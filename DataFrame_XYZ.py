@@ -26,6 +26,7 @@ from PIL import Image
 import py3Dmol
 import streamlit.components.v1 as components
 import numpy as np 
+from rdkit.Chem import rdMolAlign
 
 
 
