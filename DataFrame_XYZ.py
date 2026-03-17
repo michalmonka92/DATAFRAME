@@ -4,6 +4,7 @@ Created on Sun Mar 15 19:45:19 2026
 
 @author: monka
 """
+import gdown
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
@@ -96,15 +97,23 @@ st.set_page_config(layout="wide")
 # path_inp="C:/Michal/Dydaktyka/2025-2026/LATO/Czwartki/Analiza_Python_FIZ_MED_1st_1rok/Projekt_2"
 # os.chdir(path_inp)
 # df = pd.read_csv(file, delimiter=',',skiprows=0,usecols=[0,1,2,3])
+
+
+FILE_ID = '1qFMH8GqQPHyO7BZxF-wJOXNWScBusRkU'
+URL = f'https://drive.google.com/uc?id={FILE_ID}'
+OUTPUT = 'wyniki_obliczen1.pkl'
+
+
 @st.cache_data
 def load_my_data():
-    file="wyniki_obliczen1.pkl"
-    path_inp = "C:/Michal/Projekty/Dejan"
-    full_path = os.path.join(path_inp, file)
+    # Jeśli plik nie istnieje na serwerze, pobierz go
+    if not os.path.exists(OUTPUT):
+        with st.spinner('Pobieranie bazy danych z Google Drive...'):
+            gdown.download(URL, OUTPUT, quiet=False)
     
-    # Wczytujemy dane
-    data = pd.read_pickle(file)
-    return data
+    # Wczytaj DataFrame
+    return pd.read_pickle(OUTPUT)
+    
 df = load_my_data()
 
 
