@@ -1,12 +1,9 @@
 streamlit
 pandas
-rdkit
+rdkit>=2022.9.1
 py3Dmol
 plotly
 natsort
-numpy
+numpy<2.0.0
 Pillow
-os
-shutil
-re
 gdown
