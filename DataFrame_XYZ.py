@@ -19,12 +19,10 @@ import shutil
 import re
 from natsort import natsorted
 import streamlit as st
-from rdkit.Chem import Draw
 from io import BytesIO
 from PIL import Image
 import py3Dmol
 import streamlit.components.v1 as components
-from rdkit.Chem import rdMolAlign
 import numpy as np 
 
 
