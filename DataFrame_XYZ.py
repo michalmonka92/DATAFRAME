@@ -14,6 +14,7 @@ import pandas as pd
 import os
 import glob
 from rdkit import Chem
+from rdkit.Chem import AllChem
 from rdkit.Chem import Draw
 import subprocess
 import shutil
