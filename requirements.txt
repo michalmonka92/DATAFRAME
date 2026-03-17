@@ -1,0 +1,11 @@
+streamlit
+pandas
+rdkit
+py3Dmol
+plotly
+natsort
+numpy
+Pillow
+os
+shutil
+re
