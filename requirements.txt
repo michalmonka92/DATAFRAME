@@ -4,6 +4,6 @@ rdkit>=2022.9.1
 py3Dmol
 plotly
 natsort
-numpy<2.0.0
+numpy
 Pillow
 gdown
