@@ -99,13 +99,15 @@ st.set_page_config(layout="wide")
 @st.cache_data
 def load_my_data():
     file="wyniki_obliczen1.pkl"
+    file2="DataFrame_Energie_SOC.pkl"
     path_inp = "C:/Michal/Projekty/Dejan"
     full_path = os.path.join(path_inp, file)
     
     # Wczytujemy dane
     data = pd.read_pickle(file)
-    return data
-df = load_my_data()
+    data2 = pd.read_pickle(file2)
+    return data, data2
+df,df2 = load_my_data()
 
 
 df['S0_MOL_Opt'] = df.apply(lambda x: stworz_mol_z_optymalizacji(x['Starting_Structure_MOL'], x['S0_XYZ_Opt']), axis=1)
@@ -612,3 +614,35 @@ with st.expander("Frequency Analysis",expanded=True):
                 
     else:
         st.warning("Brak danych wibracyjnych dla tego emitera.")
+
+
+with st.expander("Energie i SOC", expanded=False):
+    # Tworzymy dwie kolumny: lewa (szeroka) na tabelę, prawa (wąska) na menu
+    col_table, col_menu = st.columns([4, 1])
+
+    # 1. Panel wyboru kolumn po prawej stronie
+    with col_menu:
+        st.write("### Filtry")
+        # Domyślnie zaznaczamy wszystkie kolumny, ale użytkownik może je odklikać
+        selected_columns = st.multiselect(
+            "Wybierz kolumny:",
+            options=df2.columns.tolist(),
+            default=df2.columns.tolist()
+        )
+
+    # 2. Wyświetlanie sformatowanej tabeli po lewej stronie
+    with col_table:
+        if selected_columns:
+            # Tworzymy widok z kolorowaniem (cmap 'coolwarm': Blue -> Red)
+            # subset określa, które kolumny mają być kolorowane (tylko numeryczne)
+            numeric_cols = df2[selected_columns].select_dtypes(include=['number']).columns
+            
+            styled_df = df2[selected_columns].style.background_gradient(
+                cmap='coolwarm', 
+                subset=numeric_cols
+            ).format(precision=4) # Zaokrąglenie do 4 miejsc po przecinku
+            
+            st.dataframe(styled_df, height=584, use_container_width=True)
+        else:
+            st.warning("Wybierz przynajmniej jedną kolumnę, aby wyświetlić dane.")
+    
