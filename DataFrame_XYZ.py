@@ -638,13 +638,22 @@ with st.expander("Energie i SOC", expanded=False):
 
     # 1. Panel wyboru kolumn po prawej stronie
     with col_menu:
-        st.write("### Filtry")
-        # Domyślnie zaznaczamy wszystkie kolumny, ale użytkownik może je odklikać
-        selected_columns = st.multiselect(
-            "Wybierz kolumny:",
-            options=df2.columns.tolist(),
-            default=df2.columns.tolist()
-        )
+        st.write("### Kolumny")
+        
+        # Przycisk do szybkiego zaznaczania/odznaczania wszystkiego
+        all_cols = df2.columns.tolist()
+        
+        # Tworzymy listę, w której będziemy trzymać wybrane nazwy
+        selected_columns = []
+        
+        # Renderujemy pionową listę checkboxów
+        # Możesz dodać st.container z height, jeśli kolumn jest ekstremalnie dużo
+        container = st.container(height=500, border=False)
+        with container:
+            for col in all_cols:
+                # Każdy checkbox domyślnie True (zaznaczony)
+                if st.checkbox(col, value=True, key=f"chk_{col}"):
+                    selected_columns.append(col)
 
     # 2. Wyświetlanie sformatowanej tabeli po lewej stronie
     with col_table:
