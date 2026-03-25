@@ -4,7 +4,6 @@ Created on Sun Mar 15 19:45:19 2026
 
 @author: monka
 """
-import gdown
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
@@ -14,19 +13,22 @@ import pandas as pd
 import os
 import glob
 from rdkit import Chem
-from rdkit.Chem import AllChem
-from rdkit.Chem import Draw
+from rdkit.Chem import Descriptors, rdDetermineBonds, Draw
 import subprocess
+from rdkit.Chem import rdmolfiles  # Dodajemy ten import
 import shutil
 import re
 from natsort import natsorted
 import streamlit as st
+from rdkit import Chem
+from rdkit.Chem import Draw
 from io import BytesIO
 from PIL import Image
 import py3Dmol
 import streamlit.components.v1 as components
-import numpy as np 
 from rdkit.Chem import rdMolAlign
+from rdkit.Chem import AllChem, Draw
+import numpy as np 
 
 
 
@@ -94,23 +96,15 @@ st.set_page_config(layout="wide")
 # path_inp="C:/Michal/Dydaktyka/2025-2026/LATO/Czwartki/Analiza_Python_FIZ_MED_1st_1rok/Projekt_2"
 # os.chdir(path_inp)
 # df = pd.read_csv(file, delimiter=',',skiprows=0,usecols=[0,1,2,3])
-
-
-FILE_ID = '1qFMH8GqQPHyO7BZxF-wJOXNWScBusRkU'
-URL = f'https://drive.google.com/uc?id={FILE_ID}'
-OUTPUT = 'wyniki_obliczen1.pkl'
-
-
 @st.cache_data
 def load_my_data():
-    # Jeśli plik nie istnieje na serwerze, pobierz go
-    if not os.path.exists(OUTPUT):
-        with st.spinner('Pobieranie bazy danych z Google Drive...'):
-            gdown.download(URL, OUTPUT, quiet=False)
+    file="wyniki_obliczen1.pkl"
+    path_inp = "C:/Michal/Projekty/Dejan"
+    full_path = os.path.join(path_inp, file)
     
-    # Wczytaj DataFrame
-    return pd.read_pickle(OUTPUT)
-    
+    # Wczytujemy dane
+    data = pd.read_pickle(file)
+    return data
 df = load_my_data()
 
 
@@ -559,54 +553,62 @@ def create_vibration_xyz(mol, vectors, amplitude=2, num_frames=45):
             xyz_frames += f"{sym} {new_x:10.6f} {new_y:10.6f} {new_z:10.6f}\n"
     return xyz_frames
 
+
+with st.expander("Frequency Analysis",expanded=True):
 # --- WIDOK W STREAMLIT ---
-row = df[df['ID'] == current_id].iloc[0]
-vibrations = row.get('Vibrational_Vectors', [])
+    row = df[df['ID'] == current_id].iloc[0]
+    vibrations = row.get('Vibrational_Vectors', [])
 
-if isinstance(vibrations, list) and len(vibrations) > 0:
-    col_list, col_view = st.columns([1, 2])
-
-    with col_list:
-        st.write("### 📋 Lista Modów")
-        # Wybór modu
-        mode_options = [v['mode_index'] for v in vibrations]
-        selected_mode_idx = st.radio(
-            "Wybierz drganie do animacji:",
-            options=mode_options,
-            format_func=lambda x: f"Mod {x}: {next(v['frequency'] for v in vibrations if v['mode_index'] == x):.2f} cm⁻¹"
-        )
-        
-        # Pobranie danych wybranego modu
-        current_mode = next(v for v in vibrations if v['mode_index'] == selected_mode_idx)
-        freq_val = current_mode['frequency']
-        
-        st.metric("Częstotliwość", f"{freq_val:.2f} cm⁻¹")
-        amp = st.slider("Amplituda drgań", 0.1, 5.0, 4.0, key="amp_slider")
-
-    with col_view:
-        st.write("### 🎬 Podgląd 3D")
-        
-        # Generowanie klatek animacji dla wybranego modu
-        # Upewnij się, że w S0_MOL_Opt masz obiekt RDKit
-        vibr_xyz = create_vibration_xyz(row['S0_MOL_Opt'], current_mode['vectors'], amplitude=amp)
-        
-        if vibr_xyz:
-            view = py3Dmol.view(width=500, height=400)
-            view.addModelsAsFrames(vibr_xyz, 'xyz')
-            view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': 0.1}, 
-                           'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
-            view.setBackgroundColor('#1e1e1e')
-            view.animate({
-    'loop': 'forward', # lub 'backAndForth' dla naturalnego ruchu
-    'step': 3,       # mniejsza wartość = znacznie większa szybkość i płynność
-    'reps': 0          # 0 oznacza nieskończoną liczbę powtórzeń (continuous)
-})
-            view.zoomTo()
+    if isinstance(vibrations, list) and len(vibrations) > 0:
+        col_list, col_view, col_param = st.columns([1, 2,1])
+    
+        with col_list:
+            st.write("### 📋 Lista Modów")
+            # Wybór modu
+            mode_options = [v['mode_index'] for v in vibrations]
+            selected_mode_idx = st.radio(
+                "Wybierz drganie do animacji:",
+                options=mode_options,
+                format_func=lambda x: f"Mod {x}: {next(v['frequency'] for v in vibrations if v['mode_index'] == x):.2f} cm⁻¹"
+            )
             
-            tjs = view._make_html()
-            components.html(tjs, height=420)
-        else:
-            st.error("Błąd generowania klatek XYZ.")
+            # Pobranie danych wybranego modu
 
-else:
-    st.warning("Brak danych wibracyjnych dla tego emitera.")
+    
+        with col_param:
+            current_mode = next(v for v in vibrations if v['mode_index'] == selected_mode_idx)
+            freq_val = current_mode['frequency']
+            
+            st.metric("Częstotliwość", f"{freq_val:.2f} cm⁻¹")
+            amp = st.slider("Amplituda drgań", 0.1, 5.0, 4.0, key="amp_slider")
+        
+        with col_view:
+            st.write("### 🎬 Podgląd 3D")
+            
+            # Generowanie klatek animacji dla wybranego modu
+            # Upewnij się, że w S0_MOL_Opt masz obiekt RDKit
+            vibr_xyz = create_vibration_xyz(row['S0_MOL_Opt'], current_mode['vectors'], amplitude=amp)
+            
+            if vibr_xyz:
+                view = py3Dmol.view(width=500, height=400)
+                view.addModelsAsFrames(vibr_xyz, 'xyz')
+                view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': 0.1}, 
+                               'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
+                view.setBackgroundColor(kolor_tla)
+                view.animate({
+        'loop': 'forward', # lub 'backAndForth' dla naturalnego ruchu
+        'step': 3,       # mniejsza wartość = znacznie większa szybkość i płynność
+        'reps': 0          # 0 oznacza nieskończoną liczbę powtórzeń (continuous)
+    })
+                view.zoomTo()
+                
+                tjs = view._make_html()
+                components.html(tjs, height=420)
+            else:
+                st.error("Błąd generowania klatek XYZ.")
+        
+                
+                
+                
+    else:
+        st.warning("Brak danych wibracyjnych dla tego emitera.")
