@@ -670,4 +670,21 @@ with st.expander("Energie i SOC", expanded=False):
             st.dataframe(styled_df, height=584, use_container_width=True)
         else:
             st.warning("Wybierz przynajmniej jedną kolumnę, aby wyświetlić dane.")
-    
+fig = px.scatter(
+    df2, 
+    x='Energy_GAP_S1_T1', 
+    y='S1_T1_SOC',
+    hover_name='ID',              # Po najechaniu myszką pokaże nazwę cząsteczki
+    trendline="ols",              # Automatyczna linia korelacji
+    title=f"Korelacja GAP vs SOC (Linker: {linker_to_process})",
+    labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'S1_T1_SOC': 'SOC S1-T1 [cm⁻¹]'},
+    template="plotly_white",       # Czysty, biały wygląd
+    color_discrete_sequence=['#636EFA']
+)
+
+# 2. Wyświetlamy w Streamlit
+st.plotly_chart(fig, use_container_width=True)
+
+# 3. Opcjonalnie: Wyciągnięcie statystyk korelacji pod wykresem
+r_squared = px.get_trendline_results(fig).px_fit_results.iloc[0].rsquared
+st.info(f"Współczynnik dopasowania R²: **{r_squared:.4f}**")    
