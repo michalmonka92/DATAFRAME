@@ -673,10 +673,10 @@ with st.expander("Energie i SOC", expanded=False):
 fig = px.scatter(
     df2, 
     x='Energy_GAP_S1_T1', 
-    y='S1_T1_SOC',
+    y='S1_eV',
     hover_name='ID',              # Po najechaniu myszką pokaże nazwę cząsteczki
-    title="Korelacja GAP vs SOC",
-    labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'S1_T1_SOC': 'SOC S1-T1 [cm⁻¹]'},
+    title="Korelacja GAP vs S1",
+    labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'S1_eV': 'S1 [eV]'},
     template="plotly_white",       # Czysty, biały wygląd
     color_discrete_sequence=['#636EFA']
 )
