@@ -7,3 +7,4 @@ natsort
 numpy
 Pillow
 gdown
+matplotlib
