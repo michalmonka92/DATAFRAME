@@ -682,8 +682,9 @@ fig = px.scatter(
 )
 
 # 2. Wyświetlamy w Streamlit
-st.plotly_chart(fig, use_container_width=True)
+col_l, col_r = st.columns([1, 1])
+with col_l:
+    st.plotly_chart(fig, use_container_width=True)
+with col_r:
+    st.plotly_chart(fig, use_container_width=True)
 
-# 3. Opcjonalnie: Wyciągnięcie statystyk korelacji pod wykresem
-r_squared = px.get_trendline_results(fig).px_fit_results.iloc[0].rsquared
-st.info(f"Współczynnik dopasowania R²: **{r_squared:.4f}**")    
