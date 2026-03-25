@@ -681,10 +681,21 @@ fig = px.scatter(
     color_discrete_sequence=['#636EFA']
 )
 
+fig2 = px.scatter(
+    df2, 
+    x='Energy_GAP_S1_T1', 
+    y='T1_eV',
+    hover_name='ID',              # Po najechaniu myszką pokaże nazwę cząsteczki
+    title="Korelacja GAP vs T1",
+    labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'T1_eV': 'T1 [eV]'},
+    template="plotly_white",       # Czysty, biały wygląd
+    color_discrete_sequence=['#636EFA']
+)
+
 # 2. Wyświetlamy w Streamlit
 col_l, col_r = st.columns([1, 1])
 with col_l:
     st.plotly_chart(fig, use_container_width=True)
 with col_r:
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig2, use_container_width=True)
 
