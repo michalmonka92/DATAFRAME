@@ -675,7 +675,6 @@ fig = px.scatter(
     x='Energy_GAP_S1_T1', 
     y='S1_T1_SOC',
     hover_name='ID',              # Po najechaniu myszką pokaże nazwę cząsteczki
-    trendline="ols",              # Automatyczna linia korelacji
     title="Korelacja GAP vs SOC",
     labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'S1_T1_SOC': 'SOC S1-T1 [cm⁻¹]'},
     template="plotly_white",       # Czysty, biały wygląd
