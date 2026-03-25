@@ -97,17 +97,33 @@ st.set_page_config(layout="wide")
 # os.chdir(path_inp)
 # df = pd.read_csv(file, delimiter=',',skiprows=0,usecols=[0,1,2,3])
 @st.cache_data
+
 def load_my_data():
-    file="wyniki_obliczen1.pkl"
-    file2="DataFrame_Energie_SOC.pkl"
-    path_inp = "C:/Michal/Projekty/Dejan"
-    full_path = os.path.join(path_inp, file)
+    # 1. Konfiguracja Google Drive
+    file_id = '1qFMH8GqQPHyO7BZxF-wJOXNWScBusRkU'  # np. '1abc123...'
+    url = f'https://drive.google.com/uc?id={file_id}'
     
-    # Wczytujemy dane
-    data = pd.read_pickle(file)
-    data2 = pd.read_pickle(file2)
-    return data, data2
-df,df2 = load_my_data()
+    output_pkl = "wyniki_obliczen1.pkl"
+    file2 = "DataFrame_Energie_SOC.pkl" # Zakładam, że ten jest lokalnie
+    
+    # 2. Pobieranie pliku z Drive (tylko jeśli go nie ma na dysku)
+    if not os.path.exists(output_pkl):
+        with st.spinner('Pobieranie dużego pliku z Google Drive...'):
+            gdown.download(url, output_pkl, quiet=False)
+    
+    # 3. Wczytywanie danych
+    # Używamy try-except, żeby obsłużyć błędy wczytywania pkl
+    try:
+        data = pd.read_pickle(output_pkl)
+        data2 = pd.read_pickle(file2)
+        return data, data2
+    except Exception as e:
+        st.error(f"Błąd podczas wczytywania plików .pkl: {e}")
+        return pd.DataFrame(), pd.DataFrame()
+
+# Wywołanie
+df, df2 = load_my_data()
+
 
 
 df['S0_MOL_Opt'] = df.apply(lambda x: stworz_mol_z_optymalizacji(x['Starting_Structure_MOL'], x['S0_XYZ_Opt']), axis=1)
