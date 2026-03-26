@@ -716,26 +716,30 @@ with col_r:
 
 
 
-if st.sidebar.button("Uruchom Analizę Podstawników L2"):
-    st.header("Wyniki Analizy Grup R (Seria L2)")
+if st.sidebar.button("🔬 Analizuj Podstawniki L2"):
+    # Wywołujemy analizę
+    wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
     
-    # Wywołujemy funkcję z drugiego pliku
-    df_wyniki, obrazek_siatki, podpisy = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
-    
-    if df_wyniki is not None:
-        # Pokazujemy tabelę
-        st.dataframe(df_wyniki)
+    if wyniki_l2:
+        st.sidebar.title("Legenda Podstawników")
+        st.sidebar.markdown("---")
         
-        # Pokazujemy siatkę 2D
-        if obrazek_siatki:
-            st.image(obrazek_siatki, caption="Struktury podstawników L2")
+        for item in wyniki_l2:
+            # Wyświetlamy ID i Wzór
+            st.sidebar.subheader(f"{item['ID']}")
+            st.sidebar.code(f"Wzór: {item['Wzor']}")
             
-        # Pokazujemy legendę w sidebarze tak jak chciałaś
-        st.sidebar.markdown("### Legenda L2")
-        for p in podpisy:
-            st.sidebar.write(p)
+            # Jeśli mamy obrazek (nie-wodór), wyświetlamy go
+            if item['Obrazek']:
+                st.sidebar.image(item['Obrazek'])
+            else:
+                st.sidebar.write("Podstawnik: Wodór (-H)")
+            
+            st.sidebar.markdown("---")
+            
+        st.success(f"Pomyślnie przeanalizowano {len(wyniki_l2)} struktur serii L2.")
     else:
-        st.error("Nie znaleziono danych do analizy.")
+        st.error("Błąd: Nie udało się przeprowadzić analizy. Sprawdź plik XYZ i dane w tabeli.")
 
 
 
