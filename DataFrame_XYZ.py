@@ -30,6 +30,7 @@ from rdkit.Chem import rdMolAlign
 from rdkit.Chem import AllChem, Draw
 import numpy as np 
 import gdown
+from analiza_podstawnikow import wykonaj_analize_L2
 
 
 
