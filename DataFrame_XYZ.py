@@ -117,7 +117,7 @@ def load_my_data():
     # 3. Wczytywanie danych
     # Używamy try-except, żeby obsłużyć błędy wczytywania pkl
     try:
-        data = pd.read_pickle(filenname_1)
+        data = pd.read_pickle(filename_1)
         data2 = pd.read_pickle(filename_2)
         return data, data2
     except Exception as e:
