@@ -3,6 +3,7 @@ from rdkit import Chem
 from rdkit.Chem import rdFMCS, rdMolDescriptors, rdDetermineBonds, Draw, rdDepictor
 import pandas as pd
 import re
+import os 
 
 def wykonaj_analize_L2(df, path_xyz):
     # --- 1. PRZYGOTOWANIE RDZENIA ---
