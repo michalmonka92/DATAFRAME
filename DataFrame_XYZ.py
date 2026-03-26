@@ -729,7 +729,7 @@ if st.sidebar.button("🔬 Analizuj Podstawniki L2"):
             label = match.group(0) if match else item['ID']
             
             # 2. Tworzymy bardzo wąskie kolumny (ratio 1:3)
-            col1, col2 = st.sidebar.columns([1, 3])
+            col2, col1 = st.sidebar.columns([1, 3])
             
             with col1:
                 if item['Obrazek']:
@@ -744,7 +744,7 @@ if st.sidebar.button("🔬 Analizuj Podstawniki L2"):
             
             # Usuwamy separator '---', żeby wpisy były jeden pod drugim
             # Opcjonalnie: minimalny odstęp HTML
-            st.sidebar.markdown('<div style="margin-bottom: -15px;"></div>', unsafe_allow_html=True)
+            st.sidebar.markdown('<div style="margin-bottom: -25px;"></div>', unsafe_allow_html=True)
 
         st.success("Analiza zakończona.")
 
