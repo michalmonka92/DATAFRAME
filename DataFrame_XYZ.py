@@ -672,12 +672,12 @@ with st.expander("Energie i SOC", expanded=False):
 fig = px.scatter(
     df2, 
     x='Energy_GAP_S1_T1', 
-    y='S1_eV',
+    y='S1',
     hover_name='ID',
-    color='S1_eV',                # Kolor zmienia się wraz z wartością S1
+    color='S1',                # Kolor zmienia się wraz z wartością S1
     color_continuous_scale='Viridis', # Ładna skala kolorów (fiolet-żółty)
     title="Korelacja GAP vs S1",
-    labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'S1_eV': 'S1 [eV]'},
+    labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'S1': 'S1 [eV]'},
     template="plotly_white"
 )
 # Powiększenie markerów (size=15) i dodanie obramowania, żeby były wyraźne
@@ -687,12 +687,12 @@ fig.update_traces(marker=dict(size=15, line=dict(width=1, color='DarkSlateGrey')
 fig2 = px.scatter(
     df2, 
     x='Energy_GAP_S1_T1', 
-    y='T1_eV',
+    y='T1',
     hover_name='ID',
-    color='T1_eV',               # Kolor zmienia się wraz z wartością T1
+    color='T1',               # Kolor zmienia się wraz z wartością T1
     color_continuous_scale='Plasma', # Inna skala dla rozróżnienia (róż-żółty)
     title="Korelacja GAP vs T1",
-    labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'T1_eV': 'T1 [eV]'},
+    labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'T1': 'T1 [eV]'},
     template="plotly_white"
 )
 # Powiększenie markerów (size=15)
