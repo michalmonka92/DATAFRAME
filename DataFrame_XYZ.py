@@ -746,7 +746,7 @@ if wyniki_l2:
             st.markdown(f"""
                 <style>
                 div[data-testid="stVerticalBlock"] > div:has(div.stMarkdown p:contains("{label}")) {{
-                    background-color: #444444;
+                    background-color: white;
                     border-radius: 10px;
                     padding: 5px;
                     margin-bottom: 5px;
@@ -764,8 +764,8 @@ if wyniki_l2:
                     <div style="
                         color: #ff9300; 
                         font-weight: bold; 
-                        font-size: 18px; 
-                        margin-top: 20px; 
+                        font-size: 16px; 
+                        margin-top: 14px; 
                         text-align: center;
                     ">
                         {label}
@@ -774,15 +774,15 @@ if wyniki_l2:
                 
             with c2:
                 if item['Obrazek']:
-                    st.image(item['Obrazek'], width=85)
+                    st.image(item['Obrazek'], width=65)
                 else:
-                    st.markdown('<div style="margin-top:20px; color:#ff9300; text-align:center;">H</div>', unsafe_allow_html=True)
+                    st.markdown('<div style="margin-top:30px; color:#ff9300; text-align:center;">H</div>', unsafe_allow_html=True)
 
 # 3. Jeszcze mocniejsze zagęszczenie całości
 st.sidebar.markdown("""
     <style>
     [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
-        gap: 0.3rem !important;
+        gap: 0.2rem !important;
     }
     </style>
     """, unsafe_allow_html=True)
