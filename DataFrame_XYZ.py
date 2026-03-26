@@ -646,7 +646,7 @@ with st.expander("Frequency Analysis",expanded=True):
 
 
     # 1. Panel wyboru kolumn po prawej stronie
-with st.expander("Energie i SOC", expanded=False):
+with st.expander("Energie i SOC", expanded=True):
     # Sprawdzamy czy df2 nie jest pusty
     if not df2.empty:
         # Automatycznie wykrywamy kolumny numeryczne do kolorowania
