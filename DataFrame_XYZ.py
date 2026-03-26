@@ -740,11 +740,11 @@ if st.sidebar.button("🔬 Analizuj Podstawniki L2"):
             
             with col2:
                 # 3. Wyświetlamy etykietę i wzór w jednej linii lub bardzo blisko
-                st.markdown(f"**{label}** : `{item['Wzor']}`")
+                st.markdown(f"**{label}** :")
             
             # Usuwamy separator '---', żeby wpisy były jeden pod drugim
             # Opcjonalnie: minimalny odstęp HTML
-            st.sidebar.markdown('<div style="margin-bottom: -45px;"></div>', unsafe_allow_html=True)
+            st.sidebar.markdown('<div style="margin-bottom: -95px;"></div>', unsafe_allow_html=True)
 
         st.success("Analiza zakończona.")
 
