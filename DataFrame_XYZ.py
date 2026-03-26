@@ -722,8 +722,8 @@ st.sidebar.markdown("""
         gap: 0rem !important;
     }
     [data-testid="stSidebar"] div.stImage > img {
-        margin-top: -15px;
-        margin-bottom: -15px;
+        margin-top: -5px;
+        margin-bottom: -5px;
     }
     </style>
     """, unsafe_allow_html=True)
