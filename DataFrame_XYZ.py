@@ -100,7 +100,6 @@ st.set_page_config(layout="wide")
 
 def load_my_data():
     # 1. Konfiguracja Google Drive
-
     filename_1="wyniki_obliczen1.pkl"
     file_id = '1qFMH8GqQPHyO7BZxF-wJOXNWScBusRkU'  # np. '1abc123...'
     url1 = f'https://drive.google.com/uc?id={file_id}'
