@@ -91,7 +91,10 @@ def stworz_mol_z_optymalizacji(mol_start, xyz_text):
 def natural_sort_key(s):
     return [int(text) if text.isdigit() else text.lower() for text in re.split('([0-9]+)', str(s))]
 
-
+if st.sidebar.button("🔄 Wymuś przeładowanie bazy"):
+    st.cache_data.clear() # Czyści CAŁY cache aplikacji
+    st.rerun() # Odświeża aplikację
+    
 st.set_page_config(layout="wide")
 # file='stroke.csv'
 # path_inp="C:/Michal/Dydaktyka/2025-2026/LATO/Czwartki/Analiza_Python_FIZ_MED_1st_1rok/Projekt_2"
