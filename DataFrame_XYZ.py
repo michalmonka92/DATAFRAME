@@ -110,7 +110,7 @@ def load_my_data():
     url2 = f'https://drive.google.com/uc?id={file_id2}'
     
     # 2. Pobieranie pliku z Drive (tylko jeśli go nie ma na dysku)
-    if not os.path.exists(output_pkl):
+    if not os.path.exists(filename_1):
         with st.spinner('Pobieranie dużego pliku z Google Drive...'):
             gdown.download(url1, filename_1, quiet=False)
             gdown.download(url2, filename_2, quiet=False)
