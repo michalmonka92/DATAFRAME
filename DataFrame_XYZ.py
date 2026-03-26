@@ -638,44 +638,29 @@ with st.expander("Frequency Analysis",expanded=True):
         st.warning("Brak danych wibracyjnych dla tego emitera.")
 
 
-with st.expander("Energie i SOC", expanded=False):
-    # Tworzymy dwie kolumny: lewa (szeroka) na tabelę, prawa (wąska) na menu
-    col_table, col_menu = st.columns([4, 1])
+
 
     # 1. Panel wyboru kolumn po prawej stronie
-    with col_menu:
-        st.write("### Kolumny")
+with st.expander("Energie i SOC", expanded=False):
+    # Sprawdzamy czy df2 nie jest pusty
+    if not df2.empty:
+        # Automatycznie wykrywamy kolumny numeryczne do kolorowania
+        numeric_cols = df2.select_dtypes(include=['number']).columns
         
-        # Przycisk do szybkiego zaznaczania/odznaczania wszystkiego
-        all_cols = df2.columns.tolist()
+        # Tworzymy ostylowany widok dla całego dataframe
+        styled_df = df2.style.background_gradient(
+            cmap='coolwarm', 
+            subset=numeric_cols
+        ).format(precision=4) # Zaokrąglenie wszystkich liczb do 4 miejsc
         
-        # Tworzymy listę, w której będziemy trzymać wybrane nazwy
-        selected_columns = []
-        
-        # Renderujemy pionową listę checkboxów
-        # Możesz dodać st.container z height, jeśli kolumn jest ekstremalnie dużo
-        container = st.container(height=500, border=False)
-        with container:
-            for col in all_cols:
-                # Każdy checkbox domyślnie True (zaznaczony)
-                if st.checkbox(col, value=True, key=f"chk_{col}"):
-                    selected_columns.append(col)
-
-    # 2. Wyświetlanie sformatowanej tabeli po lewej stronie
-    with col_table:
-        if selected_columns:
-            # Tworzymy widok z kolorowaniem (cmap 'coolwarm': Blue -> Red)
-            # subset określa, które kolumny mają być kolorowane (tylko numeryczne)
-            numeric_cols = df2[selected_columns].select_dtypes(include=['number']).columns
-            
-            styled_df = df2[selected_columns].style.background_gradient(
-                cmap='coolwarm', 
-                subset=numeric_cols
-            ).format(precision=4) # Zaokrąglenie do 4 miejsc po przecinku
-            
-            st.dataframe(styled_df, height=584, use_container_width=True)
-        else:
-            st.warning("Wybierz przynajmniej jedną kolumnę, aby wyświetlić dane.")
+        # Wyświetlamy tabelę na pełną szerokość
+        st.dataframe(
+            styled_df, 
+            height=600, 
+            use_container_width=True
+        )
+    else:
+        st.info("Brak danych do wyświetlenia w tabeli SOC.")
 
 
 # --- WYKRES 1: S1 ---
