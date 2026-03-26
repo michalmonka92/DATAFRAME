@@ -733,51 +733,65 @@ st.sidebar.markdown("### Legenda")
 # Wywołujemy funkcję bezpośrednio (bez if button)
 wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
 
+Rzeczywiście, Streamlit "rozbił" kafelki, ponieważ wrzucenie st.image do środka napisanego przez nas kodu HTML powoduje, że on się przedwcześnie zamyka. Obrazek wyskakuje pod spód zamiast siedzieć obok tekstu.
+
+Aby to naprawić i uzyskać efekt z Twojego pierwszego zdjęcia (etykieta i obrazek w jednej linii w szarym kafelku), musimy użyć st.columns wewnątrz kontenera.
+
+Oto gotowy, sprawdzony kod:
+
+Python
+# --- STYLIZOWANE KAFELKI (Wersja Poprawna) ---
+
+st.sidebar.markdown("### 🔬 Legenda L2")
+
 if wyniki_l2:
     for item in wyniki_l2:
-        # 1. Przygotowanie etykiety
         match = re.search(r'R\d+', item['ID'])
         label = match.group(0) if match else item['ID']
         
-        # 2. Generowanie HTML dla kafelka
-        # background-color: #444444 (nieco jaśniejszy od #363636)
-        # align-items: center (centruje R i obrazek w pionie)
-        
-        tile_html = f"""
-        <div style="
-            background-color: #444444;
-            border-radius: 8px;
-            padding: 5px 12px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #555555;
-        ">
-            <div style="color: #ff9300; font-weight: bold; font-size: 16px; min-width: 40px;">
-                {label}
-            </div>
-            <div style="display: flex; align-items: center;">
-        """
-        
-        st.sidebar.markdown(tile_html, unsafe_allow_html=True)
-        
-        # 3. Wyświetlanie obrazka wewnątrz kafelka
-        if item['Obrazek']:
-            # Renderujemy obrazek. UWAGA: st.image wewnątrz otwartego HTML 
-            # czasem go zamyka, więc kładziemy go po prostu "obok" w kolumnie
-            st.sidebar.image(item['Obrazek'], width=65)
-        else:
-            st.sidebar.markdown("<span style='color: #ff9300; margin-left: 20px;'>H</span>", unsafe_allow_html=True)
-            
-        # Zamykamy główny div kafelka
-        st.sidebar.markdown("</div></div>", unsafe_allow_html=True)
+        # 1. Tworzymy kontener, który będzie naszym "kafelkiem"
+        with st.sidebar.container():
+            # Nakładamy styl na ten konkretny kontener
+            st.markdown(f"""
+                <style>
+                div[data-testid="stVerticalBlock"] > div:has(div.stMarkdown p:contains("{label}")) {{
+                    background-color: #444444;
+                    border-radius: 10px;
+                    padding: 5px;
+                    margin-bottom: 5px;
+                    border: 1px solid #555;
+                }}
+                </style>
+            """, unsafe_allow_html=True)
 
-# 4. Usunięcie domyślnych odstępów Streamlita, żeby kafelki były blisko siebie
+            # 2. Używamy kolumn wewnątrz kontenera
+            c1, c2 = st.columns([1, 2])
+            
+            with c1:
+                # Etykieta (Orange) - dodajemy margines, żeby zjechała do środka
+                st.markdown(f"""
+                    <div style="
+                        color: #ff9300; 
+                        font-weight: bold; 
+                        font-size: 18px; 
+                        margin-top: 20px; 
+                        text-align: center;
+                    ">
+                        {label}
+                    </div>
+                """, unsafe_allow_html=True)
+                
+            with c2:
+                if item['Obrazek']:
+                    st.image(item['Obrazek'], width=85)
+                else:
+                    st.markdown('<div style="margin-top:20px; color:#ff9300; text-align:center;">H</div>', unsafe_allow_html=True)
+
+# 3. Jeszcze mocniejsze zagęszczenie całości
 st.sidebar.markdown("""
     <style>
     [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
-        gap: 0.1rem !important;
+        gap: 0.3rem !important;
     }
     </style>
     """, unsafe_allow_html=True)
