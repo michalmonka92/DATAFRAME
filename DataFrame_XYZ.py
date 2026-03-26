@@ -716,5 +716,27 @@ with col_r:
 
 
 
+if st.sidebar.button("Uruchom Analizę Podstawników L2"):
+    st.header("Wyniki Analizy Grup R (Seria L2)")
+    
+    # Wywołujemy funkcję z drugiego pliku
+    df_wyniki, obrazek_siatki, podpisy = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
+    
+    if df_wyniki is not None:
+        # Pokazujemy tabelę
+        st.dataframe(df_wyniki)
+        
+        # Pokazujemy siatkę 2D
+        if obrazek_siatki:
+            st.image(obrazek_siatki, caption="Struktury podstawników L2")
+            
+        # Pokazujemy legendę w sidebarze tak jak chciałaś
+        st.sidebar.markdown("### Legenda L2")
+        for p in podpisy:
+            st.sidebar.write(p)
+    else:
+        st.error("Nie znaleziono danych do analizy.")
+
+
 
 
