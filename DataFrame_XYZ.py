@@ -744,7 +744,7 @@ if st.sidebar.button("🔬 Analizuj Podstawniki L2"):
             
             # Usuwamy separator '---', żeby wpisy były jeden pod drugim
             # Opcjonalnie: minimalny odstęp HTML
-            st.sidebar.markdown('<div style="margin-bottom: -25px;"></div>', unsafe_allow_html=True)
+            st.sidebar.markdown('<div style="margin-bottom: -45px;"></div>', unsafe_allow_html=True)
 
         st.success("Analiza zakończona.")
 
