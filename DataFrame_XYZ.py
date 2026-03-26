@@ -734,7 +734,7 @@ if st.sidebar.button("🔬 Analizuj Podstawniki L2"):
             with col1:
                 if item['Obrazek']:
                     # Mały obrazek (50px) bez dodatkowych marginesów
-                    st.image(item['Obrazet'], width=50)
+                    st.image(item['Obrazek'], width=50)
                 else:
                     st.write("H")
             
