@@ -100,22 +100,25 @@ st.set_page_config(layout="wide")
 
 def load_my_data():
     # 1. Konfiguracja Google Drive
+
+    filename_1="wyniki_obliczen1.pkl"
     file_id = '1qFMH8GqQPHyO7BZxF-wJOXNWScBusRkU'  # np. '1abc123...'
-    url = f'https://drive.google.com/uc?id={file_id}'
-    
-    output_pkl = "wyniki_obliczen1.pkl"
-    file2 = "DataFrame_Energie_SOC.pkl" # Zakładam, że ten jest lokalnie
+    url1 = f'https://drive.google.com/uc?id={file_id}'
+
+    filename_2="DataFrame_Energie_SOC.pkl"
+    file_id2 = "1apIi1F8SMHtKPQzGcurxnhSmORQFz6ce"
+    url2 = f'https://drive.google.com/uc?id={file_id2}'
     
     # 2. Pobieranie pliku z Drive (tylko jeśli go nie ma na dysku)
     if not os.path.exists(output_pkl):
         with st.spinner('Pobieranie dużego pliku z Google Drive...'):
-            gdown.download(url, output_pkl, quiet=False)
-    
+            gdown.download(url1, filename_1, quiet=False)
+            gdown.download(url2, filename_2, quiet=False)
     # 3. Wczytywanie danych
     # Używamy try-except, żeby obsłużyć błędy wczytywania pkl
     try:
-        data = pd.read_pickle(output_pkl)
-        data2 = pd.read_pickle(file2)
+        data = pd.read_pickle(filenname_1)
+        data2 = pd.read_pickle(filename_2)
         return data, data2
     except Exception as e:
         st.error(f"Błąd podczas wczytywania plików .pkl: {e}")
