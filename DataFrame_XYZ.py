@@ -719,3 +719,6 @@ with col_r:
     # Dodany klucz 'key'
     st.plotly_chart(fig2, use_container_width=True, key="scatter_t1")
 
+if st.sidebar.button("Odśwież dane"):
+    st.cache_data.clear()
+    st.rerun()
