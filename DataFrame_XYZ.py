@@ -746,11 +746,11 @@ if wyniki_l2:
             st.markdown(f"""
                 <style>
                 div[data-testid="stVerticalBlock"] > div:has(div.stMarkdown p:contains("{label}")) {{
-                    background-color: white;
+                    background-color: #ff0000;
                     border-radius: 10px;
                     padding: 5px;
                     margin-bottom: 5px;
-                    border: 1px solid #555;
+                    border: 1px solid #ff0000;
                 }}
                 </style>
             """, unsafe_allow_html=True)
