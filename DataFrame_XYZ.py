@@ -98,7 +98,7 @@ st.set_page_config(layout="wide")
 # os.chdir(path_inp)
 # df = pd.read_csv(file, delimiter=',',skiprows=0,usecols=[0,1,2,3])
 @st.cache_data
-
+@st.cache_data(ttl=1, show_spinner=False)
 @st.cache_data(show_spinner=False)
 def load_my_data():
     filename_1 = "wyniki_obliczen1.pkl"
