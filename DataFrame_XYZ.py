@@ -716,38 +716,47 @@ with col_r:
 
 
 
-if st.sidebar.button("🔬 Analizuj Podstawniki L2"):
-    wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
-    
-    if wyniki_l2:
-        st.sidebar.markdown("### Grupy R (Seria L2)")
+st.sidebar.markdown("""
+    <style>
+    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+        gap: 0rem !important;
+    }
+    [data-testid="stSidebar"] div.stImage > img {
+        margin-top: -15px;
+        margin-bottom: -15px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+st.sidebar.markdown("### 🔬 Legenda L2")
+
+# Wywołujemy funkcję bezpośrednio (bez if button)
+wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
+
+if wyniki_l2:
+    for item in wyniki_l2:
+        # Wyciągamy etykietę (R2, R3 itd.)
+        match = re.search(r'R\d+', item['ID'])
+        label = match.group(0) if match else item['ID']
         
-        # Iterujemy po wynikach
-        for item in wyniki_l2:
-            # 1. Wyciągamy samą etykietę R (np. R2 z całego ID)
-            match = re.search(r'R\d+', item['ID'])
-            label = match.group(0) if match else item['ID']
-            
-            # 2. Tworzymy bardzo wąskie kolumny (ratio 1:3)
-            col2, col1 = st.sidebar.columns([1, 3], gap="small")
-            
-            with col1:
-                if item['Obrazek']:
-                    # Mały obrazek (50px) bez dodatkowych marginesów
-                    st.image(item['Obrazek'], width=80)
-                else:
-                    st.write("H")
-            
-            with col2:
-                # 3. Wyświetlamy etykietę i wzór w jednej linii lub bardzo blisko
-                st.markdown(f"**{label}** :")
-            
-            # Usuwamy separator '---', żeby wpisy były jeden pod drugim
-            # Opcjonalnie: minimalny odstęp HTML
-            st.sidebar.markdown('<div style="margin-bottom: -95px;"></div>', unsafe_allow_html=True)
-
-        st.success("Analiza zakończona.")
-
+        # Tworzymy kolumny z minimalnym odstępem (gap)
+        col1, col2 = st.sidebar.columns([1, 2], gap="small")
+        
+        with col1:
+            # Etykieta R2, R3...
+            st.markdown(f"**{label}**")
+        
+        with col2:
+            if item['Obrazek']:
+                # Mały obrazek, width dopasowany tak, by nie rozpychał wiersza
+                st.image(item['Obrazek'], width=65)
+            else:
+                st.caption("H")
+        
+        # Bardzo ciasny odstęp między wierszami
+        st.sidebar.markdown('<div style="margin-top: -10px;"></div>', unsafe_allow_html=True)
+else:
+    st.sidebar.info("Brak danych serii L2 do wyświetlenia.")
 
 
 
