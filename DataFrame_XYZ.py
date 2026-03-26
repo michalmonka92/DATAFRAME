@@ -137,11 +137,6 @@ def load_my_data():
 # Wywołanie danych
 df, df2 = load_my_data()
 
-# DODAJ TO, żeby sprawdzić czy dane są świeże
-if not df2.empty:
-    st.sidebar.write(f"Ostatnia aktualizacja bazy: {len(df2)} wierszy")
-    st.sidebar.write(f"Ostatnie ID: {df2['ID'].iloc[-1]}")
-
 df['S0_MOL_Opt'] = df.apply(lambda x: stworz_mol_z_optymalizacji(x['Starting_Structure_MOL'], x['S0_XYZ_Opt']), axis=1)
 
 #%%---------------------------------------Tytuł--------------------------------
@@ -714,6 +709,3 @@ with col_r:
     # Dodany klucz 'key'
     st.plotly_chart(fig2, use_container_width=True, key="scatter_t1")
 
-if st.sidebar.button("Odśwież dane"):
-    st.cache_data.clear()
-    st.rerun()
