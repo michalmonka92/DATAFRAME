@@ -714,36 +714,46 @@ with col_r:
     st.plotly_chart(fig2, use_container_width=True, key="scatter_t1")
 
 
-def get_substituent_legend(df):
-    # Grupowanie po ID podstawnika (np. R1, R2) wyciągniętego z ID
-    # Zakładamy, że wyciągnąłeś już kolumnę 'Substituent' (np. R1, R2...)
-    if 'Substituent' not in df.columns:
+def get_substituent_summary(df):
+    """Analizuje atomy w obiektach Mol i przypisuje im symbol chemiczny."""
+    if 'S0_MOL_Opt' not in df.columns or 'Substituent' not in df.columns:
         return None
 
-    legend = {}
-    unique_subs = df['Substituent'].unique()
-    
-    for sub_id in unique_subs:
-        # Bierzemy pierwszy lepszy przykład dla danego R
-        sample_mol = df[df['Substituent'] == sub_id]['S0_MOL_Opt'].iloc[0]
+    summary_data = []
+    # Grupowanie po R1, R2, R3...
+    for sub_id in sorted(df['Substituent'].unique()):
+        # Pobieramy pierwszy dostępny obiekt Mol dla tego R
+        mol = df[df['Substituent'] == sub_id]['S0_MOL_Opt'].iloc[0]
         
-        # Tutaj można by dodać logikę wycinania fragmentu, 
-        # ale na start najprościej wyświetlić po prostu obrazek/opis
-        legend[sub_id] = sample_mol 
+        if mol:
+            # Pobieramy symbole wszystkich atomów w cząsteczce
+            atoms = [atom.GetSymbol() for atom in mol.GetAtoms()]
+            
+            # Szukamy atomów, które nie są standardowym szkieletem (C, H, N, O, S)
+            # Jeśli podstawnikiem jest np. F, Cl, Br, I, Se - to one tutaj wyskoczą
+            special_atoms = [a for a in set(atoms) if a not in ['C', 'H', 'N', 'O', 'S']]
+            
+            # Jeśli nie znaleziono specjalnych (np. podstawnikiem jest Me lub H), 
+            # sprawdzamy czy to po prostu szkielet węglowy
+            desc = ", ".join(special_atoms) if special_atoms else "H / Alkyl"
+            
+            summary_data.append({"R (ID)": sub_id, "Atom/Grupa": desc})
+            
+    return pd.DataFrame(summary_data)
+
+# --- WYŚWIETLANIE W SIDEBARZE ---
+st.sidebar.markdown("---")
+st.sidebar.write("### 🔍 Identyfikator Podstawników")
+
+# df to Twój wczytany wyniki_obliczen1.pkl
+if not df.empty:
+    with st.spinner("Analizowanie struktur..."):
+        tabela_r = get_substituent_summary(df)
         
-    return legend
-
-
-st.sidebar.write("### 🧪 Mapa podstawników")
-if 'S0_MOL_Opt' in df.columns:
-    # Wyświetlenie obrazka fragmentu (wymaga RDKit)
-    # Jeśli to są obiekty Mol:
-    sub_map = get_substituent_legend(df)
-    for r_id, mol in sub_map.items():
-        st.sidebar.text(f"Podstawnik {r_id}:")
-        img = Draw.MolToImage(mol, size=(150, 150))
-        st.sidebar.image(img)
-
-
+        if tabela_r is not None:
+            # Wyświetlamy jako czystą tabelę bez indeksu
+            st.sidebar.table(tabela_r.set_index("R (ID)"))
+        else:
+            st.sidebar.info("Brak kolumn S0_MOL_Opt lub Substituent.")
 
 
