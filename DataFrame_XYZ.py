@@ -717,29 +717,29 @@ with col_r:
 
 
 if st.sidebar.button("🔬 Analizuj Podstawniki L2"):
-    # Wywołujemy analizę
     wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
     
     if wyniki_l2:
-        st.sidebar.title("Legenda Podstawników")
-        st.sidebar.markdown("---")
+        st.sidebar.title("Legenda R2-R16")
         
         for item in wyniki_l2:
-            # Wyświetlamy ID i Wzór
-            st.sidebar.subheader(f"{item['ID']}")
-            st.sidebar.code(f"Wzór: {item['Wzor']}")
+            # Tworzymy dwie kolumny w sidebarze: mała na obrazek, większa na tekst
+            col1, col2 = st.sidebar.columns([1, 2])
             
-            # Jeśli mamy obrazek (nie-wodór), wyświetlamy go
-            if item['Obrazek']:
-                st.sidebar.image(item['Obrazek'])
-            else:
-                st.sidebar.write("Podstawnik: Wodór (-H)")
+            with col1:
+                if item['Obrazek']:
+                    # Wyświetlamy mały obrazek bez rozciągania
+                    st.image(item['Obrazek'], width=60)
+                else:
+                    st.write("H")
             
+            with col2:
+                # Wyświetlamy ID i wzór mniejszą czcionką (caption lub mały markdown)
+                st.markdown(f"**{item['ID']}**")
+                st.caption(f"{item['Wzor']}")
+            
+            # Cienka linia oddzielająca, żeby było czytelnie
             st.sidebar.markdown("---")
-            
-        st.success(f"Pomyślnie przeanalizowano {len(wyniki_l2)} struktur serii L2.")
-    else:
-        st.error("Błąd: Nie udało się przeprowadzić analizy. Sprawdź plik XYZ i dane w tabeli.")
 
 
 
