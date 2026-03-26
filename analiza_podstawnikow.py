@@ -66,23 +66,30 @@ def wykonaj_analize_L2(df, path_xyz):
                         sub_mol_hs = Chem.AddHs(sub_mol)
                         wzor = rdMolDescriptors.CalcMolFormula(sub_mol_hs)
                         
-                        # --- GENEROWANIE OBRAZKA DARK MODE ---
+                        # --- GENEROWANIE OBRAZKA DARK MODE (Wersja stabilna) ---
                         rdDepictor.Compute2DCoords(sub_mol)
                         
-                        # Ustawiamy płótno (Canvas)
+                        # Inicjalizacja rysownika Cairo
                         d2d = Draw.MolDraw2DCairo(300, 300)
                         dopts = d2d.drawOptions()
                         
-                        # Kolory (R, G, B, A) - wartości od 0 do 1
+                        # Ustawienia kolorystyczne
                         dopts.backgroundColour = (0, 0, 0, 1) # Czarne tło
-                        dopts.symbolColour = (1, 1, 1, 1)     # Białe symbole (C, N, O...)
-                        dopts.defaultColor = (1, 1, 1, 1)     # Białe wiązania
-                        dopts.bondLineWidth = 2               # Grubsze wiązania dla widoczności
+                        
+                        # Zamiast defaultColor, używamy bezpieczniejszych ustawień:
+                        # RDKit automatycznie dobierze jasne wiązania, jeśli tło jest ciemne,
+                        # ale możemy to wymusić ustawiając kolor symboli.
+                        dopts.symbolColour = (1, 1, 1, 1)   # Białe symbole (N, O, S...)
+                        dopts.bondLineWidth = 2             # Grubość linii
+                        
+                        # Wyłączenie kolorowania atomów wg układu okresowego (opcjonalnie)
+                        # dzięki temu wszystkie atomy będą białe
+                        dopts.updateAtomPalette({i: (1, 1, 1, 1) for i in range(100)})
                         
                         d2d.DrawMolecule(sub_mol)
                         d2d.FinishDrawing()
                         
-                        # Konwersja binarna na obrazek PIL
+                        # Konwersja na obrazek PIL
                         img_data = d2d.GetDrawingText()
                         img_single = Image.open(io.BytesIO(img_data))
             
