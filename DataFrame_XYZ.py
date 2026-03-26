@@ -92,7 +92,7 @@ def stworz_mol_z_optymalizacji(mol_start, xyz_text):
 def natural_sort_key(s):
     return [int(text) if text.isdigit() else text.lower() for text in re.split('([0-9]+)', str(s))]
 
-if st.sidebar.button("🔄 Wymuś przeładowanie bazy"):
+if st.sidebar.button("🔄 Force reload data"):
     st.cache_data.clear() # Czyści CAŁY cache aplikacji
     st.rerun() # Odświeża aplikację
     
@@ -719,7 +719,7 @@ with col_r:
 st.sidebar.markdown("""
     <style>
     [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
-        gap: 0.2rem !important;
+        gap: 0.15rem !important;
     }
     [data-testid="stSidebar"] div.stImage > img {
         margin-top: -5px;
@@ -728,7 +728,7 @@ st.sidebar.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.sidebar.markdown("### 🔬 Legenda L2")
+st.sidebar.markdown("### Legenda L2")
 
 # Wywołujemy funkcję bezpośrednio (bez if button)
 wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
