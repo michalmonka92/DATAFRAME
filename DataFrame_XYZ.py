@@ -728,7 +728,7 @@ st.sidebar.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.sidebar.markdown("### Legenda L2")
+st.sidebar.markdown("### Legenda")
 
 # Wywołujemy funkcję bezpośrednio (bez if button)
 wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
