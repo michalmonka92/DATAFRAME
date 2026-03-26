@@ -733,16 +733,7 @@ st.sidebar.markdown("### Legenda")
 # Wywołujemy funkcję bezpośrednio (bez if button)
 wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
 
-Rzeczywiście, Streamlit "rozbił" kafelki, ponieważ wrzucenie st.image do środka napisanego przez nas kodu HTML powoduje, że on się przedwcześnie zamyka. Obrazek wyskakuje pod spód zamiast siedzieć obok tekstu.
 
-Aby to naprawić i uzyskać efekt z Twojego pierwszego zdjęcia (etykieta i obrazek w jednej linii w szarym kafelku), musimy użyć st.columns wewnątrz kontenera.
-
-Oto gotowy, sprawdzony kod:
-
-Python
-# --- STYLIZOWANE KAFELKI (Wersja Poprawna) ---
-
-st.sidebar.markdown("### 🔬 Legenda L2")
 
 if wyniki_l2:
     for item in wyniki_l2:
