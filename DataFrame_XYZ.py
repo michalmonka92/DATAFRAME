@@ -29,6 +29,7 @@ import streamlit.components.v1 as components
 from rdkit.Chem import rdMolAlign
 from rdkit.Chem import AllChem, Draw
 import numpy as np 
+import gdown
 
 
 
