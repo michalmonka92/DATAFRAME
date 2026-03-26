@@ -733,29 +733,54 @@ st.sidebar.markdown("### Legenda")
 # Wywołujemy funkcję bezpośrednio (bez if button)
 wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
 
-for item in wyniki_l2:
-        # Wyciągamy etykietę (R2, R3 itd.)
+if wyniki_l2:
+    for item in wyniki_l2:
+        # 1. Przygotowanie etykiety
         match = re.search(r'R\d+', item['ID'])
         label = match.group(0) if match else item['ID']
         
-        # Tworzymy kolumny z minimalnym odstępem (gap)
-        col1, col2 = st.sidebar.columns([1, 2], gap="small")
+        # 2. Generowanie HTML dla kafelka
+        # background-color: #444444 (nieco jaśniejszy od #363636)
+        # align-items: center (centruje R i obrazek w pionie)
         
-        with col1:
-            # Etykieta R2, R3...
-            st.markdown(f"<span style='color: #ff9300; font-weight: bold;'>{label}</span>", unsafe_allow_html=True)
+        tile_html = f"""
+        <div style="
+            background-color: #444444;
+            border-radius: 8px;
+            padding: 5px 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #555555;
+        ">
+            <div style="color: #ff9300; font-weight: bold; font-size: 16px; min-width: 40px;">
+                {label}
+            </div>
+            <div style="display: flex; align-items: center;">
+        """
         
-        with col2:
-            if item['Obrazek']:
-                # Mały obrazek, width dopasowany tak, by nie rozpychał wiersza
-                st.image(item['Obrazek'], width=65)
-            else:
-                st.caption("H")
+        st.sidebar.markdown(tile_html, unsafe_allow_html=True)
         
-        # Bardzo ciasny odstęp między wierszami
-        st.sidebar.markdown('<div style="margin-top: -10px;"></div>', unsafe_allow_html=True)
-else:
-    st.sidebar.info("Brak danych serii L2 do wyświetlenia.")
+        # 3. Wyświetlanie obrazka wewnątrz kafelka
+        if item['Obrazek']:
+            # Renderujemy obrazek. UWAGA: st.image wewnątrz otwartego HTML 
+            # czasem go zamyka, więc kładziemy go po prostu "obok" w kolumnie
+            st.sidebar.image(item['Obrazek'], width=65)
+        else:
+            st.sidebar.markdown("<span style='color: #ff9300; margin-left: 20px;'>H</span>", unsafe_allow_html=True)
+            
+        # Zamykamy główny div kafelka
+        st.sidebar.markdown("</div></div>", unsafe_allow_html=True)
+
+# 4. Usunięcie domyślnych odstępów Streamlita, żeby kafelki były blisko siebie
+st.sidebar.markdown("""
+    <style>
+    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+        gap: 0.1rem !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 
 
