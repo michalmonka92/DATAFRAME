@@ -729,12 +729,12 @@ if st.sidebar.button("🔬 Analizuj Podstawniki L2"):
             label = match.group(0) if match else item['ID']
             
             # 2. Tworzymy bardzo wąskie kolumny (ratio 1:3)
-            col2, col1 = st.sidebar.columns([1, 3])
+            col2, col1 = st.sidebar.columns([1, 3], gap="small")
             
             with col1:
                 if item['Obrazek']:
                     # Mały obrazek (50px) bez dodatkowych marginesów
-                    st.image(item['Obrazek'], width=50)
+                    st.image(item['Obrazek'], width=80)
                 else:
                     st.write("H")
             
