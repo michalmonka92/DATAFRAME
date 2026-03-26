@@ -733,27 +733,52 @@ st.sidebar.markdown("### Legenda")
 # Wywołujemy funkcję bezpośrednio (bez if button)
 wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
 
+# --- POPRAWIONA, WYCENTROWANA PĘTLA W SIDEBARZE ---
+
 for item in wyniki_l2:
-        # Wyciągamy etykietę (R2, R3 itd.)
-        match = re.search(r'R\d+', item['ID'])
-        label = match.group(0) if match else item['ID']
+    # 1. Wyciągamy etykietę R (np. R2 z całego ID)
+    match = re.search(r'R\d+', item['ID'])
+    label = match.group(0) if match else item['ID']
+    
+    # 2. Nie używamy 'st.sidebar.columns'. Zamiast tego robimy jedno pudełko HTML (FLEXBOX)
+    # które automatycznie wycentruje wszystko w pionie (align-items: center).
+    
+    html_template = f"""
+    <div style="
+        display: flex; 
+        align-items: center; 
+        justify-content: flex-start;
+        gap: 10px;
+        height: 65px; 
+        margin-bottom: 5px;
+    ">
+        <span style="
+            color: #ff9300; 
+            font-weight: bold; 
+            font-size: 16px; 
+            width: 30px; 
+            text-align: left;
+        ">
+            {label}
+        </span>
         
-        # Tworzymy kolumny z minimalnym odstępem (gap)
-        col1, col2 = st.sidebar.columns([1, 2], gap="small")
-        
-        with col1:
-            # Etykieta R2, R3...
-            st.markdown(f"<span style='color: #ff9300; font-weight: bold;'>{label}</span>", unsafe_allow_html=True)
-        
-        with col2:
-            if item['Obrazek']:
-                # Mały obrazek, width dopasowany tak, by nie rozpychał wiersza
-                st.image(item['Obrazek'], width=65)
-            else:
-                st.caption("H")
-        
-        # Bardzo ciasny odstęp między wierszami
-        st.sidebar.markdown('<div style="margin-top: -10px;"></div>', unsafe_allow_html=True)
+        <div style="width: 65px; height: 65px; display: flex; align-items: center;">
+            {item['Obrazek']._repr_png_() if item['Obrazek'] else '<span style="color: #ff9300;">H</span>'}
+        </div>
+    </div>
+    """
+    
+    # Wyświetlamy gotowe pudełko
+    st.sidebar.markdown(html_template, unsafe_allow_html=True)
+
+# 5. Całkowite zagęszczenie: ten CSS zabija puste przestrzenie między rzędami
+st.sidebar.markdown("""
+    <style>
+    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+        gap: 0rem !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)div style="margin-top: -10px;"></div>', unsafe_allow_html=True)
 else:
     st.sidebar.info("Brak danych serii L2 do wyświetlenia.")
 
