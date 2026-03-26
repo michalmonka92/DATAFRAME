@@ -735,37 +735,57 @@ wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
 
 
 
-for item in wyniki_l2:
-    match = re.search(r'R\d+', item['ID'])
-    label = match.group(0) if match else item['ID']
-    
-    # 1. Ten CSS "łapie" kontener, który zawiera element o konkretnym ID
-    st.sidebar.markdown(f"""
-        <style>
-        div[data-testid="stVerticalBlock"] > div:has(#{label}_box) {{
-            background-color: green !important;
-            border: 2px solid red !important;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 5px;
-        }}
-        </style>
-    """, unsafe_allow_html=True)
-
-    # 2. Tworzymy kontener, który ma to unikalne ID
-    with st.sidebar.container():
-        # Ten niewidoczny div z id przekazuje styl do całego kontenera powyżej
-        st.markdown(f'<div id="{label}_box" style="display:none;"></div>', unsafe_allow_html=True)
+if wyniki_l2:
+    for item in wyniki_l2:
+        match = re.search(r'R\d+', item['ID'])
+        label = match.group(0) if match else item['ID']
         
-        c1, c2 = st.columns([1, 2])
-        with c1:
-            # Etykieta R2, R3...
-            st.markdown(f"<p style='color: white; font-weight: bold; margin-top:15px;'>{label}</p>", unsafe_allow_html=True)
-        with c2:
-            if item['Obrazek']:
-                st.image(item['Obrazek'], width=70)
-            else:
-                st.write("H")
+        # 1. Tworzymy kontener, który będzie naszym "kafelkiem"
+        with st.sidebar.container():
+            # Nakładamy styl na ten konkretny kontener
+            st.markdown(f"""
+                <style>
+                div[data-testid="stVerticalBlock"] > div:has(div.stMarkdown p:contains("{label}")) {{
+                    background-color: #444444;
+                    border-radius: 10px;
+                    padding: 5px;
+                    margin-bottom: 5px;
+                    border: 1px solid #555;
+                }}
+                </style>
+            """, unsafe_allow_html=True)
+
+            # 2. Używamy kolumn wewnątrz kontenera
+            c1, c2 = st.columns([1, 2])
+            
+            with c1:
+                # Etykieta (Orange) - dodajemy margines, żeby zjechała do środka
+                st.markdown(f"""
+                    <div style="
+                        color: #ff9300; 
+                        font-weight: bold; 
+                        font-size: 18px; 
+                        margin-top: 20px; 
+                        text-align: center;
+                    ">
+                        {label}
+                    </div>
+                """, unsafe_allow_html=True)
+                
+            with c2:
+                if item['Obrazek']:
+                    st.image(item['Obrazek'], width=85)
+                else:
+                    st.markdown('<div style="margin-top:20px; color:#ff9300; text-align:center;">H</div>', unsafe_allow_html=True)
+
+# 3. Jeszcze mocniejsze zagęszczenie całości
+st.sidebar.markdown("""
+    <style>
+    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+        gap: 0.3rem !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 
 
