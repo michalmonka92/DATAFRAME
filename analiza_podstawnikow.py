@@ -74,7 +74,7 @@ def wykonaj_analize_L2(df, path_xyz):
                         dopts = d2d.drawOptions()
                         
                         # Ustawienia kolorystyczne
-                        dopts.backgroundColour = #363636 # Czarne tło
+                        dopts.backgroundColour = "#363636" # Czarne tło
                         
                         # Zamiast defaultColor, używamy bezpieczniejszych ustawień:
                         # RDKit automatycznie dobierze jasne wiązania, jeśli tło jest ciemne,
