@@ -588,7 +588,7 @@ def create_vibration_xyz(mol, vectors, amplitude=2, num_frames=45):
     return xyz_frames
 
 
-with st.expander("Frequency Analysis",expanded=True):
+with st.expander("Frequency Analysis",expanded=False):
 # --- WIDOK W STREAMLIT ---
     row = df[df['ID'] == current_id].iloc[0]
     vibrations = row.get('Vibrational_Vectors', [])
