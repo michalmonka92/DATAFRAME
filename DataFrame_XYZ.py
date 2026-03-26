@@ -744,7 +744,7 @@ if wyniki_l2:
         
         with col1:
             # Etykieta R2, R3...
-            st.markdown(f"**{label}**")
+            st.markdown(f"<span style='color: #2ecc71; font-weight: bold;'>{label}</span>", unsafe_allow_html=True)
         
         with col2:
             if item['Obrazek']:
