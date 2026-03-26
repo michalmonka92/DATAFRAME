@@ -733,45 +733,27 @@ st.sidebar.markdown("### Legenda")
 # Wywołujemy funkcję bezpośrednio (bez if button)
 wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
 
-if wyniki_l2:
-    for item in wyniki_l2:
-    # Wyciągamy R2, R3 itd.
-    match = re.search(r'R\d+', item['ID'])
-    label = match.group(0) if match else item['ID']
-    
-    # Tworzymy kolumny
-    col1, col2 = st.sidebar.columns([1, 2], gap="small")
-    
-    with col1:
-        # KLUCZ: Używamy div z flexem, który wycentruje tekst w pionie (align-items: center)
-        # Dodajemy też stałą wysokość odpowiadającą mniej więcej wysokości obrazka
-        st.markdown(f"""
-            <div style="
-                display: flex; 
-                align-items: center; 
-                height: 80px;
-                justify-content: flex-start;
-            ">
-                <span style="color: orange; font-weight: bold; font-size: 18px;">
-                    {label}
-                </span>
-            </div>
-            """, unsafe_allow_html=True)
-    
-    with col2:
-        if item['Obrazek']:
-            # Obrazek wyświetlamy normalnie
-            st.image(item['Obrazek'], width=80)
-        else:
-            # Dla wodoru (H) też centrujemy tekst w pionie
-            st.markdown("""
-                <div style="display: flex; align-items: center; height: 80px;">
-                    <span style="color: orange;">H</span>
-                </div>
-                """, unsafe_allow_html=True)
-
-    # Bardzo mały ujemny margines, żeby zniwelować puste miejsca Streamlita
-    st.sidebar.markdown('<div style="margin-top: -15px;"></div>', unsafe_allow_html=True)
+for item in wyniki_l2:
+        # Wyciągamy etykietę (R2, R3 itd.)
+        match = re.search(r'R\d+', item['ID'])
+        label = match.group(0) if match else item['ID']
+        
+        # Tworzymy kolumny z minimalnym odstępem (gap)
+        col1, col2 = st.sidebar.columns([1, 2], gap="small")
+        
+        with col1:
+            # Etykieta R2, R3...
+            st.markdown(f"<span style='color: #ff9300; font-weight: bold;'>{label}</span>", unsafe_allow_html=True)
+        
+        with col2:
+            if item['Obrazek']:
+                # Mały obrazek, width dopasowany tak, by nie rozpychał wiersza
+                st.image(item['Obrazek'], width=65)
+            else:
+                st.caption("H")
+        
+        # Bardzo ciasny odstęp między wierszami
+        st.sidebar.markdown('<div style="margin-top: -10px;"></div>', unsafe_allow_html=True)
 else:
     st.sidebar.info("Brak danych serii L2 do wyświetlenia.")
 
