@@ -719,7 +719,7 @@ with col_r:
 st.sidebar.markdown("""
     <style>
     [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
-        gap: 0rem !important;
+        gap: 5rem !important;
     }
     [data-testid="stSidebar"] div.stImage > img {
         margin-top: -5px;
