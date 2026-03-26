@@ -720,26 +720,33 @@ if st.sidebar.button("🔬 Analizuj Podstawniki L2"):
     wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
     
     if wyniki_l2:
-        st.sidebar.title("Legenda R2-R16")
+        st.sidebar.markdown("### Grupy R (Seria L2)")
         
+        # Iterujemy po wynikach
         for item in wyniki_l2:
-            # Tworzymy dwie kolumny w sidebarze: mała na obrazek, większa na tekst
-            col1, col2 = st.sidebar.columns([1, 2])
+            # 1. Wyciągamy samą etykietę R (np. R2 z całego ID)
+            match = re.search(r'R\d+', item['ID'])
+            label = match.group(0) if match else item['ID']
+            
+            # 2. Tworzymy bardzo wąskie kolumny (ratio 1:3)
+            col1, col2 = st.sidebar.columns([1, 3])
             
             with col1:
                 if item['Obrazek']:
-                    # Wyświetlamy mały obrazek bez rozciągania
-                    st.image(item['Obrazek'], width=60)
+                    # Mały obrazek (50px) bez dodatkowych marginesów
+                    st.image(item['Obrazet'], width=50)
                 else:
                     st.write("H")
             
             with col2:
-                # Wyświetlamy ID i wzór mniejszą czcionką (caption lub mały markdown)
-                st.markdown(f"**{item['ID']}**")
-                st.caption(f"{item['Wzor']}")
+                # 3. Wyświetlamy etykietę i wzór w jednej linii lub bardzo blisko
+                st.markdown(f"**{label}** : `{item['Wzor']}`")
             
-            # Cienka linia oddzielająca, żeby było czytelnie
-            st.sidebar.markdown("---")
+            # Usuwamy separator '---', żeby wpisy były jeden pod drugim
+            # Opcjonalnie: minimalny odstęp HTML
+            st.sidebar.markdown('<div style="margin-bottom: -15px;"></div>', unsafe_allow_html=True)
+
+        st.success("Analiza zakończona.")
 
 
 
