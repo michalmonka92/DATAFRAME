@@ -713,3 +713,37 @@ with col_r:
     # Dodany klucz 'key'
     st.plotly_chart(fig2, use_container_width=True, key="scatter_t1")
 
+
+def get_substituent_legend(df):
+    # Grupowanie po ID podstawnika (np. R1, R2) wyciągniętego z ID
+    # Zakładamy, że wyciągnąłeś już kolumnę 'Substituent' (np. R1, R2...)
+    if 'Substituent' not in df.columns:
+        return None
+
+    legend = {}
+    unique_subs = df['Substituent'].unique()
+    
+    for sub_id in unique_subs:
+        # Bierzemy pierwszy lepszy przykład dla danego R
+        sample_mol = df[df['Substituent'] == sub_id]['S0_MOL_Opt'].iloc[0]
+        
+        # Tutaj można by dodać logikę wycinania fragmentu, 
+        # ale na start najprościej wyświetlić po prostu obrazek/opis
+        legend[sub_id] = sample_mol 
+        
+    return legend
+
+
+st.sidebar.write("### 🧪 Mapa podstawników")
+if 'S0_MOL_Opt' in df.columns:
+    # Wyświetlenie obrazka fragmentu (wymaga RDKit)
+    # Jeśli to są obiekty Mol:
+    sub_map = get_substituent_legend(df)
+    for r_id, mol in sub_map.items():
+        st.sidebar.text(f"Podstawnik {r_id}:")
+        img = Draw.MolToImage(mol, size=(150, 150))
+        st.sidebar.image(img)
+
+
+
+
