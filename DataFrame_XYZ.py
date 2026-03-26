@@ -733,45 +733,27 @@ st.sidebar.markdown("### Legenda")
 # Wywołujemy funkcję bezpośrednio (bez if button)
 wyniki_l2 = wykonaj_analize_L2(df, "D5_L1_R_A1.xyz")
 
-# --- POPRAWIONA I WYCENTROWANA LEGENDA ---
-
-st.sidebar.markdown("### 🔬 Legenda L2")
-
-# 1. Styl CSS usuwający odstępy między rzędami w sidebarze
-st.sidebar.markdown("""
-    <style>
-    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
-        gap: 0.2rem !important;
-    }
-    /* Styl dla kontenera tekstu, aby zrównać go do środka obrazka */
-    .v-center {
-        margin-top: 20px;
-        color: #ff9300;
-        font-weight: bold;
-        font-size: 16px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-if wyniki_l2:
-    for item in wyniki_l2:
-        # Wyciągamy R2, R3 itd.
+for item in wyniki_l2:
+        # Wyciągamy etykietę (R2, R3 itd.)
         match = re.search(r'R\d+', item['ID'])
         label = match.group(0) if match else item['ID']
         
-        # Tworzymy kolumny: 1 dla etykiety, 2 dla obrazka
+        # Tworzymy kolumny z minimalnym odstępem (gap)
         col1, col2 = st.sidebar.columns([1, 2], gap="small")
         
         with col1:
-            # Używamy klasy CSS .v-center do wycentrowania tekstu względem obrazka
-            st.markdown(f'<p class="v-center">{label}</p>', unsafe_allow_html=True)
+            # Etykieta R2, R3...
+            st.markdown(f"<span style='color: #ff9300; font-weight: bold;'>{label}</span>", unsafe_allow_html=True)
         
         with col2:
             if item['Obrazek']:
-                # Wyświetlamy obrazek (tło ustawiliśmy w pliku .py na #363636)
-                st.image(item['Obrazek'], width=70)
+                # Mały obrazek, width dopasowany tak, by nie rozpychał wiersza
+                st.image(item['Obrazek'], width=65)
             else:
-                st.markdown('<p class="v-center">H</p>', unsafe_allow_html=True)
+                st.caption("H")
+        
+        # Bardzo ciasny odstęp między wierszami
+        st.sidebar.markdown('<div style="margin-top: -10px;"></div>', unsafe_allow_html=True)
 else:
     st.sidebar.info("Brak danych serii L2 do wyświetlenia.")
 
