@@ -106,7 +106,7 @@ def load_my_data():
     
     filename_2 = "DataFrame_Energie_SOC_FULL.pkl"
     file_id2 = "1w2n86ZEscAWNdXC9UVoriTUfgIXx9pen"
-
+ 
 
     # Funkcja pomocnicza do pobierania
     def download_file(file_id, output_name):
