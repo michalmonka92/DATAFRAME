@@ -58,9 +58,9 @@ def wykonaj_analize_L2(df, path_xyz):
                 if smi_clean and smi_clean != "":
                     sub_mol = Chem.MolFromSmiles(smi_clean)
                     if sub_mol:
-                        # Wzór sumaryczny
-                        sub_mol_hs = Chem.AddHs(sub_mol)
-                        wzor = rdMolDescriptors.CalcMolFormula(sub_mol_hs)
+                        rdDepictor.Compute2DCoords(sub_mol)
+                        # Zmniejszamy rozmiar generowanego obrazka
+                        img_single = Draw.MolToImage(sub_mol, size=(100, 100))
                         
                         # Generowanie obrazka 2D
                         rdDepictor.Compute2DCoords(sub_mol)
@@ -75,3 +75,5 @@ def wykonaj_analize_L2(df, path_xyz):
             })
 
     return final_results
+
+
