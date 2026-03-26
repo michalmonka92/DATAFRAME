@@ -99,24 +99,31 @@ st.set_page_config(layout="wide")
 # df = pd.read_csv(file, delimiter=',',skiprows=0,usecols=[0,1,2,3])
 @st.cache_data
 
+@st.cache_data(show_spinner=False)
 def load_my_data():
     filename_1 = "wyniki_obliczen1.pkl"
     file_id1 = '1qFMH8GqQPHyO7BZxF-wJOXNWScBusRkU'
-    url1 = f'https://drive.google.com/uc?id={file_id1}'
-
+    
     filename_2 = "DataFrame_Energie_SOC.pkl"
     file_id2 = "1apIi1F8SMHtKPQzGcurxnhSmORQFz6ce"
-    url2 = f'https://drive.google.com/uc?id={file_id2}'
-    
-    # Pobieramy plik 1 jeśli go nie ma
-    if not os.path.exists(filename_1):
-        with st.spinner(f'Pobieranie {filename_1}...'):
-            gdown.download(url1, filename_1, quiet=False)
 
-    # Pobieramy plik 2 jeśli go nie ma
-    if not os.path.exists(filename_2):
-        with st.spinner(f'Pobieranie {filename_2}...'):
-            gdown.download(url2, filename_2, quiet=False)
+    # Funkcja pomocnicza do pobierania
+    def download_file(file_id, output_name):
+        url = f'https://drive.google.com/uc?id={file_id}'
+        # Jeśli plik istnieje, usuwamy go, aby gdown pobrał nową wersję
+        if os.path.exists(output_name):
+            os.remove(output_name)
+        
+        try:
+            # gdown czasami potrzebuje parametru fuzzy=True dla GDrive
+            gdown.download(url, output_name, quiet=False, fuzzy=True)
+        except Exception as e:
+            st.error(f"Błąd pobierania {output_name}: {e}")
+
+    # Pobieranie plików
+    with st.spinner('Synchronizacja z Google Drive...'):
+        download_file(file_id1, filename_1)
+        download_file(file_id2, filename_2)
 
     # Wczytywanie
     try:
@@ -124,12 +131,13 @@ def load_my_data():
         data2 = pd.read_pickle(filename_2)
         return data, data2
     except Exception as e:
-        st.error(f"Błąd podczas wczytywania plików .pkl: {e}")
+        st.error(f"Błąd wczytywania pkl: {e}")
         return pd.DataFrame(), pd.DataFrame()
 
-# Wywołanie
+# Wywołanie danych
 df, df2 = load_my_data()
 
+# DODAJ TO, żeby sprawdzić czy dane są świeże
 if not df2.empty:
     st.sidebar.write(f"Ostatnia aktualizacja bazy: {len(df2)} wierszy")
     st.sidebar.write(f"Ostatnie ID: {df2['ID'].iloc[-1]}")
