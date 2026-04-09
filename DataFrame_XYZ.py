@@ -674,8 +674,7 @@ with st.expander("Energie i SOC", expanded=True):
         
 
 st.markdown("---")
-st.subheader("📊 Podsumowanie ilościowe")
-        
+       
 if 'Linker' in df2.columns:
             # 1. Agregacja danych
     counts = df2['Linker'].value_counts().sort_index()
@@ -686,7 +685,7 @@ if 'Linker' in df2.columns:
         st.markdown(f"""
             <div style="
                         font-size: 14px; 
-                        color: #007BFF; 
+                        color: "white"; 
                         margin-bottom: 2px;
                     ">
                         <b>{linker}:</b> {count} związków
