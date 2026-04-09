@@ -691,8 +691,7 @@ if 'Linker' in df2.columns:
                         <b>{linker}:</b> {count} związków
             </div>
         """, unsafe_allow_html=True)
-    else:
-        st.warning("Brak kolumny 'Linker' w danych.")
+
 
 
 
