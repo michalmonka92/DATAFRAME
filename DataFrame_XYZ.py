@@ -647,11 +647,13 @@ with st.expander("Frequency Analysis",expanded=False):
     else:
         st.warning("Brak danych wibracyjnych dla tego emitera.")
 
-cola,colb=st.columns([10,1])
+
 
 
     # 1. Panel wyboru kolumn po prawej stronie
 with st.expander("Energie i SOC", expanded=True):
+
+    cola,colb=st.columns([10,1])
     with cola:   # Sprawdzamy czy df2 nie jest pusty
         if not df2.empty:
             # Automatycznie wykrywamy kolumny numeryczne do kolorowania
