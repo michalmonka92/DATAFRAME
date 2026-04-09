@@ -667,13 +667,8 @@ with st.expander("Energie i SOC", expanded=True):
             st.dataframe(
                 styled_df, 
                 height=600, 
-                use_container_width=True
-            )
-        else:
-            st.info("Brak danych do wyświetlenia w tabeli SOC.")
+                use_container_width=True)
             
-
-
     with colb:       
         if 'Linker' in df2.columns:
                     # 1. Agregacja danych
