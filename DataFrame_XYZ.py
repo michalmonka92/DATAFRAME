@@ -647,50 +647,50 @@ with st.expander("Frequency Analysis",expanded=False):
     else:
         st.warning("Brak danych wibracyjnych dla tego emitera.")
 
-
+cola,colb=st.columns([10,1])
 
 
     # 1. Panel wyboru kolumn po prawej stronie
 with st.expander("Energie i SOC", expanded=True):
-    # Sprawdzamy czy df2 nie jest pusty
-    if not df2.empty:
-        # Automatycznie wykrywamy kolumny numeryczne do kolorowania
-        numeric_cols = df2.select_dtypes(include=['number']).columns
-        
-        # Tworzymy ostylowany widok dla całego dataframe
-        styled_df = df2.style.background_gradient(
-            cmap='coolwarm', 
-            subset=numeric_cols
-        ).format(precision=4) # Zaokrąglenie wszystkich liczb do 4 miejsc
-        
-        # Wyświetlamy tabelę na pełną szerokość
-        st.dataframe(
-            styled_df, 
-            height=600, 
-            use_container_width=True
-        )
-    else:
-        st.info("Brak danych do wyświetlenia w tabeli SOC.")
-        
-
-st.markdown("---")
-       
-if 'Linker' in df2.columns:
-            # 1. Agregacja danych
-    counts = df2['Linker'].value_counts().sort_index()
+    with cola:   # Sprawdzamy czy df2 nie jest pusty
+        if not df2.empty:
+            # Automatycznie wykrywamy kolumny numeryczne do kolorowania
+            numeric_cols = df2.select_dtypes(include=['number']).columns
             
-            # 2. Wyświetlanie w rzędzie (z góry na dół nie da się w poziomie, 
-            # więc robimy listę pionową w jednej kolumnie)
-    for linker, count in counts.items():
-        st.markdown(f"""
-            <div style="
-                        font-size: 14px; 
-                        color: "white"; 
-                        margin-bottom: 2px;
-                    ">
-                        <b>{linker}:</b> {count} związków
-            </div>
-        """, unsafe_allow_html=True)
+            # Tworzymy ostylowany widok dla całego dataframe
+            styled_df = df2.style.background_gradient(
+                cmap='coolwarm', 
+                subset=numeric_cols
+            ).format(precision=4) # Zaokrąglenie wszystkich liczb do 4 miejsc
+            
+            # Wyświetlamy tabelę na pełną szerokość
+            st.dataframe(
+                styled_df, 
+                height=600, 
+                use_container_width=True
+            )
+        else:
+            st.info("Brak danych do wyświetlenia w tabeli SOC.")
+            
+
+
+    with colb:       
+        if 'Linker' in df2.columns:
+                    # 1. Agregacja danych
+            counts = df2['Linker'].value_counts().sort_index()
+                    
+                    # 2. Wyświetlanie w rzędzie (z góry na dół nie da się w poziomie, 
+                    # więc robimy listę pionową w jednej kolumnie)
+            for linker, count in counts.items():
+                st.markdown(f"""
+                    <div style="
+                                font-size: 14px; 
+                                color: "white"; 
+                                margin-bottom: 2px;
+                            ">
+                                <b>{linker}:</b> {count} związków
+                    </div>
+                """, unsafe_allow_html=True)
 
 
 
