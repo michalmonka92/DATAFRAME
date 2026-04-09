@@ -671,7 +671,28 @@ with st.expander("Energie i SOC", expanded=True):
         )
     else:
         st.info("Brak danych do wyświetlenia w tabeli SOC.")
-
+        
+# --- SEKCJA PODSUMOWANIA (wstaw pod st.dataframe) ---
+        st.markdown("---")
+        st.subheader("📊 Podsumowanie obliczeń wg Linkerów")
+        
+        if 'Linker' in df2.columns:
+            # Liczymy wystąpienia każdego linkera
+            counts = df2['Linker'].value_counts().sort_index()
+            
+            # Tworzymy kolumny, aby wyświetlić statystyki obok siebie
+            cols = st.columns(len(counts))
+            
+            for i, (linker, count) in enumerate(counts.items()):
+                with cols[i]:
+                    st.metric(label=f"Linker {linker}", value=count)
+            
+            # Opcjonalnie: prosta tabela tekstowa poniżej, jeśli linkerów jest bardzo dużo
+            if len(counts) > 5:
+                st.write("Szczegółowa lista:")
+                st.table(counts.rename("Liczba związków"))
+        else:
+            st.warning("Nie znaleziono kolumny 'Linker' do przygotowania podsumowania.")
 
 # --- WYKRES 1: S1 ---
 fig = px.scatter(
