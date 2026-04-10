@@ -980,9 +980,6 @@ with st.expander("Dihedrals", expanded=False):
         
         # 4. Stylizacja
         fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
-        
-        fig.update_layout(
-            yaxis=dict(range=[-2, 95], title='Dihedral D-L [°]'))
           
         # 5. Wyświetlenie
         st.plotly_chart(fig, use_container_width=True)
