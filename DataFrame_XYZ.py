@@ -821,4 +821,4 @@ with st.expander("🔍 Szczegóły bazy danych i statystyki kolumn", expanded=Fa
     with colb:
         plt.figure(figsize=(12, 6))
         sns.set_style("whitegrid")
-        plot = sns.scatterplot(data=df_final, x='ID', y='Torsion_DL2', s=100, color='royalblue', edgecolor='black')
+        plot = sns.scatterplot(data=df3, x='ID', y='Torsion_DL2', s=100, color='royalblue', edgecolor='black')
