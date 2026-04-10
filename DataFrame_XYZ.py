@@ -812,7 +812,11 @@ st.sidebar.markdown("""
 
 
 with st.expander("🔍 Szczegóły bazy danych i statystyki kolumn", expanded=False):
-    st.dataframe(
-                df3, 
-                height=600, 
-                use_container_width=True)
+    cola,colb=st.columns([1,3])
+    
+    with cola:
+        st.dataframe(df3, height=600, use_container_width=True)
+    with colb:
+        plt.figure(figsize=(12, 6))
+        sns.set_style("whitegrid")
+        plot = sns.scatterplot(data=df_final, x='ID', y='Torsion_DL2', s=100, color='royalblue', edgecolor='black')
