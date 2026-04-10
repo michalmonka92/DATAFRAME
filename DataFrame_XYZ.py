@@ -835,23 +835,25 @@ with st.expander("🔍 Szczegóły bazy danych i statystyki kolumn", expanded=Fa
         sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
         heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
         
-        # 4. Tworzenie wykresu w Streamlit
-        fig, ax = plt.subplots(figsize=(16, 9)) # Tworzymy obiekt fig i ax
+        fig = px.imshow(
+            heatmap_data,
+            labels=dict(x="Podstawnik", y="Linker", color="Kąt [°]"),
+            x=sorted_substituents,
+            y=sorted_linkers,
+            color_continuous_scale="Rainbow", # Twoja ulubiona paleta
+            range_color=[70, 90],             # Twoje skalowanie
+            text_auto=".3f",                  # Wyświetlanie wartości w kratkach
+            aspect="auto"                     # Automatyczne dopasowanie proporcji
+        )
         
-        sns.heatmap(heatmap_data, 
-                    annot=True, 
-                    fmt=".3f", 
-                    vmin=70.0, 
-                    vmax=90.0, 
-                    cmap="rainbow", 
-                    linewidths=.5,
-                    cbar_kws={'label': 'Kąt [°]'},
-                    ax=ax) # Rysujemy na konkretnej osi ax
+        # 5. Estetyka wykresu
+        fig.update_layout(
+            title='Interaktywna Heatmapa Kątów (R1, R2, R3...)',
+            xaxis_nticks=len(sorted_substituents),
+            yaxis_nticks=len(sorted_linkers),
+            width=900, 
+            height=600
+        )
         
-        plt.title('Heatmapa kątów - Poprawna kolejność (R1, R2, R3...)', fontsize=16, pad=20)
-        plt.xlabel('Podstawnik', fontsize=12)
-        plt.ylabel('Linker', fontsize=12)
-        plt.xticks(rotation=45)
-        
-        # Wyświetlenie w Streamlit
-        st.pyplot(fig)
+        # 6. Wyświetlenie w Streamlit
+        st.plotly_chart(fig, use_container_width=True)
