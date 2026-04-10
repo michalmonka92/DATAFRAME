@@ -179,9 +179,10 @@ st.markdown(f"""
     """, unsafe_allow_html=True)            
 
 st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)      
- 
-st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
-st.dataframe(df)
+
+with st.expander("Input DataFrame with Strating Structures (from Dejan) and further S0-Optimized", expanded=False):
+    st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
+    st.dataframe(df)
 
 
             
