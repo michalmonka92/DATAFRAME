@@ -859,7 +859,7 @@ with st.expander("Dihedrals", expanded=False):
         # 6. Wyświetlenie w Streamlit
         st.plotly_chart(fig, use_container_width=True)
     with colc:
-        tab1, tab2, tab3 = st.tabs(["Scatter plot: 1", "Scatter plot: 2", "Scatter plot: 3"])
+        tab1, tab2, tab3 = st.tabs(["Scatter: Group - Substituents 1", "Scatter: Group - Substituents 2", "Scatter: Group - Linker"])
 
         with tab1:
     
