@@ -814,11 +814,22 @@ st.sidebar.markdown("""
 
 
 with st.expander("🔍 Szczegóły bazy danych i statystyki kolumn", expanded=False):
-    cola,colb=st.columns([1,3])
+    cola, colb = st.columns([1, 3])
     
     with cola:
         st.dataframe(df3, height=600, use_container_width=True)
+        
     with colb:
-        plt.figure(figsize=(12, 6))
+        # Tworzymy obiekt figure jawnie
+        fig, ax = plt.subplots(figsize=(12, 6))
         sns.set_style("whitegrid")
-        plot = sns.scatterplot(data=df3, x='ID', y='Torsion_DL2', s=100, color='royalblue', edgecolor='black')
+        
+        # Rysujemy na osi 'ax'
+        sns.scatterplot(data=df3, x='ID', y='Torsion_DL2', s=100, color='royalblue', edgecolor='black', ax=ax)
+        
+        # Estetyka
+        plt.xticks(rotation=45, ha='right')
+        plt.tight_layout()
+        
+        # KLUCZOWY MOMENT: Przekazujemy fig do Streamlit
+        st.pyplot(fig)
