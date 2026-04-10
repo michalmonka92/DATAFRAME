@@ -814,7 +814,7 @@ st.sidebar.markdown("""
 
 
 with st.expander("Dihedrals", expanded=False):
-    cola, colb = st.columns([1, 3])
+    cola, colb, colc = st.columns([1,2,2])
     
     with cola:
         st.dataframe(df3, height=600, use_container_width=True)
@@ -857,3 +857,42 @@ with st.expander("Dihedrals", expanded=False):
         
         # 6. Wyświetlenie w Streamlit
         st.plotly_chart(fig, use_container_width=True)
+    with colc:
+        df_plot = df3.sort_values('Torsion_DL2').copy()
+        
+        # 2. Tworzenie interaktywnego wykresu Plotly
+        fig = px.scatter(
+            df_plot,
+            x='ID',              # Oś X: nazwa związku
+            y='Torsion_DL2',     # Oś Y: kąt
+            color='Substituent', # Kolor punktu zależny od podstawnika
+            title='Rozkład kątów dwuściennych dla badanych związków (posortowany)',
+            labels={
+                'ID': 'ID Związku',
+                'Torsion_DL2': 'Kąt [°]',
+                'Substituent': 'Podstawnik'
+            },
+            hover_name='ID',     # Wytłuszczona nazwa w dymku po najechaniu
+            # Dodatkowe dane widoczne w dymku:
+            hover_data={'Linker': True, 'Substituent': True, 'Torsion_DL2': ':.3f'}
+        )
+        
+        # 3. Personalizacja wykresu (estetyka i zakresy)
+        fig.update_traces(
+            marker=dict(size=12, line=dict(width=1, color='DarkSlateGrey')) # Większe punkty z obwódką
+        )
+        
+        fig.update_layout(
+            yaxis=dict(range=[-2, 95]),   # Sztywny zakres osi Y od 0 do 95 (z małym zapasem)
+            xaxis_tickangle=-45,          # Obrócenie etykiet na osi X
+            legend_title_text='Podstawnik',
+            template='plotly_white',       # Jasny, czysty styl (odpowiednik whitegrid)
+            height=600                     # Wysokość wykresu
+        )
+        
+        # 4. Wyświetlenie w Streamlit
+        st.plotly_chart(fig, use_container_width=True)
+
+
+
+        
