@@ -866,7 +866,7 @@ with st.expander("Dihedrals", expanded=False):
             x='ID',              # Oś X: nazwa związku
             y='Torsion_DL2',     # Oś Y: kąt
             color='Substituent', # Kolor punktu zależny od podstawnika
-            title='Heatmapa of dihedrals D-L: increasing D-L in order of Linker',
+            title='Scatter plot  of dihedrals D-L: increasing D-L in order of Linker',
             labels={
                 'ID': 'ID',
                 'Torsion_DL2': 'Dihedral D-L [°]',
