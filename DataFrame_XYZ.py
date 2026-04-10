@@ -929,33 +929,39 @@ with st.expander("Dihedrals", expanded=False):
         
         st.plotly_chart(fig, use_container_width=True)
 #&&-------------------------------------------------------------------------------
-        # 1. Funkcja wyciągająca numer (np. "L2" -> 2)
+        # 1. Funkcja pomocnicza do wyciągania numerów z tekstu (np. "L10" -> 10)
         def get_number(text):
             if not isinstance(text, str): return 0
             match = re.search(r'\d+', text)
             return int(match.group()) if match else 0
         
         # 2. Przygotowanie danych
-        # Tworzymy kolumnę pomocniczą do sortowania Linkerów (L2 przed L10)
-        df3['L_num_internal'] = df3['Linker'].apply(get_number)
+        # Dodajemy kolumny pomocnicze do poprawnego sortowania
+        df3['R_num'] = df3['Substituent'].apply(get_number)
+        df3['L_num'] = df3['Linker'].apply(get_number)
         
-        # Sortujemy: najpierw po Linkerze (L2, L3...), a potem po kącie (rosnąco)
-        df_plot = df3.sort_values(by=['L_num_internal', 'Torsion_DL2']).copy()
+        # SORTOWANIE:
+        # 1. Po numerze podstawnika (R1, R2...)
+        # 2. Po numerze linkera (L2, L3...) - to ustawi "schodki" wewnątrz grupy
+        df_plot = df3.sort_values(by=['R_num', 'L_num']).copy()
         
-        # Usuwamy pomocniczą kolumnę
-        df_plot = df_plot.drop(columns=['L_num_internal'])
+        # Opcjonalnie: Jeśli chcesz wymusić kolejność w legendzie, 
+        # musimy posortować unikalne wartości Linkerów
+        sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
         
-        # 3. Wykres Plotly
+        # 3. Tworzenie wykresu Plotly
         fig = px.scatter(
             df_plot,
-            x='ID',              # Oś X: nazwa związku
-            y='Torsion_DL2',     # Oś Y: kąt
-            color='Substituent', # Kolor: Podstawnik (R)
-            title='Kąty pogrupowane według Linkerów (L2 -> L10), rosnąco w grupach',
+            x='ID',
+            y='Torsion_DL2',
+            color='Linker',
+            # Wymuszamy kolejność kolorów w legendzie zgodną z numeracją L
+            category_orders={"Linker": sorted_linkers}, 
+            title='Kąty pogrupowane według podstawników (R), kolejność Linkerów L2-L10',
             labels={
                 'ID': 'ID Związku',
                 'Torsion_DL2': 'Dihedral D-L [°]',
-                'Substituent': 'Podstawnik'
+                'Linker': 'Linker'
             },
             hover_data=['Linker', 'Substituent', 'Torsion_DL2']
         )
@@ -967,7 +973,7 @@ with st.expander("Dihedrals", expanded=False):
             yaxis=dict(range=[-2, 95], title='Dihedral D-L [°]'),
             xaxis=dict(
                 tickangle=-90, 
-                type='category'  # Zachowuje naszą kolejność sortowania z DataFrame
+                type='category' # Trzyma kolejność z df_plot
             ),
             template='plotly_dark',
             height=750
