@@ -1014,7 +1014,7 @@ with st.expander("Dihedrals", expanded=False):
         current_title = 'Kąty pogrupowane wg R, sortowane wg numeru Linkera'
     else:
         # Sortujemy: R rosnąco, potem Kąt malejąco
-        df_plot = df3.sort_values(by=['R_num', 'Torsion_DL2'], ascending=[True, True]).copy()
+        df_plot = df3.sort_values(by=['Torsion_DL2', 'L_num'], ascending=[True, True]).copy()
         current_title = 'Kąty pogrupowane wg R, sortowane wg malejącego kąta'
     
     # Stała kolejność w legendzie (L2, L3...)
