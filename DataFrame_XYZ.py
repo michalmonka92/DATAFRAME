@@ -813,7 +813,7 @@ st.sidebar.markdown("""
     """, unsafe_allow_html=True)
 
 
-with st.expander("🔍 Szczegóły bazy danych i statystyki kolumn", expanded=False):
+with st.expander("Dihedrals", expanded=False):
     cola, colb = st.columns([1, 3])
     
     with cola:
@@ -840,15 +840,15 @@ with st.expander("🔍 Szczegóły bazy danych i statystyki kolumn", expanded=Fa
             labels=dict(x="Podstawnik", y="Linker", color="Kąt [°]"),
             x=sorted_substituents,
             y=sorted_linkers,
-            color_continuous_scale="Rainbow", # Twoja ulubiona paleta
-            range_color=[70, 90],             # Twoje skalowanie
+            color_continuous_scale="jet", # Twoja ulubiona paleta
+            range_color=[60, 90],             # Twoje skalowanie
             text_auto=".3f",                  # Wyświetlanie wartości w kratkach
             aspect="auto"                     # Automatyczne dopasowanie proporcji
         )
         
         # 5. Estetyka wykresu
         fig.update_layout(
-            title='Interaktywna Heatmapa Kątów (R1, R2, R3...)',
+            title='Dihedrals Donor - Linker',
             xaxis_nticks=len(sorted_substituents),
             yaxis_nticks=len(sorted_linkers),
             width=900, 
