@@ -697,47 +697,47 @@ with st.expander("Energie i SOC", expanded=True):
 
 
 
-
-# --- WYKRES 1: S1 ---
-fig = px.scatter(
-    df2, 
-    x='Energy_GAP_S1_T1', 
-    y='S1',
-    hover_name='ID',
-    color='S1',                # Kolor zmienia się wraz z wartością S1
-    color_continuous_scale='Viridis', # Ładna skala kolorów (fiolet-żółty)
-    title="Korelacja GAP vs S1",
-    labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'S1': 'S1 [eV]'},
-    template="plotly_white"
-)
-# Powiększenie markerów (size=15) i dodanie obramowania, żeby były wyraźne
-fig.update_traces(marker=dict(size=15, line=dict(width=1, color='DarkSlateGrey')))
-
-# --- WYKRES 2: T1 ---
-fig2 = px.scatter(
-    df2, 
-    x='Energy_GAP_S1_T1', 
-    y='T1',
-    hover_name='ID',
-    color='T1',               # Kolor zmienia się wraz z wartością T1
-    color_continuous_scale='Plasma', # Inna skala dla rozróżnienia (róż-żółty)
-    title="Korelacja GAP vs T1",
-    labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'T1': 'T1 [eV]'},
-    template="plotly_white"
-)
-# Powiększenie markerów (size=15)
-fig2.update_traces(marker=dict(size=15, line=dict(width=1, color='DarkSlateGrey')))
-
-# --- WYŚWIETLANIE ---
-col_l, col_r = st.columns([1, 1])
-
-with col_l:
-    # Dodany klucz 'key', żeby Streamlit nie wyrzucił błędu duplikacji
-    st.plotly_chart(fig, use_container_width=True, key="scatter_s1")
-
-with col_r:
-    # Dodany klucz 'key'
-    st.plotly_chart(fig2, use_container_width=True, key="scatter_t1")
+    
+    # --- WYKRES 1: S1 ---
+    fig = px.scatter(
+        df2, 
+        x='Energy_GAP_S1_T1', 
+        y='S1',
+        hover_name='ID',
+        color='S1',                # Kolor zmienia się wraz z wartością S1
+        color_continuous_scale='Viridis', # Ładna skala kolorów (fiolet-żółty)
+        title="Korelacja GAP vs S1",
+        labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'S1': 'S1 [eV]'},
+        template="plotly_white"
+    )
+    # Powiększenie markerów (size=15) i dodanie obramowania, żeby były wyraźne
+    fig.update_traces(marker=dict(size=15, line=dict(width=1, color='DarkSlateGrey')))
+    
+    # --- WYKRES 2: T1 ---
+    fig2 = px.scatter(
+        df2, 
+        x='Energy_GAP_S1_T1', 
+        y='T1',
+        hover_name='ID',
+        color='T1',               # Kolor zmienia się wraz z wartością T1
+        color_continuous_scale='Plasma', # Inna skala dla rozróżnienia (róż-żółty)
+        title="Korelacja GAP vs T1",
+        labels={'Energy_GAP_S1_T1': 'Energy GAP S1-T1 [eV]', 'T1': 'T1 [eV]'},
+        template="plotly_white"
+    )
+    # Powiększenie markerów (size=15)
+    fig2.update_traces(marker=dict(size=15, line=dict(width=1, color='DarkSlateGrey')))
+    
+    # --- WYŚWIETLANIE ---
+    col_l, col_r = st.columns([1, 1])
+    
+    with col_l:
+        # Dodany klucz 'key', żeby Streamlit nie wyrzucił błędu duplikacji
+        st.plotly_chart(fig, use_container_width=True, key="scatter_s1")
+    
+    with col_r:
+        # Dodany klucz 'key'
+        st.plotly_chart(fig2, use_container_width=True, key="scatter_t1")
 
 
 
