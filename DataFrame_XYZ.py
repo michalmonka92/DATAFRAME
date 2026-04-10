@@ -894,6 +894,38 @@ with st.expander("Dihedrals", expanded=False):
         # 4. Wyświetlenie w Streamlit
         st.plotly_chart(fig, use_container_width=True)
 
-
+        # 1. Sortowanie: najpierw według nazwy Podstawnika (R1, R2...), 
+        # a potem wewnątrz podstawnika według wartości kąta
+        df_plot2 = df3.sort_values(['Substituent', 'Torsion_DL2']).copy()
+        
+        # 2. Tworzenie wykresu
+        fig = px.scatter(
+            df_plot2,
+            x='ID',
+            y='Torsion_DL2',
+            color='Substituent',  # Kolorowanie nadal według podstawnika
+            symbol='Linker',      # Opcjonalnie: inny kształt dla różnych linkerów
+            title='Kąty dwuścienne pogrupowane według Podstawników',
+            labels={
+                'ID': 'ID Związku (Grupowanie po R)',
+                'Torsion_DL2': 'Kąt [°]',
+                'Substituent': 'Podstawnik'
+            },
+            hover_data=['Linker', 'Substituent', 'Torsion_DL2']
+        )
+        
+        # 3. Stylizacja
+        fig.update_traces(marker=dict(size=10, line=dict(width=1, color='white')))
+        
+        fig.update_layout(
+            yaxis=dict(range=[0, 95], title='Dihedral D-L [°]'),
+            xaxis_tickangle=-90,  # Pionowe etykiety ID, żeby zmieścić ich dużo obok siebie
+            template='plotly_dark', # Ciemny motyw pasujący do Twoich screenów
+            height=700,
+            showlegend=True
+        )
+        
+        # 4. Wyświetlenie w Streamlit
+        st.plotly_chart(fig, use_container_width=True)
 
         
