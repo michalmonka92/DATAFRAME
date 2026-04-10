@@ -981,3 +981,72 @@ with st.expander("Dihedrals", expanded=False):
     
     # 5. Wyświetlenie
     st.plotly_chart(fig, use_container_width=True)
+
+
+
+
+
+
+
+    # 1. Funkcja pomocnicza
+    def get_number(text):
+        if not isinstance(text, str): return 0
+        match = re.search(r'\d+', text)
+        return int(match.group()) if match else 0
+    
+    # --- INTERFEJS WYBORU ---
+    st.subheader("📊 Ustawienia wizualizacji")
+    sort_option = st.radio(
+        "Wybierz sposób sortowania wewnątrz grup R:",
+        ["Numer Linkera (L2 -> L10)", "Wartość kąta (Malejąco)"],
+        horizontal=True
+    )
+    
+    # 2. Przygotowanie danych
+    # Zawsze potrzebujemy numeru R do głównego grupowania
+    df3['R_num_val'] = df3['Substituent'].apply(get_number)
+    df3['L_num_val'] = df3['Linker'].apply(get_number)
+    
+    if sort_option == "Numer Linkera (L2 -> L10)":
+        # Sortujemy: R rosnąco, potem Linker rosnąco
+        df_plot = df3.sort_values(by=['R_num_val', 'L_num_val'], ascending=[True, True]).copy()
+        current_title = 'Kąty pogrupowane wg R, sortowane wg numeru Linkera'
+    else:
+        # Sortujemy: R rosnąco, potem Kąt malejąco
+        df_plot = df3.sort_values(by=['R_num_val', 'Torsion_DL2'], ascending=[True, False]).copy()
+        current_title = 'Kąty pogrupowane wg R, sortowane wg malejącego kąta'
+    
+    # Stała kolejność w legendzie (L2, L3...)
+    sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
+    
+    # 3. Tworzenie wykresu Plotly
+    fig = px.scatter(
+        df_plot,
+        x='ID',
+        y='Torsion_DL2',
+        color='Linker',
+        category_orders={"Linker": sorted_linkers}, 
+        title=current_title,
+        labels={
+            'ID': 'ID Związku',
+            'Torsion_DL2': 'Dihedral D-L [°]',
+            'Linker': 'Linker'
+        },
+        hover_data=['Linker', 'Substituent', 'Torsion_DL2']
+    )
+    
+    # 4. Stylizacja
+    fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
+    
+    fig.update_layout(
+        yaxis=dict(range=[-2, 95], title='Dihedral D-L [°]'),
+        xaxis=dict(
+            tickangle=-90, 
+            type='category' 
+        ),
+        template='plotly_dark',
+        height=750
+    )
+    
+    # 5. Wyświetlenie
+    st.plotly_chart(fig, use_container_width=True)
