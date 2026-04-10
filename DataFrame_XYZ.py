@@ -925,7 +925,15 @@ with st.expander("Dihedrals", expanded=False):
         
         # Wymuszenie kolejności kategorii na osi X
 
-        fig.update_layout(height=400)
+        fig.update_layout(
+                    height=400,
+                    xaxis=dict(
+                        showticklabels=False, # Ukrywa podpisy (ID)
+                        title=None,           # Ukrywa napis "Związek"
+                        showgrid=False        # Opcjonalnie: usuwa pionowe linie siatki
+                    )
+                )
+        
         
         st.plotly_chart(fig, use_container_width=True)
 
