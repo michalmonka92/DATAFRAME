@@ -894,38 +894,49 @@ with st.expander("Dihedrals", expanded=False):
         # 4. Wyświetlenie w Streamlit
         st.plotly_chart(fig, use_container_width=True)
 
-        # 1. Sortowanie: najpierw według nazwy Podstawnika (R1, R2...), 
-        # a potem wewnątrz podstawnika według wartości kąta
-        df_plot2 = df3.sort_values(['Substituent', 'Torsion_DL2']).copy()
+
+
+        # 1. Funkcja do sortowania naturalnego (R1, R2, R10...)
+        def natural_key(string_):
+            return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
         
-        # 2. Tworzenie wykresu
+        # 2. Sortowanie danych
+        # Tworzymy pomocniczą kolumnę do sortowania podstawników, żeby R1 był przed R10
+        df3['R_sort'] = df3['Substituent'].apply(natural_key)
+        
+        # Sortujemy: najpierw po podstawniku (naturalnie), potem po kącie (rosnąco)
+        df_plot = df3.sort_values(by=['R_sort', 'Torsion_DL2']).drop(columns=['R_sort'])
+        
+        # 3. Tworzenie wykresu Plotly
         fig = px.scatter(
-            df_plot2,
+            df_plot,
             x='ID',
             y='Torsion_DL2',
-            color='Substituent',  # Kolorowanie nadal według podstawnika
-            symbol='Linker',      # Opcjonalnie: inny kształt dla różnych linkerów
-            title='Kąty dwuścienne pogrupowane według Podstawników',
+            color='Substituent',
+            symbol='Linker',
+            title='Kąty pogrupowane według podstawników (rosnąco w grupach)',
             labels={
-                'ID': 'ID Związku (Grupowanie po R)',
+                'ID': 'ID Związku',
                 'Torsion_DL2': 'Kąt [°]',
                 'Substituent': 'Podstawnik'
             },
             hover_data=['Linker', 'Substituent', 'Torsion_DL2']
         )
         
-        # 3. Stylizacja
+        # 4. Stylizacja i osie
         fig.update_traces(marker=dict(size=10, line=dict(width=1, color='white')))
         
         fig.update_layout(
             yaxis=dict(range=[0, 95], title='Dihedral D-L [°]'),
-            xaxis_tickangle=-90,  # Pionowe etykiety ID, żeby zmieścić ich dużo obok siebie
-            template='plotly_dark', # Ciemny motyw pasujący do Twoich screenów
-            height=700,
-            showlegend=True
+            xaxis=dict(
+                tickangle=-90, 
+                type='category'  # Wymuszamy traktowanie ID jako kategorii, żeby zachować naszą kolejność
+            ),
+            template='plotly_dark',
+            height=700
         )
         
-        # 4. Wyświetlenie w Streamlit
+        # 5. Wyświetlenie w Streamlit
         st.plotly_chart(fig, use_container_width=True)
 
         
