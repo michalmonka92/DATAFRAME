@@ -983,13 +983,6 @@ with st.expander("Dihedrals", expanded=False):
         
         fig.update_layout(
             yaxis=dict(range=[-2, 95], title='Dihedral D-L [°]'),
-            xaxis=dict(
-                tickangle=-90, 
-                type='category' 
-            ),
-            template='plotly_dark',
-            height=550
-        )
-        
+          
         # 5. Wyświetlenie
         st.plotly_chart(fig, use_container_width=True)
