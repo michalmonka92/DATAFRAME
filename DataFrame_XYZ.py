@@ -884,7 +884,7 @@ with st.expander("Dihedrals", expanded=False):
         
         fig.update_layout(
             yaxis=dict(range=[-2, 95]),   # Sztywny zakres osi Y od 0 do 95 (z małym zapasem)
-            xaxis_tickangle=-45,          # Obrócenie etykiet na osi X
+            xaxis_tickangle=-90,          # Obrócenie etykiet na osi X
             legend_title_text='Podstawnik',
             template='plotly_white',       # Jasny, czysty styl (odpowiednik whitegrid)
             height=600                     # Wysokość wykresu
