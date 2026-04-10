@@ -928,5 +928,55 @@ with st.expander("Dihedrals", expanded=False):
         fig.update_layout(height=700)
         
         st.plotly_chart(fig, use_container_width=True)
+#&&-------------------------------------------------------------------------------
+        # 1. Funkcja wyciągająca numer podstawnika (aby posortować R1 przed R10)
+        def get_r_number(text):
+            if not isinstance(text, str): return 0
+            match = re.search(r'\d+', text)
+            return int(match.group()) if match else 0
         
-                
+        # 2. Przygotowanie danych (df_final to Twój DataFrame)
+        # Tworzymy tymczasową kolumnę z numerem podstawnika (np. "R12" -> 12)
+        df3['R_num_internal'] = df3['Substituent'].apply(get_r_number)
+        
+        # Sortujemy: najpierw po podstawniku (R1, R2...), a potem wewnątrz podstawnika po kącie
+        df_plot = df3.sort_values(by=['R_num_internal', 'Torsion_DL2']).copy()
+        
+        # Usuwamy pomocniczą kolumnę, żeby nie śmieciła w legendzie/dymkach
+        df_plot = df_plot.drop(columns=['R_num_internal'])
+        
+        # 3. Tworzenie wykresu Plotly
+        fig = px.scatter(
+            df_plot,
+            x='ID',              # Oś X: nazwa związku (posortowana w grupach R)
+            y='Torsion_DL2',     # Oś Y: kąt
+            color='Linker',       # KLUCZOWA ZMIANA: Kolor zależy od Linkera
+            title='Kąty pogrupowane według podstawników, kolorowane według Linkerów',
+            labels={
+                'ID': 'ID Związku',
+                'Torsion_DL2': 'Dihedral D-L [°]',
+                'Linker': 'Typ Modyfikacji (Linker)'
+            },
+            hover_data=['Linker', 'Substituent', 'Torsion_DL2']
+        )
+        
+        # 4. Stylizacja
+        fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
+        
+        fig.update_layout(
+            yaxis=dict(range=[-2, 95], title='Dihedral D-L [°]'),
+            xaxis=dict(
+                tickangle=-90, 
+                type='category'  # Wymuszamy traktowanie ID jako kategorii
+            ),
+            template='plotly_dark', # Ciemny motyw dla kontrastu
+            height=750,
+            legend=dict(
+                title='Linker',
+                traceorder='normal',
+                font=dict(size=12)
+            )
+        )
+        
+        # 5. Wyświetlenie w Streamlit
+        st.plotly_chart(fig, use_container_width=True)
