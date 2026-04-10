@@ -820,16 +820,38 @@ with st.expander("🔍 Szczegóły bazy danych i statystyki kolumn", expanded=Fa
         st.dataframe(df3, height=600, use_container_width=True)
         
     with colb:
-        # Tworzymy obiekt figure jawnie
-        fig, ax = plt.subplots(figsize=(12, 6))
-        sns.set_style("whitegrid")
+        # 1. Funkcja do sortowania naturalnego
+        def natural_key(string_):
+            return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
         
-        # Rysujemy na osi 'ax'
-        sns.scatterplot(data=df3, x='ID', y='Torsion_DL2', s=100, color='royalblue', edgecolor='black', ax=ax)
+        # 2. Przygotowanie danych
+        heatmap_data = df3.pivot_table(index="Linker", 
+                                            columns="Substituent", 
+                                            values="Torsion_DL2", 
+                                            aggfunc='mean')
         
-        # Estetyka
-        plt.xticks(rotation=45, ha='right')
-        plt.tight_layout()
+        # 3. Sortowanie osi
+        sorted_linkers = sorted(heatmap_data.index, key=natural_key)
+        sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
+        heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
         
-        # KLUCZOWY MOMENT: Przekazujemy fig do Streamlit
+        # 4. Tworzenie wykresu w Streamlit
+        fig, ax = plt.subplots(figsize=(16, 9)) # Tworzymy obiekt fig i ax
+        
+        sns.heatmap(heatmap_data, 
+                    annot=True, 
+                    fmt=".3f", 
+                    vmin=70.0, 
+                    vmax=90.0, 
+                    cmap="rainbow", 
+                    linewidths=.5,
+                    cbar_kws={'label': 'Kąt [°]'},
+                    ax=ax) # Rysujemy na konkretnej osi ax
+        
+        plt.title('Heatmapa kątów - Poprawna kolejność (R1, R2, R3...)', fontsize=16, pad=20)
+        plt.xlabel('Podstawnik', fontsize=12)
+        plt.ylabel('Linker', fontsize=12)
+        plt.xticks(rotation=45)
+        
+        # Wyświetlenie w Streamlit
         st.pyplot(fig)
