@@ -925,7 +925,7 @@ with st.expander("Dihedrals", expanded=False):
         
         # Wymuszenie kolejności kategorii na osi X
         fig.update_xaxes(type='category', tickangle=-90)
-        fig.update_layout(height=700)
+        fig.update_layout(height=400)
         
         st.plotly_chart(fig, use_container_width=True)
 
@@ -980,6 +980,17 @@ with st.expander("Dihedrals", expanded=False):
         
         # 4. Stylizacja
         fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
-          
+        fig.update_layout(
+                    yaxis=dict(range=[-2, 95], title='Dihedral D-L [°]'),
+                    xaxis=dict(
+                        showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
+                        showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
+                        title=None            # Ukrywa napis "ID Związku"
+                    ),
+                    template='plotly_dark',
+                    height=400 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
+                )
+
+        
         # 5. Wyświetlenie
         st.plotly_chart(fig, use_container_width=True)
