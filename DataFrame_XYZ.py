@@ -866,11 +866,11 @@ with st.expander("Dihedrals", expanded=False):
             x='ID',              # Oś X: nazwa związku
             y='Torsion_DL2',     # Oś Y: kąt
             color='Substituent', # Kolor punktu zależny od podstawnika
-            title='Rozkład kątów dwuściennych dla badanych związków (posortowany)',
+            title='Heatmapa of dihedrals D-L: increasing D-L in order of Linker',
             labels={
                 'ID': 'ID Związku',
-                'Torsion_DL2': 'Kąt [°]',
-                'Substituent': 'Podstawnik'
+                'Torsion_DL2': 'Dihedral D-L [°]',
+                'Substituent': 'Substituent'
             },
             hover_name='ID',     # Wytłuszczona nazwa w dymku po najechaniu
             # Dodatkowe dane widoczne w dymku:
@@ -885,7 +885,7 @@ with st.expander("Dihedrals", expanded=False):
         fig.update_layout(
             yaxis=dict(range=[-2, 95]),   # Sztywny zakres osi Y od 0 do 95 (z małym zapasem)
             xaxis_tickangle=-90,          # Obrócenie etykiet na osi X
-            legend_title_text='Podstawnik',
+            legend_title_text='Substituent',
             template='plotly_white',       # Jasny, czysty styl (odpowiednik whitegrid)
             height=600                     # Wysokość wykresu
         )
