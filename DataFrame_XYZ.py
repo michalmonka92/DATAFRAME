@@ -940,7 +940,7 @@ with st.expander("Dihedrals", expanded=False):
     
         sort_option = st.radio(
             "Sorting by",
-            ["Linker order (L2 -> L10)", "Dihedral order (descending)"],
+            ["Dihedral order (descending)","Linker order (L2 -> L10)"],
             horizontal=True
         ) 
         
