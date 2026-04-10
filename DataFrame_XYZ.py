@@ -111,6 +111,8 @@ def load_my_data():
     filename_2 = "DataFrame_Energie_SOC_FULL.pkl"
     file_id2 = "1eBc9AKrb3_Xj3s_FP3o5I3dkcHU7uBwN"
 
+    filename_3 = "DataFrame_Dihedrals.pkl"
+    file_id3 = "1SeTbsc_NOPAqBegcc8pAJIRzCKpyerzQ"
 
     # Funkcja pomocnicza do pobierania
     def download_file(file_id, output_name):
@@ -129,18 +131,20 @@ def load_my_data():
     with st.spinner('Synchronizacja z Google Drive...'):
         download_file(file_id1, filename_1)
         download_file(file_id2, filename_2)
+        download_file(file_id3, filename_3)
 
     # Wczytywanie
     try:
         data = pd.read_pickle(filename_1)
         data2 = pd.read_pickle(filename_2)
-        return data, data2
+        data3 = pd.read_pickle(filename_3)
+        return data, data2, data3
     except Exception as e:
         st.error(f"Błąd wczytywania pkl: {e}")
         return pd.DataFrame(), pd.DataFrame()
 
 # Wywołanie danych
-df, df2 = load_my_data()
+df, df2, df3 = load_my_data()
 
 df['S0_MOL_Opt'] = df.apply(lambda x: stworz_mol_z_optymalizacji(x['Starting_Structure_MOL'], x['S0_XYZ_Opt']), axis=1)
 
@@ -807,4 +811,8 @@ st.sidebar.markdown("""
     """, unsafe_allow_html=True)
 
 
-
+with st.expander("🔍 Szczegóły bazy danych i statystyki kolumn", expanded=False):
+    st.dataframe(
+                df3, 
+                height=600, 
+                use_container_width=True)
