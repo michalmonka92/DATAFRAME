@@ -1004,15 +1004,19 @@ with st.expander("Dihedrals", expanded=False):
     
     # 2. Przygotowanie danych
     # Zawsze potrzebujemy numeru R do głównego grupowania
-    df3['R_num_val'] = df3['Substituent'].apply(get_number)
-    df3['L_num_val'] = df3['Linker'].apply(get_number)
+
     
     if sort_option == "Numer Linkera (L2 -> L10)":
         # Sortujemy: R rosnąco, potem Linker rosnąco
+        df3['R_num'] = df3['Substituent'].apply(get_number)
+        df3['L_num'] = df3['Linker'].apply(get_number)
+     
         df_plot = df3.sort_values(by=['R_num_val', 'L_num_val'], ascending=[True, True]).copy()
         current_title = 'Kąty pogrupowane wg R, sortowane wg numeru Linkera'
     else:
         # Sortujemy: R rosnąco, potem Kąt malejąco
+        df3['R_num'] = df3['Torsion_DL2']
+        df3['L_num'] = df3['Linker'].apply(get_number)
         df_plot = df3.sort_values(by=['R_num_val', 'Torsion_DL2'], ascending=[True, True]).copy()
         current_title = 'Kąty pogrupowane wg R, sortowane wg malejącego kąta'
     
