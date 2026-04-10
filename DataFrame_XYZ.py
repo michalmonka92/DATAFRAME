@@ -937,13 +937,13 @@ with st.expander("Dihedrals", expanded=False):
     
     # 2. Przygotowanie danych
     # Dodajemy kolumny pomocnicze do poprawnego sortowania
-    df3['R_num'] = df3['Torsion_DL2'].apply(get_number)
+    df3['R_num'] = df3['Substituent'].apply(get_number)
     df3['L_num'] = df3['Linker'].apply(get_number)
     
     # SORTOWANIE:
     # 1. Po numerze podstawnika (R1, R2...)
     # 2. Po numerze linkera (L2, L3...) - to ustawi "schodki" wewnątrz grupy
-    df_plot = df3.sort_values(by=['R_num', 'L_num']).copy()
+    df_plot = df3.sort_values(by=['R_num', 'Torsion_DL2']).copy()
     
     # Opcjonalnie: Jeśli chcesz wymusić kolejność w legendzie, 
     # musimy posortować unikalne wartości Linkerów
