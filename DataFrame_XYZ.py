@@ -937,7 +937,7 @@ with st.expander("Dihedrals", expanded=False):
     
     # 2. Przygotowanie danych
     # Dodajemy kolumny pomocnicze do poprawnego sortowania
-    df3['R_num'] = df3['Substituent'].apply(get_number)
+    df3['R_num'] = df3['Torsion_DL2'].apply(get_number)
     df3['L_num'] = df3['Linker'].apply(get_number)
     
     # SORTOWANIE:
