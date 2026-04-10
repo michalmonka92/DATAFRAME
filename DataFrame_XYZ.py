@@ -942,7 +942,7 @@ with st.expander("Dihedrals", expanded=False):
         "Sorting by",
         ["Linker order (L2 -> L10)", "Dihedral order (descending)"],
         horizontal=True
-    )
+    ) 
     
     # 2. Przygotowanie danych
     # Zawsze potrzebujemy numeru R do głównego grupowania
