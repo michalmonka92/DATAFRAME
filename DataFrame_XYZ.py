@@ -848,7 +848,7 @@ with st.expander("Dihedrals", expanded=False):
         
         # 5. Estetyka wykresu
         fig.update_layout(
-            title='Dihedrals Donor - Linker',
+            title='Dihedrals Donor - Linker (D-L)',
             xaxis_nticks=len(sorted_substituents),
             yaxis_nticks=len(sorted_linkers),
             width=900, 
@@ -868,7 +868,7 @@ with st.expander("Dihedrals", expanded=False):
             color='Substituent', # Kolor punktu zależny od podstawnika
             title='Heatmapa of dihedrals D-L: increasing D-L in order of Linker',
             labels={
-                'ID': 'ID Związku',
+                'ID': 'ID',
                 'Torsion_DL2': 'Dihedral D-L [°]',
                 'Substituent': 'Substituent'
             },
