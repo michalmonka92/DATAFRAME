@@ -859,7 +859,7 @@ with st.expander("Dihedrals", expanded=False):
         # 6. Wyświetlenie w Streamlit
         st.plotly_chart(fig, use_container_width=True)
     with colc:
-        tab1, tab2, tab3 = st.tabs(["A", "B", "C"])
+        tab1, tab2, tab3 = st.tabs(["Scatter plot: 1", "Scatter plot: 2", "Scatter plot: 3"])
 
         with tab1:
     
@@ -897,7 +897,7 @@ with st.expander("Dihedrals", expanded=False):
                         ),          # Obrócenie etykiet na osi X
                 legend_title_text='Substituent',
                 template='plotly_white',       # Jasny, czysty styl (odpowiednik whitegrid)
-                height=600                     # Wysokość wykresu
+                height=500                     # Wysokość wykresu
             )
             
             # 4. Wyświetlenie w Streamlit
@@ -935,7 +935,7 @@ with st.expander("Dihedrals", expanded=False):
             # Wymuszenie kolejności kategorii na osi X
     
             fig.update_layout(
-                        height=400,
+                        height=500,
                         xaxis=dict(
                             showticklabels=False, # Ukrywa podpisy (ID)
                             title=None,           # Ukrywa napis "Związek"
@@ -1005,7 +1005,7 @@ with st.expander("Dihedrals", expanded=False):
                             title=None            # Ukrywa napis "ID Związku"
                         ),
                         template='plotly_dark',
-                        height=400 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
+                        height=500 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
                     )
     
             
