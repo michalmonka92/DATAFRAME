@@ -859,151 +859,155 @@ with st.expander("Dihedrals", expanded=False):
         # 6. Wyświetlenie w Streamlit
         st.plotly_chart(fig, use_container_width=True)
     with colc:
-        df_plot = df3.sort_values('Torsion_DL2').copy()
-        
-        # 2. Tworzenie interaktywnego wykresu Plotly
-        fig = px.scatter(
-            df_plot,
-            x='ID',              # Oś X: nazwa związku
-            y='Torsion_DL2',     # Oś Y: kąt
-            color='Substituent', # Kolor punktu zależny od podstawnika
-            title='Scatter plot  of dihedrals D-L: increasing D-L in order of Linker',
-            labels={
-                'ID': 'ID',
-                'Torsion_DL2': 'Dihedral D-L [°]',
-                'Substituent': 'Substituent'
-            },
-            hover_name='ID',     # Wytłuszczona nazwa w dymku po najechaniu
-            # Dodatkowe dane widoczne w dymku:
-            hover_data={'Linker': True, 'Substituent': True, 'Torsion_DL2': ':.3f'}
-        )
-        
-        # 3. Personalizacja wykresu (estetyka i zakresy)
-        fig.update_traces(
-            marker=dict(size=12, line=dict(width=1, color='DarkSlateGrey')) # Większe punkty z obwódką
-        )
-        
-        fig.update_layout(
-        
-            yaxis=dict(range=[-2, 95]),   # Sztywny zakres osi Y od 0 do 95 (z małym zapasem)
-            xaxis=dict(
-                        showticklabels=False, # Ukrywa podpisy (ID)
-                        title=None,           # Ukrywa napis "Związek"
-                        showgrid=False        # Opcjonalnie: usuwa pionowe linie siatki
-                    ),          # Obrócenie etykiet na osi X
-            legend_title_text='Substituent',
-            template='plotly_white',       # Jasny, czysty styl (odpowiednik whitegrid)
-            height=600                     # Wysokość wykresu
-        )
-        
-        # 4. Wyświetlenie w Streamlit
-        st.plotly_chart(fig, use_container_width=True)
+        tab1, tab2, tab3 = st.tabs(["A", "B", "C"])
+
+        with tab1:
+    
+            df_plot = df3.sort_values('Torsion_DL2').copy()
+            
+            # 2. Tworzenie interaktywnego wykresu Plotly
+            fig = px.scatter(
+                df_plot,
+                x='ID',              # Oś X: nazwa związku
+                y='Torsion_DL2',     # Oś Y: kąt
+                color='Substituent', # Kolor punktu zależny od podstawnika
+                title='Scatter plot  of dihedrals D-L: increasing D-L in order of Linker',
+                labels={
+                    'ID': 'ID',
+                    'Torsion_DL2': 'Dihedral D-L [°]',
+                    'Substituent': 'Substituent'
+                },
+                hover_name='ID',     # Wytłuszczona nazwa w dymku po najechaniu
+                # Dodatkowe dane widoczne w dymku:
+                hover_data={'Linker': True, 'Substituent': True, 'Torsion_DL2': ':.3f'}
+            )
+            
+            # 3. Personalizacja wykresu (estetyka i zakresy)
+            fig.update_traces(
+                marker=dict(size=12, line=dict(width=1, color='DarkSlateGrey')) # Większe punkty z obwódką
+            )
+            
+            fig.update_layout(
+            
+                yaxis=dict(range=[-2, 95]),   # Sztywny zakres osi Y od 0 do 95 (z małym zapasem)
+                xaxis=dict(
+                            showticklabels=False, # Ukrywa podpisy (ID)
+                            title=None,           # Ukrywa napis "Związek"
+                            showgrid=False        # Opcjonalnie: usuwa pionowe linie siatki
+                        ),          # Obrócenie etykiet na osi X
+                legend_title_text='Substituent',
+                template='plotly_white',       # Jasny, czysty styl (odpowiednik whitegrid)
+                height=600                     # Wysokość wykresu
+            )
+            
+            # 4. Wyświetlenie w Streamlit
+            st.plotly_chart(fig, use_container_width=True)
 
 
-
-        # 1. Funkcja wyciągająca tylko numer (zwraca int)
-        def get_r_number(text):
-            if not isinstance(text, str): return 0
-            match = re.search(r'\d+', text)
-            return int(match.group()) if match else 0
-        
-        # 2. Przygotowanie danych do wykresu
-        # Tworzymy tymczasową kolumnę z samym numerem (np. "R12" -> 12)
-        df3['R_num_internal'] = df3['Substituent'].apply(get_r_number)
-        
-        # Sortujemy po numerze podstawnika, a potem po kącie
-        df_plot = df3.sort_values(by=['R_num_internal', 'Torsion_DL2']).copy()
-        
-        # Usuwamy pomocniczą kolumnę, żeby nie śmieciła w dymkach (hover)
-        df_plot = df_plot.drop(columns=['R_num_internal'])
-        
-        # 3. Wykres Plotly
-        fig = px.scatter(
-            df_plot,
-            x='ID',
-            y='Torsion_DL2',
-            color='Substituent',
-            title='Kąty pogrupowane według podstawników (rosnąco)',
-            labels={'Torsion_DL2': 'Kąt [°]', 'ID': 'Związek'},
-            template='plotly_dark'
-        )
-        
-        # Wymuszenie kolejności kategorii na osi X
-
-        fig.update_layout(
-                    height=400,
-                    xaxis=dict(
-                        showticklabels=False, # Ukrywa podpisy (ID)
-                        title=None,           # Ukrywa napis "Związek"
-                        showgrid=False        # Opcjonalnie: usuwa pionowe linie siatki
+        with tab2:
+            # 1. Funkcja wyciągająca tylko numer (zwraca int)
+            def get_r_number(text):
+                if not isinstance(text, str): return 0
+                match = re.search(r'\d+', text)
+                return int(match.group()) if match else 0
+            
+            # 2. Przygotowanie danych do wykresu
+            # Tworzymy tymczasową kolumnę z samym numerem (np. "R12" -> 12)
+            df3['R_num_internal'] = df3['Substituent'].apply(get_r_number)
+            
+            # Sortujemy po numerze podstawnika, a potem po kącie
+            df_plot = df3.sort_values(by=['R_num_internal', 'Torsion_DL2']).copy()
+            
+            # Usuwamy pomocniczą kolumnę, żeby nie śmieciła w dymkach (hover)
+            df_plot = df_plot.drop(columns=['R_num_internal'])
+            
+            # 3. Wykres Plotly
+            fig = px.scatter(
+                df_plot,
+                x='ID',
+                y='Torsion_DL2',
+                color='Substituent',
+                title='Kąty pogrupowane według podstawników (rosnąco)',
+                labels={'Torsion_DL2': 'Kąt [°]', 'ID': 'Związek'},
+                template='plotly_dark'
+            )
+            
+            # Wymuszenie kolejności kategorii na osi X
+    
+            fig.update_layout(
+                        height=400,
+                        xaxis=dict(
+                            showticklabels=False, # Ukrywa podpisy (ID)
+                            title=None,           # Ukrywa napis "Związek"
+                            showgrid=False        # Opcjonalnie: usuwa pionowe linie siatki
+                        )
                     )
-                )
-        
-        
-        st.plotly_chart(fig, use_container_width=True)
+            
+            
+            st.plotly_chart(fig, use_container_width=True)
 
-
-        # 1. Funkcja pomocnicza
-        def get_number(text):
-            if not isinstance(text, str): return 0
-            match = re.search(r'\d+', text)
-            return int(match.group()) if match else 0
+        with tab3:
+            # 1. Funkcja pomocnicza
+            def get_number(text):
+                if not isinstance(text, str): return 0
+                match = re.search(r'\d+', text)
+                return int(match.group()) if match else 0
+        
+        # --- INTERFEJS WYBORU ---
+        
+            sort_option = st.radio(
+                "Sorting by",
+                ["Dihedral order (descending)","Linker order (L2 -> L10)"],
+                horizontal=True
+            ) 
+            
+            # 2. Przygotowanie danych
+            # Zawsze potrzebujemy numeru R do głównego grupowania
+            df3['R_num'] = df3['Substituent'].apply(get_number)
+            df3['L_num'] = df3['Linker'].apply(get_number)
+            
+            if sort_option == "Linker order (L2 -> L10)":
+                # Sortujemy: R rosnąco, potem Linker rosnąco
+             
+                df_plot = df3.sort_values(by=['R_num', 'L_num'], ascending=[True, True]).copy()
+                current_title = 'Linker order (L2 -> L10)'
+            else:
+                # Sortujemy: R rosnąco, potem Kąt malejąco
+                df_plot = df3.sort_values(by=['Torsion_DL2', 'L_num'], ascending=[True, True]).copy()
+                current_title = 'Dihedral order (descending)'
+            
+            # Stała kolejność w legendzie (L2, L3...)
+            sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
+            
+            # 3. Tworzenie wykresu Plotly
+            fig = px.scatter(
+                df_plot,
+                x='ID',
+                y='Torsion_DL2',
+                color='Linker',
+                category_orders={"Linker": sorted_linkers}, 
+                title=current_title,
+                labels={
+                    'ID': 'ID Związku',
+                    'Torsion_DL2': 'Dihedral D-L [°]',
+                    'Linker': 'Linker'
+                },
+                hover_data=['Linker', 'Substituent', 'Torsion_DL2']
+            )
+            
+            # 4. Stylizacja
+            fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
+            fig.update_layout(
+                        yaxis=dict(range=[-2, 95], title='Dihedral D-L [°]'),
+                        xaxis=dict(
+                            showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
+                            showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
+                            title=None            # Ukrywa napis "ID Związku"
+                        ),
+                        template='plotly_dark',
+                        height=400 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
+                    )
     
-    # --- INTERFEJS WYBORU ---
-    
-        sort_option = st.radio(
-            "Sorting by",
-            ["Dihedral order (descending)","Linker order (L2 -> L10)"],
-            horizontal=True
-        ) 
-        
-        # 2. Przygotowanie danych
-        # Zawsze potrzebujemy numeru R do głównego grupowania
-        df3['R_num'] = df3['Substituent'].apply(get_number)
-        df3['L_num'] = df3['Linker'].apply(get_number)
-        
-        if sort_option == "Linker order (L2 -> L10)":
-            # Sortujemy: R rosnąco, potem Linker rosnąco
-         
-            df_plot = df3.sort_values(by=['R_num', 'L_num'], ascending=[True, True]).copy()
-            current_title = 'Linker order (L2 -> L10)'
-        else:
-            # Sortujemy: R rosnąco, potem Kąt malejąco
-            df_plot = df3.sort_values(by=['Torsion_DL2', 'L_num'], ascending=[True, True]).copy()
-            current_title = 'Dihedral order (descending)'
-        
-        # Stała kolejność w legendzie (L2, L3...)
-        sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
-        
-        # 3. Tworzenie wykresu Plotly
-        fig = px.scatter(
-            df_plot,
-            x='ID',
-            y='Torsion_DL2',
-            color='Linker',
-            category_orders={"Linker": sorted_linkers}, 
-            title=current_title,
-            labels={
-                'ID': 'ID Związku',
-                'Torsion_DL2': 'Dihedral D-L [°]',
-                'Linker': 'Linker'
-            },
-            hover_data=['Linker', 'Substituent', 'Torsion_DL2']
-        )
-        
-        # 4. Stylizacja
-        fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
-        fig.update_layout(
-                    yaxis=dict(range=[-2, 95], title='Dihedral D-L [°]'),
-                    xaxis=dict(
-                        showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
-                        showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
-                        title=None            # Ukrywa napis "ID Związku"
-                    ),
-                    template='plotly_dark',
-                    height=400 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
-                )
-
-        
-        # 5. Wyświetlenie
-        st.plotly_chart(fig, use_container_width=True)
+            
+            # 5. Wyświetlenie
+            st.plotly_chart(fig, use_container_width=True)
