@@ -31,6 +31,8 @@ from rdkit.Chem import AllChem, Draw
 import numpy as np 
 import gdown
 from analiza_podstawnikow import wykonaj_analize_L2
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 
