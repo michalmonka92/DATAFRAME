@@ -924,7 +924,7 @@ with st.expander("Dihedrals", expanded=False):
         )
         
         # Wymuszenie kolejności kategorii na osi X
-        fig.update_xaxes(type='category', tickangle=-90)
+
         fig.update_layout(height=400)
         
         st.plotly_chart(fig, use_container_width=True)
