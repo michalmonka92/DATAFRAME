@@ -658,7 +658,7 @@ with st.expander("Frequency Analysis",expanded=False):
 
 
     # 1. Panel wyboru kolumn po prawej stronie
-with st.expander("Energie i SOC", expanded=True):
+with st.expander("Energie i SOC", expanded=False):
 
     cola,colb=st.columns([10,1])
     with cola:   # Sprawdzamy czy df2 nie jest pusty
