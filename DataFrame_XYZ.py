@@ -705,7 +705,6 @@ with st.expander("Energies", expanded=False):
             
             # 5. Estetyka wykresu
             fig.update_layout(
-                title='Dihedrals Donor - Linker (D-L)',
                 xaxis_nticks=len(sorted_substituents),
                 yaxis_nticks=len(sorted_linkers),
                 width=900, 
@@ -737,7 +736,6 @@ with st.expander("Energies", expanded=False):
             
             # 5. Estetyka wykresu
             fig.update_layout(
-                title='Dihedrals Donor - Linker (D-L)',
                 xaxis_nticks=len(sorted_substituents),
                 yaxis_nticks=len(sorted_linkers),
                 width=900, 
@@ -769,7 +767,6 @@ with st.expander("Energies", expanded=False):
             
             # 5. Estetyka wykresu
             fig.update_layout(
-                title='Dihedrals Donor - Linker (D-L)',
                 xaxis_nticks=len(sorted_substituents),
                 yaxis_nticks=len(sorted_linkers),
                 width=900, 
