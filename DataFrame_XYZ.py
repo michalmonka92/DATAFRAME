@@ -880,64 +880,9 @@ with st.expander("Energies", expanded=False):
         with tab3:
             coll,colr=st.columns([2,2])
             with coll:
-                heatmap_datax = df2.pivot_table(index="Linker", 
-                                                    columns="Substituent", 
-                                                    values="T1", 
-                                                    aggfunc='mean')
-                # 3. Sortowanie osi
-                sorted_linkers = sorted(heatmap_datax.index, key=natural_key)
-                sorted_substituents = sorted(heatmap_datax.columns, key=natural_key)
-                heatmap_datax = heatmap_datax.reindex(index=sorted_linkers, columns=sorted_substituents)
-                
-                fig7 = px.imshow(heatmap_datax,
-                    labels=dict(x="Podstawnik", y="Linker", color="T1 [eV]"),
-                    x=sorted_substituents,
-                    y=sorted_linkers,
-                    color_continuous_scale="jet", # Twoja ulubiona paleta
-                    range_color=[float(heatmap_datax.min().min()), float(heatmap_datax.max().max())],
-                    text_auto=".2f",                  # Wyświetlanie wartości w kratkach
-                    aspect="auto"                     # Automatyczne dopasowanie proporcji
-                )
-                
-                # 5. Estetyka wykresu
-                fig7.update_layout(
-                    xaxis_nticks=len(sorted_substituents),
-                    yaxis_nticks=len(sorted_linkers),
-                    width=900, 
-                    height=400)
-                
-                # 6. Wyświetlenie w Streamlit
-                st.plotly_chart(fig7, use_container_width=True)
-
+                print("a")
             with colr:
-                heatmap_data = df2.pivot_table(index="Linker", 
-                                                    columns="Substituent", 
-                                                    values="T1", 
-                                                    aggfunc='mean')
-                # 3. Sortowanie osi
-                sorted_linkers = sorted(heatmap_data.index, key=natural_key)
-                sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
-                heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
-                
-                fig8 = px.imshow(heatmap_data,
-                    labels=dict(x="Podstawnik", y="Linker", color="T1 [eV]"),
-                    x=sorted_substituents,
-                    y=sorted_linkers,
-                    color_continuous_scale="jet", # Twoja ulubiona paleta
-                    range_color=[float(heatmap_data.min().min()), float(heatmap_data.max().max())],
-                    text_auto=".2f",                  # Wyświetlanie wartości w kratkach
-                    aspect="auto"                     # Automatyczne dopasowanie proporcji
-                )
-                
-                # 5. Estetyka wykresu
-                fig8.update_layout(
-                    xaxis_nticks=len(sorted_substituents),
-                    yaxis_nticks=len(sorted_linkers),
-                    width=900, 
-                    height=400)
-                
-                # 6. Wyświetlenie w Streamlit
-                st.plotly_chart(fig8, use_container_width=True)
+                print("a")
 
 #%%------------------------------------------------------------------------------------sidebar-------------------------------------------------------------------------------------------------------------------
 st.sidebar.markdown("""
