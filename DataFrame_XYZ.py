@@ -827,7 +827,6 @@ with st.expander("Energies", expanded=False):
         # 4. Stylizacja
         fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
         fig.update_layout(
-                    yaxis=dict(range=[-2, 95], title='Dihedral D-L [°]'),
                     xaxis=dict(
                         showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
                         showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
