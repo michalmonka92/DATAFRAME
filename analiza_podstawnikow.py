@@ -28,7 +28,7 @@ def wykonaj_analize_L2(df, path_xyz):
         return []
 
     # --- 2. FILTROWANIE I SORTOWANIE ---
-    df_l2 = df[df['ID'].astype(str).str.contains('L1', na=False)].copy()
+    df_l2 = df[df['ID'].astype(str).str.contains('L3', na=False)].copy()
     if df_l2.empty: return []
 
     df_l2['sort_num'] = df_l2['ID'].str.extract(r'R(\d+)').astype(float)
