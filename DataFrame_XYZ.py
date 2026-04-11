@@ -776,23 +776,70 @@ with st.expander("Energies", expanded=False):
             st.plotly_chart(fig, use_container_width=True)
         
     with colc:       
-        if 'Linker' in df2.columns:
-                    # 1. Agregacja danych
-            counts = df2['Linker'].value_counts().sort_index()
-                    
-                    # 2. Wyświetlanie w rzędzie (z góry na dół nie da się w poziomie, 
-                    # więc robimy listę pionową w jednej kolumnie)
-            for linker, count in counts.items():
-                st.markdown(f"""
-                    <div style="
-                                font-size: 14px; 
-                                color: "white"; 
-                                margin-bottom: 2px;
-                            ">
-                                <b>{linker}:</b> {count} związków
-                    </div>
-                """, unsafe_allow_html=True)
-
+       # 1. Funkcja pomocnicza
+        def get_number(text):
+            if not isinstance(text, str): return 0
+            match = re.search(r'\d+', text)
+            return int(match.group()) if match else 0
+    
+    # --- INTERFEJS WYBORU ---
+    
+        sort_option = st.radio(
+            "Sorting by",
+            ["Energy S1 (descending)","Linker order (L2 -> L10)"],
+            horizontal=True
+        ) 
+        
+        # 2. Przygotowanie danych
+        # Zawsze potrzebujemy numeru R do głównego grupowania
+        df2['R_num'] = df2['Substituent'].apply(get_number)
+        df2['L_num'] = df2['Linker'].apply(get_number)
+        
+        if sort_option == "Linker order (L2 -> L10)":
+            # Sortujemy: R rosnąco, potem Linker rosnąco
+         
+            df_plot = df2.sort_values(by=['R_num', 'L_num'], ascending=[True, True]).copy()
+            current_title = 'Linker order (L2 -> L10)'
+        else:
+            # Sortujemy: R rosnąco, potem Kąt malejąco
+            df_plot = df2.sort_values(by=['S1', 'L_num'], ascending=[True, True]).copy()
+            current_title = 'Dihedral order (descending)'
+        
+        # Stała kolejność w legendzie (L2, L3...)
+        sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
+        
+        # 3. Tworzenie wykresu Plotly
+        fig = px.scatter(
+            df_plot,
+            x='ID',
+            y='S1',
+            color='Linker',
+            category_orders={"Linker": sorted_linkers}, 
+            title=current_title,
+            labels={
+                'ID': 'ID Związku',
+                'S1': 'Dihedral D-L [°]',
+                'Linker': 'Linker'
+            },
+            hover_data=['Linker', 'Substituent', 'S1']
+        )
+        
+        # 4. Stylizacja
+        fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
+        fig.update_layout(
+                    yaxis=dict(range=[-2, 95], title='Dihedral D-L [°]'),
+                    xaxis=dict(
+                        showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
+                        showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
+                        title=None            # Ukrywa napis "ID Związku"
+                    ),
+                    template='plotly_dark',
+                    height=500 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
+                )
+    
+        
+        # 5. Wyświetlenie
+        st.plotly_chart(fig, use_container_width=True)
 
 #%%------------------------------------------------------------------------------------sidebar-------------------------------------------------------------------------------------------------------------------
 st.sidebar.markdown("""
