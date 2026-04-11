@@ -685,21 +685,21 @@ with st.expander("Energies", expanded=False):
             with coll:
                 def natural_key(string_):
                     return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
-                heatmap_data = df2.pivot_table(index="Linker", 
+                heatmap_dataS1 = df2.pivot_table(index="Linker", 
                                                     columns="Substituent", 
                                                     values="S1", 
                                                     aggfunc='mean')
                 # 3. Sortowanie osi
-                sorted_linkers = sorted(heatmap_data.index, key=natural_key)
-                sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
-                heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
+                sorted_linkers = sorted(heatmap_dataS1.index, key=natural_key)
+                sorted_substituents = sorted(heatmap_dataS1.columns, key=natural_key)
+                heatmap_dataS1 = heatmap_dataS1.reindex(index=sorted_linkers, columns=sorted_substituents)
                 
-                fig1 = px.imshow(heatmap_data,
+                fig1 = px.imshow(heatmap_dataS1,
                     labels=dict(x="Podstawnik", y="Linker", color="S1 [eV]"),
                     x=sorted_substituents,
                     y=sorted_linkers,
                     color_continuous_scale="jet", # Twoja ulubiona paleta
-                    range_color=[float(heatmap_data.min().min()), float(heatmap_data.max().max())],             # Twoje skalowanie
+                    range_color=[float(heatmap_dataS1.min().min()), float(heatmap_dataS1.max().max())],             # Twoje skalowanie
                     text_auto=".2f",                  # Wyświetlanie wartości w kratkach
                     aspect="auto"                     # Automatyczne dopasowanie proporcji
                 )
@@ -785,21 +785,21 @@ with st.expander("Energies", expanded=False):
             
                 def natural_key(string_):
                     return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
-                heatmap_data = df2.pivot_table(index="Linker", 
+                heatmap_dataT1 = df2.pivot_table(index="Linker", 
                                                     columns="Substituent", 
                                                     values="T1", 
                                                     aggfunc='mean')
                 # 3. Sortowanie osi
-                sorted_linkers = sorted(heatmap_data.index, key=natural_key)
-                sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
-                heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
+                sorted_linkers = sorted(heatmap_dataT1.index, key=natural_key)
+                sorted_substituents = sorted(heatmap_dataT1.columns, key=natural_key)
+                heatmap_dataT1 = heatmap_dataT1.reindex(index=sorted_linkers, columns=sorted_substituents)
                 
-                fig3 = px.imshow(heatmap_data,
+                fig3 = px.imshow(heatmap_dataT1,
                     labels=dict(x="Podstawnik", y="Linker", color="T1 [eV]"),
                     x=sorted_substituents,
                     y=sorted_linkers,
                     color_continuous_scale="jet", # Twoja ulubiona paleta
-                    range_color=[float(heatmap_data.min().min()), float(heatmap_data.max().max())],
+                    range_color=[float(heatmap_dataT1.min().min()), float(heatmap_dataT1.max().max())],
                     text_auto=".2f",                  # Wyświetlanie wartości w kratkach
                     aspect="auto"                     # Automatyczne dopasowanie proporcji
                 )
@@ -883,7 +883,17 @@ with st.expander("Energies", expanded=False):
                 st.plotly_chart(fig1, use_container_width=True, key="heatmap_S1_pierwszy")
             with colr:
                 st.plotly_chart(fig3, use_container_width=True, key="heatmap_t1_pierwszy")
+        heatmap_diff = heatmap_dataS1 - heatmap_dataT1
 
+# Rysujemy mapę różnicy (Delta E_ST)
+        fig_delta = px.imshow(
+    heatmap_diff,
+    labels=dict(x="Podstawnik", y="Linker", color="Delta E_ST [eV]"),
+    color_continuous_scale="Viridis", # Inna skala, żeby odróżnić
+    text_auto=".2f",
+    title="Różnica Energii S1 - T1 (Delta E_ST)"
+)
+        st.plotly_chart(fig_delta, use_container_width=True)
 #%%------------------------------------------------------------------------------------sidebar-------------------------------------------------------------------------------------------------------------------
 st.sidebar.markdown("""
     <style>
