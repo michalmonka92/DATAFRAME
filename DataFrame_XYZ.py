@@ -880,9 +880,9 @@ with st.expander("Energies", expanded=False):
         with tab3:
             coll,colr=st.columns([2,2])
             with coll:
-                st.plotly_chart(fig1, use_container_width=True, key="heatmap_t1_pierwszy")
+                st.plotly_chart(fig1, use_container_width=True, key="heatmap_S1_pierwszy")
             with colr:
-                print("a")
+                st.plotly_chart(fig3, use_container_width=True, key="heatmap_t1_pierwszy")
 
 #%%------------------------------------------------------------------------------------sidebar-------------------------------------------------------------------------------------------------------------------
 st.sidebar.markdown("""
