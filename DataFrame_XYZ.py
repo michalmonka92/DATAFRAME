@@ -660,7 +660,7 @@ with st.expander("Frequency Analysis",expanded=False):
     # 1. Panel wyboru kolumn po prawej stronie
 with st.expander("Energies", expanded=False):
 
-    cola,colb,colc=st.columns([5,5,1])
+    cola,colb,colc=st.columns([4,5,1])
     with cola:   # Sprawdzamy czy df2 nie jest pusty
         if not df2.empty:
             # Automatycznie wykrywamy kolumny numeryczne do kolorowania
@@ -679,42 +679,104 @@ with st.expander("Energies", expanded=False):
                 use_container_width=True)
             
     with colb:
-        def natural_key(string_):
-            return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
-            
-        # 2. Przygotowanie danych
-        heatmap_data = df2.pivot_table(index="Linker", 
-                                            columns="Substituent", 
-                                            values="S1", 
-                                            aggfunc='mean')
-        
-        # 3. Sortowanie osi
-        sorted_linkers = sorted(heatmap_data.index, key=natural_key)
-        sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
-        heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
-        
-        fig = px.imshow(heatmap_data,
-            labels=dict(x="Podstawnik", y="Linker", color="Kąt [°]"),
-            x=sorted_substituents,
-            y=sorted_linkers,
-            color_continuous_scale="jet", # Twoja ulubiona paleta
-            range_color=[2.3, 4.7],             # Twoje skalowanie
-            text_auto=".3f",                  # Wyświetlanie wartości w kratkach
-            aspect="auto"                     # Automatyczne dopasowanie proporcji
-        )
-        
-        # 5. Estetyka wykresu
-        fig.update_layout(
-            title='Dihedrals Donor - Linker (D-L)',
-            xaxis_nticks=len(sorted_substituents),
-            yaxis_nticks=len(sorted_linkers),
-            width=900, 
-            height=600
-        )
-        
-        # 6. Wyświetlenie w Streamlit
-        st.plotly_chart(fig, use_container_width=True)
+        tab1, tab2, tab3 = st.tabs(["Energy: S1", "Energy: T1", "Energy: T2"])
+        with tab1:
 
+            def natural_key(string_):
+                return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
+            heatmap_data = df2.pivot_table(index="Linker", 
+                                                columns="Substituent", 
+                                                values="S1", 
+                                                aggfunc='mean')
+            # 3. Sortowanie osi
+            sorted_linkers = sorted(heatmap_data.index, key=natural_key)
+            sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
+            heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
+            
+            fig = px.imshow(heatmap_data,
+                labels=dict(x="Podstawnik", y="Linker", color="Kąt [°]"),
+                x=sorted_substituents,
+                y=sorted_linkers,
+                color_continuous_scale="jet", # Twoja ulubiona paleta
+                range_color=[2.3, 4.7],             # Twoje skalowanie
+                text_auto=".3f",                  # Wyświetlanie wartości w kratkach
+                aspect="auto"                     # Automatyczne dopasowanie proporcji
+            )
+            
+            # 5. Estetyka wykresu
+            fig.update_layout(
+                title='Dihedrals Donor - Linker (D-L)',
+                xaxis_nticks=len(sorted_substituents),
+                yaxis_nticks=len(sorted_linkers),
+                width=900, 
+                height=600)
+            
+            # 6. Wyświetlenie w Streamlit
+            st.plotly_chart(fig, use_container_width=True)
+        with tab2:
+            def natural_key(string_):
+                return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
+            heatmap_data = df2.pivot_table(index="Linker", 
+                                                columns="Substituent", 
+                                                values="T1", 
+                                                aggfunc='mean')
+            # 3. Sortowanie osi
+            sorted_linkers = sorted(heatmap_data.index, key=natural_key)
+            sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
+            heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
+            
+            fig = px.imshow(heatmap_data,
+                labels=dict(x="Podstawnik", y="Linker", color="Kąt [°]"),
+                x=sorted_substituents,
+                y=sorted_linkers,
+                color_continuous_scale="jet", # Twoja ulubiona paleta
+                range_color=[2.0, 4.7],             # Twoje skalowanie
+                text_auto=".3f",                  # Wyświetlanie wartości w kratkach
+                aspect="auto"                     # Automatyczne dopasowanie proporcji
+            )
+            
+            # 5. Estetyka wykresu
+            fig.update_layout(
+                title='Dihedrals Donor - Linker (D-L)',
+                xaxis_nticks=len(sorted_substituents),
+                yaxis_nticks=len(sorted_linkers),
+                width=900, 
+                height=600)
+            
+            # 6. Wyświetlenie w Streamlit
+            st.plotly_chart(fig, use_container_width=True)
+        with tab3:
+            def natural_key(string_):
+                return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
+            heatmap_data = df2.pivot_table(index="Linker", 
+                                                columns="Substituent", 
+                                                values="T2", 
+                                                aggfunc='mean')
+            # 3. Sortowanie osi
+            sorted_linkers = sorted(heatmap_data.index, key=natural_key)
+            sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
+            heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
+            
+            fig = px.imshow(heatmap_data,
+                labels=dict(x="Podstawnik", y="Linker", color="Kąt [°]"),
+                x=sorted_substituents,
+                y=sorted_linkers,
+                color_continuous_scale="jet", # Twoja ulubiona paleta
+                range_color=[2.0, 4.7],             # Twoje skalowanie
+                text_auto=".3f",                  # Wyświetlanie wartości w kratkach
+                aspect="auto"                     # Automatyczne dopasowanie proporcji
+            )
+            
+            # 5. Estetyka wykresu
+            fig.update_layout(
+                title='Dihedrals Donor - Linker (D-L)',
+                xaxis_nticks=len(sorted_substituents),
+                yaxis_nticks=len(sorted_linkers),
+                width=900, 
+                height=600)
+            
+            # 6. Wyświetlenie w Streamlit
+            st.plotly_chart(fig, use_container_width=True)
         
     with colc:       
         if 'Linker' in df2.columns:
