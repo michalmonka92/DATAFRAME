@@ -885,8 +885,8 @@ with st.expander("Energies", expanded=False):
                                                     values="T1", 
                                                     aggfunc='mean')
                 # 3. Sortowanie osi
-                sorted_linkers = sorted(heatmap_dataa.index, key="m")
-                sorted_substituents = sorted(heatmap_dataa.columns, key="m")
+                sorted_linkers = sorted(heatmap_dataa.index)
+                sorted_substituents = sorted(heatmap_dataa.columns)
                 heatmap_dataa = heatmap_dataa.reindex(index=sorted_linkers, columns=sorted_substituents)
                 
                 fig9 = px.imshow(heatmap_dataa,
