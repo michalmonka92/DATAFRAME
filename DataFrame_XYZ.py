@@ -880,9 +880,9 @@ with st.expander("Energies", expanded=False):
         with tab3:
             coll,colr=st.columns([2,2])
             with coll:
-                st.print("a")
+                print("a")
             with colr:
-                st.print("a")
+                print("a")
 
 #%%------------------------------------------------------------------------------------sidebar-------------------------------------------------------------------------------------------------------------------
 st.sidebar.markdown("""
