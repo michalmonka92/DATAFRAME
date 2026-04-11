@@ -698,7 +698,7 @@ with st.expander("Energies", expanded=False):
             x=sorted_substituents,
             y=sorted_linkers,
             color_continuous_scale="jet", # Twoja ulubiona paleta
-            range_color=[1, 5],             # Twoje skalowanie
+            range_color=[2.3, 4.7],             # Twoje skalowanie
             text_auto=".3f",                  # Wyświetlanie wartości w kratkach
             aspect="auto"                     # Automatyczne dopasowanie proporcji
         )
