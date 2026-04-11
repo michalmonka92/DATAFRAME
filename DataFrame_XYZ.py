@@ -660,7 +660,7 @@ with st.expander("Frequency Analysis",expanded=False):
     # 1. Panel wyboru kolumn po prawej stronie
 with st.expander("Energies", expanded=False):
 
-    cola,colb,colc=st.columns([4,3,3])
+    cola,colb,colc=st.columns([3,3,3])
     with cola:   # Sprawdzamy czy df2 nie jest pusty
         if not df2.empty:
             # Automatycznie wykrywamy kolumny numeryczne do kolorowania
