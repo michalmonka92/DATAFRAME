@@ -880,7 +880,7 @@ with st.expander("Energies", expanded=False):
         with tab3:
             coll,colr=st.columns([2,2])
             with coll:
-                print("a")
+                st.plotly_chart(fig3, use_container_width=True)
             with colr:
                 print("a")
 
