@@ -698,7 +698,7 @@ with st.expander("Energies", expanded=False):
                 x=sorted_substituents,
                 y=sorted_linkers,
                 color_continuous_scale="jet", # Twoja ulubiona paleta
-                range_color=[2.3, 4.7],             # Twoje skalowanie
+                range_color=[float(heatmap_data.min().min()), float(heatmap_data.max().max())],             # Twoje skalowanie
                 text_auto=".2f",                  # Wyświetlanie wartości w kratkach
                 aspect="auto"                     # Automatyczne dopasowanie proporcji
             )
@@ -729,7 +729,7 @@ with st.expander("Energies", expanded=False):
                 x=sorted_substituents,
                 y=sorted_linkers,
                 color_continuous_scale="jet", # Twoja ulubiona paleta
-                range_color=[2.0, 4.7],             # Twoje skalowanie
+                range_color=[float(heatmap_data.min().min()), float(heatmap_data.max().max())]
                 text_auto=".2f",                  # Wyświetlanie wartości w kratkach
                 aspect="auto"                     # Automatyczne dopasowanie proporcji
             )
@@ -760,7 +760,7 @@ with st.expander("Energies", expanded=False):
                 x=sorted_substituents,
                 y=sorted_linkers,
                 color_continuous_scale="jet", # Twoja ulubiona paleta
-                range_color=[2.0, 4.7],             # Twoje skalowanie
+                range_color=[float(heatmap_data.min().min()), float(heatmap_data.max().max())]
                 text_auto=".2f",                  # Wyświetlanie wartości w kratkach
                 aspect="auto"                     # Automatyczne dopasowanie proporcji
             )
