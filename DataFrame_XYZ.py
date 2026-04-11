@@ -658,9 +658,9 @@ with st.expander("Frequency Analysis",expanded=False):
 
 
     # 1. Panel wyboru kolumn po prawej stronie
-with st.expander("Energie", expanded=False):
+with st.expander("Energies", expanded=False):
 
-    cola,colb=st.columns([10,1])
+    cola,colb,colc==st.columns([5,5,1])
     with cola:   # Sprawdzamy czy df2 nie jest pusty
         if not df2.empty:
             # Automatycznie wykrywamy kolumny numeryczne do kolorowania
@@ -678,7 +678,25 @@ with st.expander("Energie", expanded=False):
                 height=600, 
                 use_container_width=True)
             
-    with colb:       
+    with colb:
+        if not df2.empty:
+    # Automatycznie wykrywamy kolumny numeryczne do kolorowania
+            numeric_cols = df2.select_dtypes(include=['number']).columns
+    
+    # Tworzymy ostylowany widok dla całego dataframe
+            styled_df = df2.style.background_gradient(
+        cmap='coolwarm', 
+        subset=numeric_cols
+    ).format(precision=4) # Zaokrąglenie wszystkich liczb do 4 miejsc
+    
+    # Wyświetlamy tabelę na pełną szerokość
+            st.dataframe(
+        styled_df, 
+        height=600, 
+        use_container_width=True)
+
+        
+    with colc:       
         if 'Linker' in df2.columns:
                     # 1. Agregacja danych
             counts = df2['Linker'].value_counts().sort_index()
