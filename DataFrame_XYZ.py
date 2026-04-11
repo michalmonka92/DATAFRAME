@@ -655,7 +655,7 @@ with st.expander("Frequency Analysis",expanded=False):
         st.warning("Brak danych wibracyjnych dla tego emitera.")
 
 
-
+#%%------------------------------------------------------------------------------------ENERGIE-------------------------------------------------------------------------------------------------------------------
 
     # 1. Panel wyboru kolumn po prawej stronie
 with st.expander("Energies", expanded=False):
@@ -709,7 +709,7 @@ with st.expander("Energies", expanded=False):
                 xaxis_nticks=len(sorted_substituents),
                 yaxis_nticks=len(sorted_linkers),
                 width=900, 
-                height=600)
+                height=400)
             
             # 6. Wyświetlenie w Streamlit
             st.plotly_chart(fig, use_container_width=True)
@@ -741,7 +741,7 @@ with st.expander("Energies", expanded=False):
                 xaxis_nticks=len(sorted_substituents),
                 yaxis_nticks=len(sorted_linkers),
                 width=900, 
-                height=600)
+                height=400)
             
             # 6. Wyświetlenie w Streamlit
             st.plotly_chart(fig, use_container_width=True)
@@ -773,7 +773,7 @@ with st.expander("Energies", expanded=False):
                 xaxis_nticks=len(sorted_substituents),
                 yaxis_nticks=len(sorted_linkers),
                 width=900, 
-                height=600)
+                height=400)
             
             # 6. Wyświetlenie w Streamlit
             st.plotly_chart(fig, use_container_width=True)
@@ -797,7 +797,7 @@ with st.expander("Energies", expanded=False):
                 """, unsafe_allow_html=True)
 
 
-
+#%%------------------------------------------------------------------------------------sidebar-------------------------------------------------------------------------------------------------------------------
 st.sidebar.markdown("""
     <style>
     [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
@@ -869,7 +869,7 @@ st.sidebar.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-
+#%%------------------------------------------------------------------------------------DIHEDRALS-------------------------------------------------------------------------------------------------------------------
 with st.expander("Dihedrals", expanded=False):
     cola, colb, colc = st.columns([1,2,2])
     
