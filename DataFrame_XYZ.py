@@ -883,17 +883,17 @@ with st.expander("Energies", expanded=False):
                 st.plotly_chart(fig1, use_container_width=True, key="heatmap_S1_pierwszy")
             with colr:
                 st.plotly_chart(fig3, use_container_width=True, key="heatmap_t1_pierwszy")
-        heatmap_diff = heatmap_dataS1 - heatmap_dataT1
+            heatmap_diff = heatmap_dataS1 - heatmap_dataT1
 
 # Rysujemy mapę różnicy (Delta E_ST)
-        fig_delta = px.imshow(
+            fig_delta = px.imshow(
     heatmap_diff,
     labels=dict(x="Podstawnik", y="Linker", color="Delta E_ST [eV]"),
     color_continuous_scale="Viridis", # Inna skala, żeby odróżnić
     text_auto=".2f",
     title="Różnica Energii S1 - T1 (Delta E_ST)"
 )
-        st.plotly_chart(fig_delta, use_container_width=True)
+            st.plotly_chart(fig_delta, use_container_width=True)
 #%%------------------------------------------------------------------------------------sidebar-------------------------------------------------------------------------------------------------------------------
 st.sidebar.markdown("""
     <style>
