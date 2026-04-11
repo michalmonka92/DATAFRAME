@@ -660,7 +660,7 @@ with st.expander("Frequency Analysis",expanded=False):
     # 1. Panel wyboru kolumn po prawej stronie
 with st.expander("Energies", expanded=False):
 
-    cola,colb,colc=st.columns([4,5,1])
+    cola,colb,colc=st.columns([3,4,3])
     with cola:   # Sprawdzamy czy df2 nie jest pusty
         if not df2.empty:
             # Automatycznie wykrywamy kolumny numeryczne do kolorowania
@@ -670,7 +670,7 @@ with st.expander("Energies", expanded=False):
             styled_df = df2.style.background_gradient(
                 cmap='coolwarm', 
                 subset=numeric_cols
-            ).format(precision=4) # Zaokrąglenie wszystkich liczb do 4 miejsc
+            ).format(precision=3) # Zaokrąglenie wszystkich liczb do 4 miejsc
             
             # Wyświetlamy tabelę na pełną szerokość
             st.dataframe(
@@ -699,7 +699,7 @@ with st.expander("Energies", expanded=False):
                 y=sorted_linkers,
                 color_continuous_scale="jet", # Twoja ulubiona paleta
                 range_color=[2.3, 4.7],             # Twoje skalowanie
-                text_auto=".3f",                  # Wyświetlanie wartości w kratkach
+                text_auto=".2f",                  # Wyświetlanie wartości w kratkach
                 aspect="auto"                     # Automatyczne dopasowanie proporcji
             )
             
@@ -731,7 +731,7 @@ with st.expander("Energies", expanded=False):
                 y=sorted_linkers,
                 color_continuous_scale="jet", # Twoja ulubiona paleta
                 range_color=[2.0, 4.7],             # Twoje skalowanie
-                text_auto=".3f",                  # Wyświetlanie wartości w kratkach
+                text_auto=".2f",                  # Wyświetlanie wartości w kratkach
                 aspect="auto"                     # Automatyczne dopasowanie proporcji
             )
             
@@ -763,7 +763,7 @@ with st.expander("Energies", expanded=False):
                 y=sorted_linkers,
                 color_continuous_scale="jet", # Twoja ulubiona paleta
                 range_color=[2.0, 4.7],             # Twoje skalowanie
-                text_auto=".3f",                  # Wyświetlanie wartości w kratkach
+                text_auto=".2f",                  # Wyświetlanie wartości w kratkach
                 aspect="auto"                     # Automatyczne dopasowanie proporcji
             )
             
