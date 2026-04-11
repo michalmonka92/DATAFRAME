@@ -660,7 +660,7 @@ with st.expander("Frequency Analysis",expanded=False):
     # 1. Panel wyboru kolumn po prawej stronie
 with st.expander("Energies", expanded=False):
 
-    cola,colb,colc=st.columns([1,2,2])
+    cola,colb=st.columns([1,4])
     with cola:   # Sprawdzamy czy df2 nie jest pusty
         if not df2.empty:
             # Automatycznie wykrywamy kolumny numeryczne do kolorowania
@@ -681,68 +681,212 @@ with st.expander("Energies", expanded=False):
     with colb:
         tab1, tab2, tab3 = st.tabs(["Energy: S1", "Energy: T1", "Energy: T2"])
         with tab1:
+            coll,colr=st.columns([2,2])
+            with coll:
+                def natural_key(string_):
+                    return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
+                heatmap_data = df2.pivot_table(index="Linker", 
+                                                    columns="Substituent", 
+                                                    values="S1", 
+                                                    aggfunc='mean')
+                # 3. Sortowanie osi
+                sorted_linkers = sorted(heatmap_data.index, key=natural_key)
+                sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
+                heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
+                
+                fig = px.imshow(heatmap_data,
+                    labels=dict(x="Podstawnik", y="Linker", color="S1 [eV]"),
+                    x=sorted_substituents,
+                    y=sorted_linkers,
+                    color_continuous_scale="jet", # Twoja ulubiona paleta
+                    range_color=[float(heatmap_data.min().min()), float(heatmap_data.max().max())],             # Twoje skalowanie
+                    text_auto=".2f",                  # Wyświetlanie wartości w kratkach
+                    aspect="auto"                     # Automatyczne dopasowanie proporcji
+                )
+                
+                # 5. Estetyka wykresu
+                fig.update_layout(
+                    xaxis_nticks=len(sorted_substituents),
+                    yaxis_nticks=len(sorted_linkers),
+                    width=900, 
+                    height=400)
+                
+                # 6. Wyświetlenie w Streamlit
+                st.plotly_chart(fig, use_container_width=True)
+            with colr:
+                     # 1. Funkcja pomocnicza
+                def get_number(text):
+                    if not isinstance(text, str): return 0
+                    match = re.search(r'\d+', text)
+                    return int(match.group()) if match else 0
+            
+            # --- INTERFEJS WYBORU ---
+            
+                sort_option = st.radio(
+                    "Sorting by",
+                    ["Energy S1 (descending)","Linker order (L2 -> L10)"],
+                    horizontal=True
+                ) 
+                
+                # 2. Przygotowanie danych
+                # Zawsze potrzebujemy numeru R do głównego grupowania
+                df2['R_num'] = df2['Substituent'].apply(get_number)
+                df2['L_num'] = df2['Linker'].apply(get_number)
+                
+                if sort_option == "Linker order (L2 -> L10)":
+                    # Sortujemy: R rosnąco, potem Linker rosnąco
+                 
+                    df_plot = df2.sort_values(by=['R_num', 'L_num'], ascending=[True, True]).copy()
+                    current_title = 'Linker order (L2 -> L10)'
+                else:
+                    # Sortujemy: R rosnąco, potem Kąt malejąco
+                    df_plot = df2.sort_values(by=['S1', 'L_num'], ascending=[True, True]).copy()
+                    current_title = 'S1 (descending)'
+                
+                # Stała kolejność w legendzie (L2, L3...)
+                sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
+                
+                # 3. Tworzenie wykresu Plotly
+                fig = px.scatter(
+                    df_plot,
+                    x='ID',
+                    y='S1',
+                    color='Linker',
+                    category_orders={"Linker": sorted_linkers}, 
+                    title=current_title,
+                    labels={
+                        'ID': 'ID Związku',
+                        'S1': 'S1 [eV]',
+                        'Linker': 'Linker'
+                    },
+                    hover_data=['Linker', 'Substituent', 'S1']
+                )
+                
+                # 4. Stylizacja
+                fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
+                fig.update_layout(
+                            xaxis=dict(
+                                showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
+                                showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
+                                title=None            # Ukrywa napis "ID Związku"
+                            ),
+                            template='plotly_dark',
+                            height=500 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
+                        )
+            
+                
+                # 5. Wyświetlenie
+                st.plotly_chart(fig, use_container_width=True)
 
-            def natural_key(string_):
-                return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
-            heatmap_data = df2.pivot_table(index="Linker", 
-                                                columns="Substituent", 
-                                                values="S1", 
-                                                aggfunc='mean')
-            # 3. Sortowanie osi
-            sorted_linkers = sorted(heatmap_data.index, key=natural_key)
-            sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
-            heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
-            
-            fig = px.imshow(heatmap_data,
-                labels=dict(x="Podstawnik", y="Linker", color="S1 [eV]"),
-                x=sorted_substituents,
-                y=sorted_linkers,
-                color_continuous_scale="jet", # Twoja ulubiona paleta
-                range_color=[float(heatmap_data.min().min()), float(heatmap_data.max().max())],             # Twoje skalowanie
-                text_auto=".2f",                  # Wyświetlanie wartości w kratkach
-                aspect="auto"                     # Automatyczne dopasowanie proporcji
-            )
-            
-            # 5. Estetyka wykresu
-            fig.update_layout(
-                xaxis_nticks=len(sorted_substituents),
-                yaxis_nticks=len(sorted_linkers),
-                width=900, 
-                height=400)
-            
-            # 6. Wyświetlenie w Streamlit
-            st.plotly_chart(fig, use_container_width=True)
+
         with tab2:
-            def natural_key(string_):
-                return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
-            heatmap_data = df2.pivot_table(index="Linker", 
-                                                columns="Substituent", 
-                                                values="T1", 
-                                                aggfunc='mean')
-            # 3. Sortowanie osi
-            sorted_linkers = sorted(heatmap_data.index, key=natural_key)
-            sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
-            heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
+            coll,colr=st.columns([2,2])
+            with coll:
             
-            fig = px.imshow(heatmap_data,
-                labels=dict(x="Podstawnik", y="Linker", color="T1 [eV]"),
-                x=sorted_substituents,
-                y=sorted_linkers,
-                color_continuous_scale="jet", # Twoja ulubiona paleta
-                range_color=[float(heatmap_data.min().min()), float(heatmap_data.max().max())],
-                text_auto=".2f",                  # Wyświetlanie wartości w kratkach
-                aspect="auto"                     # Automatyczne dopasowanie proporcji
-            )
+                def natural_key(string_):
+                    return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
+                heatmap_data = df2.pivot_table(index="Linker", 
+                                                    columns="Substituent", 
+                                                    values="T1", 
+                                                    aggfunc='mean')
+                # 3. Sortowanie osi
+                sorted_linkers = sorted(heatmap_data.index, key=natural_key)
+                sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
+                heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
+                
+                fig = px.imshow(heatmap_data,
+                    labels=dict(x="Podstawnik", y="Linker", color="T1 [eV]"),
+                    x=sorted_substituents,
+                    y=sorted_linkers,
+                    color_continuous_scale="jet", # Twoja ulubiona paleta
+                    range_color=[float(heatmap_data.min().min()), float(heatmap_data.max().max())],
+                    text_auto=".2f",                  # Wyświetlanie wartości w kratkach
+                    aspect="auto"                     # Automatyczne dopasowanie proporcji
+                )
+                
+                # 5. Estetyka wykresu
+                fig.update_layout(
+                    xaxis_nticks=len(sorted_substituents),
+                    yaxis_nticks=len(sorted_linkers),
+                    width=900, 
+                    height=400)
+                
+                # 6. Wyświetlenie w Streamlit
+                st.plotly_chart(fig, use_container_width=True)
+            with colr:
+                     # 1. Funkcja pomocnicza
+                def get_number(text):
+                    if not isinstance(text, str): return 0
+                    match = re.search(r'\d+', text)
+                    return int(match.group()) if match else 0
             
-            # 5. Estetyka wykresu
-            fig.update_layout(
-                xaxis_nticks=len(sorted_substituents),
-                yaxis_nticks=len(sorted_linkers),
-                width=900, 
-                height=400)
+            # --- INTERFEJS WYBORU ---
             
-            # 6. Wyświetlenie w Streamlit
-            st.plotly_chart(fig, use_container_width=True)
+                sort_option = st.radio(
+                    "Sorting by",
+                    ["Energy T1 (descending)","Linker order (L2 -> L10)"],
+                    horizontal=True
+                ) 
+                
+                # 2. Przygotowanie danych
+                # Zawsze potrzebujemy numeru R do głównego grupowania
+                df2['R_num'] = df2['Substituent'].apply(get_number)
+                df2['L_num'] = df2['Linker'].apply(get_number)
+                
+                if sort_option == "Linker order (L2 -> L10)":
+                    # Sortujemy: R rosnąco, potem Linker rosnąco
+                 
+                    df_plot = df2.sort_values(by=['R_num', 'L_num'], ascending=[True, True]).copy()
+                    current_title = 'Linker order (L2 -> L10)'
+                else:
+                    # Sortujemy: R rosnąco, potem Kąt malejąco
+                    df_plot = df2.sort_values(by=['T1', 'L_num'], ascending=[True, True]).copy()
+                    current_title = 'T1 (descending)'
+                
+                # Stała kolejność w legendzie (L2, L3...)
+                sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
+                
+                # 3. Tworzenie wykresu Plotly
+                fig = px.scatter(
+                    df_plot,
+                    x='ID',
+                    y='T1',
+                    color='Linker',
+                    category_orders={"Linker": sorted_linkers}, 
+                    title=current_title,
+                    labels={
+                        'ID': 'ID Związku',
+                        'S1': 'T1 [eV]',
+                        'Linker': 'Linker'
+                    },
+                    hover_data=['Linker', 'Substituent', 'T1']
+                )
+                
+                # 4. Stylizacja
+                fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
+                fig.update_layout(
+                            xaxis=dict(
+                                showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
+                                showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
+                                title=None            # Ukrywa napis "ID Związku"
+                            ),
+                            template='plotly_dark',
+                            height=500 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
+                        )
+            
+                
+                # 5. Wyświetlenie
+                st.plotly_chart(fig, use_container_width=True)
+
+
+
+
+
+
+
+
+
+        
         with tab3:
             def natural_key(string_):
                 return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
@@ -774,71 +918,7 @@ with st.expander("Energies", expanded=False):
             
             # 6. Wyświetlenie w Streamlit
             st.plotly_chart(fig, use_container_width=True)
-        
-    with colc:       
-       # 1. Funkcja pomocnicza
-        def get_number(text):
-            if not isinstance(text, str): return 0
-            match = re.search(r'\d+', text)
-            return int(match.group()) if match else 0
-    
-    # --- INTERFEJS WYBORU ---
-    
-        sort_option = st.radio(
-            "Sorting by",
-            ["Energy S1 (descending)","Linker order (L2 -> L10)"],
-            horizontal=True
-        ) 
-        
-        # 2. Przygotowanie danych
-        # Zawsze potrzebujemy numeru R do głównego grupowania
-        df2['R_num'] = df2['Substituent'].apply(get_number)
-        df2['L_num'] = df2['Linker'].apply(get_number)
-        
-        if sort_option == "Linker order (L2 -> L10)":
-            # Sortujemy: R rosnąco, potem Linker rosnąco
-         
-            df_plot = df2.sort_values(by=['R_num', 'L_num'], ascending=[True, True]).copy()
-            current_title = 'Linker order (L2 -> L10)'
-        else:
-            # Sortujemy: R rosnąco, potem Kąt malejąco
-            df_plot = df2.sort_values(by=['S1', 'L_num'], ascending=[True, True]).copy()
-            current_title = 'S1 (descending)'
-        
-        # Stała kolejność w legendzie (L2, L3...)
-        sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
-        
-        # 3. Tworzenie wykresu Plotly
-        fig = px.scatter(
-            df_plot,
-            x='ID',
-            y='S1',
-            color='Linker',
-            category_orders={"Linker": sorted_linkers}, 
-            title=current_title,
-            labels={
-                'ID': 'ID Związku',
-                'S1': 'S1 [eV]',
-                'Linker': 'Linker'
-            },
-            hover_data=['Linker', 'Substituent', 'S1']
-        )
-        
-        # 4. Stylizacja
-        fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
-        fig.update_layout(
-                    xaxis=dict(
-                        showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
-                        showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
-                        title=None            # Ukrywa napis "ID Związku"
-                    ),
-                    template='plotly_dark',
-                    height=500 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
-                )
-    
-        
-        # 5. Wyświetlenie
-        st.plotly_chart(fig, use_container_width=True)
+              
 
 #%%------------------------------------------------------------------------------------sidebar-------------------------------------------------------------------------------------------------------------------
 st.sidebar.markdown("""
