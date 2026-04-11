@@ -694,7 +694,7 @@ with st.expander("Energies", expanded=False):
                 sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
                 heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
                 
-                fig = px.imshow(heatmap_data,
+                fig1 = px.imshow(heatmap_data,
                     labels=dict(x="Podstawnik", y="Linker", color="S1 [eV]"),
                     x=sorted_substituents,
                     y=sorted_linkers,
@@ -705,14 +705,14 @@ with st.expander("Energies", expanded=False):
                 )
                 
                 # 5. Estetyka wykresu
-                fig.update_layout(
+                fig1.update_layout(
                     xaxis_nticks=len(sorted_substituents),
                     yaxis_nticks=len(sorted_linkers),
                     width=900, 
                     height=400)
                 
                 # 6. Wyświetlenie w Streamlit
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig1, use_container_width=True)
             with colr:
                      # 1. Funkcja pomocnicza
                 def get_number(text):
@@ -747,7 +747,7 @@ with st.expander("Energies", expanded=False):
                 sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
                 
                 # 3. Tworzenie wykresu Plotly
-                fig = px.scatter(
+                fig2 = px.scatter(
                     df_plot,
                     x='ID',
                     y='S1',
@@ -763,8 +763,8 @@ with st.expander("Energies", expanded=False):
                 )
                 
                 # 4. Stylizacja
-                fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
-                fig.update_layout(
+                fig2.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
+                fig2.update_layout(
                             xaxis=dict(
                                 showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
                                 showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
@@ -776,7 +776,7 @@ with st.expander("Energies", expanded=False):
             
                 
                 # 5. Wyświetlenie
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig2, use_container_width=True)
 
 
         with tab2:
@@ -794,7 +794,7 @@ with st.expander("Energies", expanded=False):
                 sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
                 heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
                 
-                fig = px.imshow(heatmap_data,
+                fig3 = px.imshow(heatmap_data,
                     labels=dict(x="Podstawnik", y="Linker", color="T1 [eV]"),
                     x=sorted_substituents,
                     y=sorted_linkers,
@@ -805,14 +805,14 @@ with st.expander("Energies", expanded=False):
                 )
                 
                 # 5. Estetyka wykresu
-                fig.update_layout(
+                fig3.update_layout(
                     xaxis_nticks=len(sorted_substituents),
                     yaxis_nticks=len(sorted_linkers),
                     width=900, 
                     height=400)
                 
                 # 6. Wyświetlenie w Streamlit
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig3, use_container_width=True)
             with colr:
                      # 1. Funkcja pomocnicza
                 def get_number(text):
@@ -847,7 +847,7 @@ with st.expander("Energies", expanded=False):
                 sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
                 
                 # 3. Tworzenie wykresu Plotly
-                fig = px.scatter(
+                fig4 = px.scatter(
                     df_plot,
                     x='ID',
                     y='T1',
@@ -863,8 +863,8 @@ with st.expander("Energies", expanded=False):
                 )
                 
                 # 4. Stylizacja
-                fig.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
-                fig.update_layout(
+                fig4.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
+                fig4.update_layout(
                             xaxis=dict(
                                 showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
                                 showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
@@ -876,7 +876,7 @@ with st.expander("Energies", expanded=False):
             
                 
                 # 5. Wyświetlenie
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig4, use_container_width=True)
         with tab3:
             coll,colr=st.columns([2,2])
             with coll:
