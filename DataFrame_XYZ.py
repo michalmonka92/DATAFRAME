@@ -679,21 +679,42 @@ with st.expander("Energies", expanded=False):
                 use_container_width=True)
             
     with colb:
-        if not df2.empty:
-    # Automatycznie wykrywamy kolumny numeryczne do kolorowania
-            numeric_cols = df2.select_dtypes(include=['number']).columns
-    
-    # Tworzymy ostylowany widok dla całego dataframe
-            styled_df = df2.style.background_gradient(
-        cmap='coolwarm', 
-        subset=numeric_cols
-    ).format(precision=4) # Zaokrąglenie wszystkich liczb do 4 miejsc
-    
-    # Wyświetlamy tabelę na pełną szerokość
-            st.dataframe(
-        styled_df, 
-        height=600, 
-        use_container_width=True)
+         def natural_key(string_):
+                return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
+            
+            # 2. Przygotowanie danych
+            heatmap_data = df2.pivot_table(index="Linker", 
+                                                columns="Substituent", 
+                                                values="S1", 
+                                                aggfunc='mean')
+            
+            # 3. Sortowanie osi
+            sorted_linkers = sorted(heatmap_data.index, key=natural_key)
+            sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
+            heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
+            
+            fig = px.imshow(
+                heatmap_data,
+                labels=dict(x="Podstawnik", y="Linker", color="Kąt [°]"),
+                x=sorted_substituents,
+                y=sorted_linkers,
+                color_continuous_scale="jet", # Twoja ulubiona paleta
+                range_color=[1, 5],             # Twoje skalowanie
+                text_auto=".3f",                  # Wyświetlanie wartości w kratkach
+                aspect="auto"                     # Automatyczne dopasowanie proporcji
+            )
+            
+            # 5. Estetyka wykresu
+            fig.update_layout(
+                title='Dihedrals Donor - Linker (D-L)',
+                xaxis_nticks=len(sorted_substituents),
+                yaxis_nticks=len(sorted_linkers),
+                width=900, 
+                height=600
+            )
+            
+            # 6. Wyświetlenie w Streamlit
+            st.plotly_chart(fig, use_container_width=True)
 
         
     with colc:       
