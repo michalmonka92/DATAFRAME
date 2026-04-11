@@ -694,7 +694,7 @@ with st.expander("Energies", expanded=False):
             heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
             
             fig = px.imshow(heatmap_data,
-                labels=dict(x="Podstawnik", y="Linker", color="Kąt [°]"),
+                labels=dict(x="Podstawnik", y="Linker", color="S1 [eV]"),
                 x=sorted_substituents,
                 y=sorted_linkers,
                 color_continuous_scale="jet", # Twoja ulubiona paleta
@@ -725,7 +725,7 @@ with st.expander("Energies", expanded=False):
             heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
             
             fig = px.imshow(heatmap_data,
-                labels=dict(x="Podstawnik", y="Linker", color="Kąt [°]"),
+                labels=dict(x="Podstawnik", y="Linker", color="T1 [eV]"),
                 x=sorted_substituents,
                 y=sorted_linkers,
                 color_continuous_scale="jet", # Twoja ulubiona paleta
@@ -756,7 +756,7 @@ with st.expander("Energies", expanded=False):
             heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
             
             fig = px.imshow(heatmap_data,
-                labels=dict(x="Podstawnik", y="Linker", color="Kąt [°]"),
+                labels=dict(x="Podstawnik", y="Linker", color="T2 [eV]"),
                 x=sorted_substituents,
                 y=sorted_linkers,
                 color_continuous_scale="jet", # Twoja ulubiona paleta
@@ -803,7 +803,7 @@ with st.expander("Energies", expanded=False):
         else:
             # Sortujemy: R rosnąco, potem Kąt malejąco
             df_plot = df2.sort_values(by=['S1', 'L_num'], ascending=[True, True]).copy()
-            current_title = 'Dihedral order (descending)'
+            current_title = 'S1 (descending)'
         
         # Stała kolejność w legendzie (L2, L3...)
         sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
@@ -818,7 +818,7 @@ with st.expander("Energies", expanded=False):
             title=current_title,
             labels={
                 'ID': 'ID Związku',
-                'S1': 'Dihedral D-L [°]',
+                'S1': 'S1 [eV]',
                 'Linker': 'Linker'
             },
             hover_data=['Linker', 'Substituent', 'S1']
