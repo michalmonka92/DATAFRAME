@@ -679,7 +679,7 @@ with st.expander("Energies", expanded=False):
                 use_container_width=True)
             
     with colb:
-         def natural_key(string_):
+        def natural_key(string_):
             return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
             
         # 2. Przygotowanie danych
@@ -693,8 +693,7 @@ with st.expander("Energies", expanded=False):
         sorted_substituents = sorted(heatmap_data.columns, key=natural_key)
         heatmap_data = heatmap_data.reindex(index=sorted_linkers, columns=sorted_substituents)
         
-        fig = px.imshow(
-            heatmap_data,
+        fig = px.imshow(heatmap_data,
             labels=dict(x="Podstawnik", y="Linker", color="Kąt [°]"),
             x=sorted_substituents,
             y=sorted_linkers,
