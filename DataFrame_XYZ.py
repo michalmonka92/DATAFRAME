@@ -880,6 +880,9 @@ with st.expander("Energies", expanded=False):
         with tab3:
             coll,colr=st.columns([2,2])
             with coll:
+                def natural_key(string_):
+                    return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
+                
                 heatmap_dataa = df2.pivot_table(index="Linker", 
                                                     columns="Substituent", 
                                                     values="T1", 
