@@ -125,7 +125,7 @@ def load_my_data():
         
         try:
             # gdown czasami potrzebuje parametru fuzzy=True dla GDrive
-            gdown.download(url, output_name, quiet=False, fuzzy=True)
+            gdown.download(url, output_name, quiet=False)
         except Exception as e:
             st.error(f"Błąd pobierania {output_name}: {e}")
 
