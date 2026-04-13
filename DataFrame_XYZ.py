@@ -36,10 +36,6 @@ import seaborn as sns
 
 def natural_sort_key(s):
     return [int(text) if text.isdigit() else text.lower() for text in re.split('([0-9]+)', str(s))]
-
-if st.sidebar.button("🔄 Force reload data"):
-    st.cache_data.clear() # Czyści CAŁY cache aplikacji
-    st.rerun() # Odświeża aplikację
     
 st.set_page_config(layout="wide")
 @st.cache_data
