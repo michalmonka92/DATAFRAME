@@ -121,7 +121,7 @@ with colb:
         <style>
         .moja-ramka {{ 
         border-radius: 10px;
-        padding: 20px;
+        padding: 2px;
         background-color: {kolor_tla};
         text-align: center;
         height: 30px;
