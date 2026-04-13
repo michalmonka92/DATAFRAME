@@ -752,7 +752,7 @@ with st.expander("Energies", expanded=False):
                     # Sortujemy: R rosnąco, potem Linker rosnąco
                  
                     df_plot = df2.sort_values(by=['R_num', 'L_num'], ascending=[True, True]).copy()
-                    current_title = 'Linker order (L2 -> L10)'
+                    
                 else:
                     # Sortujemy: R rosnąco, potem Kąt malejąco
                     df_plot = df2.sort_values(by=['S1', 'L_num'], ascending=[True, True]).copy()
