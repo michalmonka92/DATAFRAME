@@ -713,7 +713,7 @@ with st.expander("Energies", expanded=False):
                     match = re.search(r'\d+', text)
                     return int(match.group()) if match else 0
             
-            # --- INTERFEJS WYBORU ---
+            # --- INTERFEJS WYBORU --- TU TRZEBA NAPRAWIĆ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 st.markdown(f"""
         <div style="
             background-color: {kolor_tla}; 
@@ -740,11 +740,9 @@ with st.expander("Energies", expanded=False):
                     df2['R_num'] = df2['Substituent'].apply(get_number)
                     df2['L_num'] = df2['Linker'].apply(get_number)
                     
-                    if sort_option == "Linker order (L2 -> L10)":
+                    if sort_option == "Substituent order (R1 -> R16)":
                         # Sortujemy: R rosnąco, potem Linker rosnąco
-                     
-                        df_plot = df2.sort_values(by=['R_num', 'L_num'], ascending=[True, True]).copy()
-                        
+                        df_plot = df2.sort_values(by=['R_num', 'L_num'], ascending=[True, True]).copy()  
                     else:
                         # Sortujemy: R rosnąco, potem Kąt malejąco
                         df_plot = df2.sort_values(by=['S1', 'L_num'], ascending=[True, True]).copy()
