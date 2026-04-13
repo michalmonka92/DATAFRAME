@@ -113,6 +113,62 @@ st.markdown(f"""
 
 st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)      
 
+
+# 1. Definicja stylu CSS dla przypiętego paska
+st.markdown("""
+    <style>
+    /* Kontener, który będzie przyklejony do góry */
+    .fixed-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #0e1117; /* Dopasuj do koloru tła (np. #0e1117 dla dark) */
+        z-index: 9999;
+        padding: 10px 20px;
+        border-bottom: 2px solid orange; /* Opcjonalna linia pod paskiem */
+        display: flex;
+        justify-content: center;
+    }
+    
+    /* Dodatkowy margines dla reszty strony, żeby górny pasek niczego nie zasłaniał */
+    .main .block-container {
+        padding-top: 100px; /* Dostosuj tę wartość do wysokości Twojego paska */
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# 2. Umieszczenie elementów wewnątrz przypiętego paska
+# Używamy st.container, aby zgrupować elementy sterujące
+header_container = st.container()
+
+with header_container:
+    # Otwieramy div z naszą klasą CSS
+    st.markdown('<div class="fixed-header">', unsafe_allow_html=True)
+    
+    # Tutaj dajesz swoje kontrolki, np. radio lub przyciski w kolumnach
+    col1, col2 = st.columns(2)
+    with col1:
+        sort_option = st.radio(
+            "Sorting by",
+            ["Energy S1 (descending)", "Substituent order (R1 -> R16)"],
+            horizontal=True,
+            key="fixed_radio"
+        )
+    with col2:
+        st.write("Statystyki sesji: Aktywne") # Przykład innego elementu
+        
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# --- RESZTA TWOJEGO KODU (WYKRESY ITP.) ---
+st.title("Twoje Wykresy")
+for i in range(20):
+    st.write(f"To jest linijka tekstu nr {i}, przewijaj stronę, aby sprawdzić czy pasek u góry zostaje.")
+
+
+
+
+
 with st.expander("Input DataFrame with Strating Structures (from Dejan) and further S0-Optimized", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
     st.dataframe(df)
