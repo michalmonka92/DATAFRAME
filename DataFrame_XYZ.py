@@ -785,15 +785,15 @@ with st.expander("Energies", expanded=False):
                             ),
                     yaxis=dict(
                         showgrid=True,           # Włącza linie siatki
-                        gridcolor='orange',      # Kolor linii siatki
+                        gridcolor='white',      # Kolor linii siatki
                         gridwidth=0.5,           # Grubość linii
-                        zerolinecolor='orange',  # Linia zerowa też na pomarańczowo
+                        zerolinecolor='red',  # Linia zerowa też na pomarańczowo
                         dtick=0.5                # Co ile ma być linia (np. co 0.5 eV)
                     ),
                             template='plotly_dark' if bg_color in ["#111111", "#000000", "#2D2D2D"] else 'plotly_white',
                             plot_bgcolor=bg_color,
                             paper_bgcolor=bg_color,
-                            height=400 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
+                            height=300 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
                         )
             
                 
