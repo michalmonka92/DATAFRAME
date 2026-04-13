@@ -22,7 +22,7 @@ import numpy as np
 
 
 
-def stworz_mol_z_optymalizacji(mol_start, xyz_text):
+def stworz_mol_z_XYZ(mol_start, xyz_text):
     if mol_start is None or not xyz_text:
         return None
     try:
