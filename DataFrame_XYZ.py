@@ -726,7 +726,7 @@ with st.expander("Energies", expanded=False):
         ">
         </div>
     """, unsafe_allow_html=True)
-                tabl, tabr= st.tabs(["by Linker", "by Substutuent"])
+                tabl, tabr= st.tabs(["Group by Linker", "Group by Substutuent"])
                 with tabl:
 
                     sort_option = st.radio(
