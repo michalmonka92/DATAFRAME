@@ -625,9 +625,8 @@ with st.expander("Frequency Analysis",expanded=False):
 
 #%%------------------------------------------------------------------------------------ENERGIE-------------------------------------------------------------------------------------------------------------------
 
-    # 1. Panel wyboru kolumn po prawej stronie
+#1. Panel wyboru kolumn po prawej stronie
 with st.expander("Energies", expanded=False):
-
     cola,colb=st.columns([1,4])
     with cola:   # Sprawdzamy czy df2 nie jest pusty
         if not df2.empty:
@@ -688,7 +687,7 @@ with st.expander("Energies", expanded=False):
                     match = re.search(r'\d+', text)
                     return int(match.group()) if match else 0
             
-            # --- INTERFEJS WYBORU --- TU TRZEBA NAPRAWIĆ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            # --- INTERFEJS WYBORU ---
                 st.markdown(f"""
         <div style="
             background-color: {kolor_tla}; 
@@ -833,10 +832,9 @@ with st.expander("Energies", expanded=False):
         with tab2:
             coll,colr=st.columns([2,2])
             with coll:
-            
                 def natural_key(string_):
                     return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
-                heatmap_dataT1 = df2.pivot_table(index="Linker", 
+                heatmap_dataS1 = df2.pivot_table(index="Linker", 
                                                     columns="Substituent", 
                                                     values="T1", 
                                                     aggfunc='mean')
@@ -845,25 +843,25 @@ with st.expander("Energies", expanded=False):
                 sorted_substituents = sorted(heatmap_dataT1.columns, key=natural_key)
                 heatmap_dataT1 = heatmap_dataT1.reindex(index=sorted_linkers, columns=sorted_substituents)
                 
-                fig3 = px.imshow(heatmap_dataT1,
+                fig1 = px.imshow(heatmap_dataT1,
                     labels=dict(x="Podstawnik", y="Linker", color="T1 [eV]"),
                     x=sorted_substituents,
                     y=sorted_linkers,
                     color_continuous_scale="jet", # Twoja ulubiona paleta
-                    range_color=[float(heatmap_dataT1.min().min()), float(heatmap_dataT1.max().max())],
+                    range_color=[float(heatmap_dataT1.min().min()), float(heatmap_dataT1.max().max())],             # Twoje skalowanie
                     text_auto=".2f",                  # Wyświetlanie wartości w kratkach
                     aspect="auto"                     # Automatyczne dopasowanie proporcji
                 )
                 
                 # 5. Estetyka wykresu
-                fig3.update_layout(
+                fig1.update_layout(
                     xaxis_nticks=len(sorted_substituents),
                     yaxis_nticks=len(sorted_linkers),
                     width=900, 
                     height=400)
                 
                 # 6. Wyświetlenie w Streamlit
-                st.plotly_chart(fig3, use_container_width=True)
+                st.plotly_chart(fig1, use_container_width=True)
             with colr:
                      # 1. Funkcja pomocnicza
                 def get_number(text):
@@ -872,62 +870,149 @@ with st.expander("Energies", expanded=False):
                     return int(match.group()) if match else 0
             
             # --- INTERFEJS WYBORU ---
+                st.markdown(f"""
+        <div style="
+            background-color: {kolor_tla}; 
+            border-radius: 10px; 
+            padding: 1px;
+            margin-left: -10px;
+            margin-right: 0px;
+            margin-bottom: -590px; /* Trik, żeby 'podłożyć' tło pod wykres */
+            height: 450px;
+        ">
+        </div>
+    """, unsafe_allow_html=True)
+                tabl, tabr= st.tabs(["Group by Linker", "Group by Substutuent"])
+                with tabl:
+
+                    sort_option = st.radio(
+                        "Sorting by",
+                        ["Energy T1 (descending)","Substituent order (R1 -> R16)"],
+                        horizontal=True) 
+
+
+                    # 2. Przygotowanie danych
+                    # Zawsze potrzebujemy numeru R do głównego grupowania
+                    df2['R_num'] = df2['Substituent'].apply(get_number)
+                    df2['L_num'] = df2['Linker'].apply(get_number)
+                    
+                    if sort_option == "Substituent order (R1 -> R16)":
+                        # Sortujemy: R rosnąco, potem Linker rosnąco
+                        df_plot = df2.sort_values(by=['R_num', 'L_num'], ascending=[True, True]).copy()  
+                    else:
+                        # Sortujemy: R rosnąco, potem Kąt malejąco
+                        df_plot = df2.sort_values(by=['T1', 'L_num'], ascending=[True, True]).copy()
+                    
+                    # Stała kolejność w legendzie (L2, L3...)
+                    sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
+                    
+                    # 3. Tworzenie wykresu Plotly
+                    fig2 = px.scatter(
+                        df_plot,
+                        x='ID',
+                        y='T1',
+                        color='Linker',
+                        category_orders={"Linker": sorted_linkers}, 
+                        labels={
+                            'ID': 'ID Związku',
+                            'T1': 'T1 [eV]',
+                            'Linker': 'Linker'
+                        },
+                        hover_data=['Linker', 'Substituent', 'T1']
+                    )
+                    
+                    # 4. Stylizacja
+                    fig2.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
+                    fig2.update_layout(
+                                xaxis=dict(
+                                    showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
+                                    showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
+                                    title=None            # Ukrywa napis "ID Związku"
+                                ),
+                        yaxis=dict(
+                            showgrid=True,           # Włącza linie siatki
+                            gridcolor='white',      # Kolor linii siatki
+                            gridwidth=0.5,           # Grubość linii
+                            zerolinecolor='red',  # Linia zerowa też na pomarańczowo
+                            dtick=0.5                # Co ile ma być linia (np. co 0.5 eV)
+                        ),
+                                template='plotly_dark' if bg_color in ["#111111", "#000000", "#2D2D2D"] else 'plotly_white',
+                                plot_bgcolor=bg_color,
+                                paper_bgcolor=bg_color,
+                                margin=dict(l=60, r=10, t=30, b=10),
+                                height=300 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
+                            )
+                
+                    
+                    # 5. Wyświetlenie
+                    st.plotly_chart(fig2, use_container_width=True)
+                with tabr:
+                    sort_option = st.radio(
+                        "Sorting by",
+                        ["Energy T1 (descending)","Linker order (L2 -> L10)"],
+                        horizontal=True) 
+                    
+                    # 2. Przygotowanie danych
+                    # Zawsze potrzebujemy numeru R do głównego grupowania
+                    df2['R_num'] = df2['Substituent'].apply(get_number)
+                    df2['L_num'] = df2['Linker'].apply(get_number)
+                    
+                    if sort_option == "Linker order (L2 -> L10)":
+                        # Sortujemy: R rosnąco, potem Linker rosnąco
+                        df_plot = df2.sort_values(by=['R_num', 'L_num'], ascending=[True, True]).copy()
+                    else:
+                        # Sortujemy: R rosnąco, potem Kąt malejąco
+                        df_plot = df2.sort_values(by=['T1', 'R_num'], ascending=[True, True]).copy()
+                    
+                    # Stała kolejność w legendzie (L2, L3...)
+                    sorted_subs = sorted(df_plot['Substituent'].unique(), key=get_number)
+                    
+                    # 3. Tworzenie wykresu Plotly
+                    fig3 = px.scatter(
+                        df_plot,
+                        x='ID',
+                        y='T1',
+                        color='Substituent',
+                        category_orders={"Substituent": sorted_subs}, 
+                        labels={
+                            'ID': 'ID Związku',
+                            'T1': 'T1 [eV]',
+                            'Substituent': 'Substituent'
+                        },
+                        hover_data=['Substituent', 'Linker', 'T1']
+                    )
+                    
+                    # 4. Stylizacja
+                    fig3.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
+                    fig3.update_layout(
+                                xaxis=dict(
+                                    showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
+                                    showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
+                                    title=None            # Ukrywa napis "ID Związku"
+                                ),
+                        yaxis=dict(
+                            showgrid=True,           # Włącza linie siatki
+                            gridcolor='white',      # Kolor linii siatki
+                            gridwidth=0.5,           # Grubość linii
+                            zerolinecolor='red',  # Linia zerowa też na pomarańczowo
+                            dtick=0.5                # Co ile ma być linia (np. co 0.5 eV)
+                        ),
+                                template='plotly_dark' if bg_color in ["#111111", "#000000", "#2D2D2D"] else 'plotly_white',
+                                plot_bgcolor=bg_color,
+                                paper_bgcolor=bg_color,
+                                margin=dict(l=60, r=10, t=30, b=10),
+                                height=300 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
+                            )
+                
+                    
+                    # 5. Wyświetlenie
+                    st.plotly_chart(fig3, use_container_width=True,key="heatmT")
+                
+
+
+
+
             
-                sort_option = st.radio(
-                    "Sorting by",
-                    ["Energy T1 (descending)","Linker order (L2 -> L10)"],
-                    horizontal=True
-                ) 
-                
-                # 2. Przygotowanie danych
-                # Zawsze potrzebujemy numeru R do głównego grupowania
-                df2['R_num'] = df2['Substituent'].apply(get_number)
-                df2['L_num'] = df2['Linker'].apply(get_number)
-                
-                if sort_option == "Linker order (L2 -> L10)":
-                    # Sortujemy: R rosnąco, potem Linker rosnąco
-                 
-                    df_plot = df2.sort_values(by=['R_num', 'L_num'], ascending=[True, True]).copy()
-                    current_title = 'Linker order (L2 -> L10)'
-                else:
-                    # Sortujemy: R rosnąco, potem Kąt malejąco
-                    df_plot = df2.sort_values(by=['T1', 'L_num'], ascending=[True, True]).copy()
-                    current_title = 'T1 (descending)'
-                
-                # Stała kolejność w legendzie (L2, L3...)
-                sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
-                
-                # 3. Tworzenie wykresu Plotly
-                fig4 = px.scatter(
-                    df_plot,
-                    x='ID',
-                    y='T1',
-                    color='Linker',
-                    category_orders={"Linker": sorted_linkers}, 
-                    title=current_title,
-                    labels={
-                        'ID': 'ID Związku',
-                        'S1': 'T1 [eV]',
-                        'Linker': 'Linker'
-                    },
-                    hover_data=['Linker', 'Substituent', 'T1']
-                )
-                
-                # 4. Stylizacja
-                fig4.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
-                fig4.update_layout(
-                            xaxis=dict(
-                                showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
-                                showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
-                                title=None            # Ukrywa napis "ID Związku"
-                            ),
-                            template='plotly_dark',
-                            height=500 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
-                        )
-            
-                
-                # 5. Wyświetlenie
-                st.plotly_chart(fig4, use_container_width=True)
         with tab3:
             coll,colr=st.columns([2,2])
             with coll:
