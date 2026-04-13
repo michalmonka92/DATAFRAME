@@ -729,7 +729,7 @@ with st.expander("Energies", expanded=False):
             margin-left: -10px;
             margin-right: 0px;
             margin-bottom: -590px; /* Trik, żeby 'podłożyć' tło pod wykres */
-            height: 420px;
+            height: 350px;
         ">
         </div>
     """, unsafe_allow_html=True)
