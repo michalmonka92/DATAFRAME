@@ -91,8 +91,8 @@ kolor_ramki = "#ff9300"  # Twój kolor (np. niebieski)
 kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 
 st.markdown(f"""
-<style>
-.moja-ramka {{ 
+        <style>
+        .moja-ramka {{ 
         border-radius: 10px;
         padding: 20px;
         background-color: {kolor_tla};
