@@ -128,7 +128,7 @@ with colb:
     }}
     .moja-ramka h4 {{
         color: {kolor_ramki};
-        font-size: 14px;
+        font-size: 18px;
         margin: 0;
     }}
     </style>
