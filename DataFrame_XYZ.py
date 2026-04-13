@@ -106,8 +106,8 @@ st.markdown(f"""
     </style>
     
     <div class="moja-ramka">
-        <h4>Machine Learning XYZ</h4>
-        <p style="color: #fff8db;">Baza danych</p>
+        <h4>Dataset for Machine Learning</h4>
+        <p style="color: #fff8db;">by MM</p>
     </div>
     """, unsafe_allow_html=True)            
 
