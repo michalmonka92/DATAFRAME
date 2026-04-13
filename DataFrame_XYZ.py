@@ -90,7 +90,9 @@ st.markdown("""<hr style="height:5px; border:none; color:#444444; background-col
 kolor_ramki = "#ff9300"  # Twój kolor (np. niebieski)
 kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 
-st.markdown(f"""<style>.moja-ramka {{ 
+st.markdown(f"""
+<style>
+.moja-ramka {{ 
         border-radius: 10px;
         padding: 20px;
         background-color: {kolor_tla};
