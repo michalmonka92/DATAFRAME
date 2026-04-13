@@ -119,7 +119,14 @@ with st.expander("Input DataFrame with Strating Structures (from Dejan) and furt
 
 
 image = Image.open('linkers.jpg')
-st.image(image, caption='Podpis pod Twoim zdjęciem', use_container_width=True)           
+
+cola,colb=st.columns([10,2])
+with cola:
+        st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)      
+         
+with colb:
+        st.image(image, caption='Podpis pod Twoim zdjęciem', use_container_width=True)           
+
 #%%
 
 # 1. Przykładowy słownik opisów (dostosuj do swojego DF)
