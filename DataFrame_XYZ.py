@@ -786,6 +786,8 @@ with st.expander("Energies", expanded=False):
                                 title=None            # Ukrywa napis "ID Związku"
                             ),
                             template='plotly_dark',
+                            plot_bgcolor=orange,
+                            paper_bgcolor=green,
                             height=500 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
                         )
             
