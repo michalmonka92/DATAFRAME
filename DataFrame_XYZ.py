@@ -783,6 +783,13 @@ with st.expander("Energies", expanded=False):
                                 showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
                                 title=None            # Ukrywa napis "ID Związku"
                             ),
+                    yaxis=dict(
+                        showgrid=True,           # Włącza linie siatki
+                        gridcolor='orange',      # Kolor linii siatki
+                        gridwidth=0.5,           # Grubość linii
+                        zerolinecolor='orange',  # Linia zerowa też na pomarańczowo
+                        dtick=0.5                # Co ile ma być linia (np. co 0.5 eV)
+                    ),
                             template='plotly_dark' if bg_color in ["#111111", "#000000", "#2D2D2D"] else 'plotly_white',
                             plot_bgcolor=bg_color,
                             paper_bgcolor=bg_color,
