@@ -32,18 +32,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
         
      
-def pokaz_freq(mol_id):
-    row = df[df['ID'] == mol_id]
-    if not row.empty:
-        freq_list = row['S0_Freq_Top20'].values[0]
-        if isinstance(freq_list, list):
-            print(f"\n--- Precyzyjna lista częstotliwości dla: {mol_id} ---")
-            for i, f in enumerate(freq_list, 1):
-                tag = " <-- IMAGINARY" if f < 0 else ""
-                # Zmienione na .6f (6 miejsc po przecinku)
-                print(f"{i:2d}. {f:14.6f} cm⁻¹{tag}")      
-        
-        
 def stworz_mol_z_optymalizacji(mol_start, xyz_text):
     if mol_start is None or not xyz_text:
         return None
