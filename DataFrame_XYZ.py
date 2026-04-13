@@ -121,10 +121,10 @@ with colb:
         <style>
         .moja-ramka {{ 
         border-radius: 10px;
-        padding: 2px;
+        padding: 0px;
         background-color: {kolor_tla};
         text-align: center;
-        height: 30px;
+        height: 40px;
     }}
     .moja-ramka h4 {{
         color: {kolor_ramki};
