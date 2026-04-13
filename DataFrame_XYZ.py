@@ -97,20 +97,20 @@ with cola:
         
         st.markdown(f"""
         <style>
-        .moja-ramka {{ 
+        .moja-ramka1 {{ 
         border-radius: 10px;
         padding: 20px;
         background-color: {kolor_tla};
         text-align: center;
         height: 120px;
     }}
-    .moja-ramka h4 {{
+    .moja-ramka1 h4 {{
         color: {kolor_ramki};
         margin: 0;
     }}
     </style>
     
-    <div class="moja-ramka">
+    <div class="moja-ramka1">
         <h4>Dataset for Machine Learning</h4>
         <p style="color: #fff8db;">by MM</p>
     </div>
