@@ -756,7 +756,6 @@ with st.expander("Energies", expanded=False):
                 else:
                     # Sortujemy: R rosnąco, potem Kąt malejąco
                     df_plot = df2.sort_values(by=['S1', 'L_num'], ascending=[True, True]).copy()
-                    current_title = 'S1 (descending)'
                 
                 # Stała kolejność w legendzie (L2, L3...)
                 sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
@@ -768,7 +767,6 @@ with st.expander("Energies", expanded=False):
                     y='S1',
                     color='Linker',
                     category_orders={"Linker": sorted_linkers}, 
-                    title=current_title,
                     labels={
                         'ID': 'ID Związku',
                         'S1': 'S1 [eV]',
