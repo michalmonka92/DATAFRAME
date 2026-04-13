@@ -91,7 +91,7 @@ kolor_ramki = "#ff9300"  # Twój kolor (np. niebieski)
 kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 
 
-cola,colb=st.columns([10,2])
+cola,colb=st.columns([5,5])
 with cola:
         st.markdown(f"""
         <style>
