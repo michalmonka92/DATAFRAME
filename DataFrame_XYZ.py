@@ -834,7 +834,7 @@ with st.expander("Energies", expanded=False):
             with coll:
                 def natural_key(string_):
                     return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
-                heatmap_dataS1 = df2.pivot_table(index="Linker", 
+                heatmap_dataT1 = df2.pivot_table(index="Linker", 
                                                     columns="Substituent", 
                                                     values="T1", 
                                                     aggfunc='mean')
