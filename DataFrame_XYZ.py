@@ -15,19 +15,16 @@ import glob
 from rdkit import Chem
 from rdkit.Chem import Descriptors, rdDetermineBonds, Draw
 import subprocess
-from rdkit.Chem import rdmolfiles  # Dodajemy ten import
+from rdkit.Chem import rdmolfiles  
 import shutil
 import re
 from natsort import natsorted
-import streamlit as st
-from rdkit import Chem
-from rdkit.Chem import Draw
 from io import BytesIO
 from PIL import Image
 import py3Dmol
 import streamlit.components.v1 as components
 from rdkit.Chem import rdMolAlign
-from rdkit.Chem import AllChem, Draw
+from rdkit.Chem import AllChem
 import numpy as np 
 import gdown
 from analiza_podstawnikow import wykonaj_analize_L2
@@ -99,10 +96,6 @@ if st.sidebar.button("🔄 Force reload data"):
     st.rerun() # Odświeża aplikację
     
 st.set_page_config(layout="wide")
-# file='stroke.csv'
-# path_inp="C:/Michal/Dydaktyka/2025-2026/LATO/Czwartki/Analiza_Python_FIZ_MED_1st_1rok/Projekt_2"
-# os.chdir(path_inp)
-# df = pd.read_csv(file, delimiter=',',skiprows=0,usecols=[0,1,2,3])
 @st.cache_data
 @st.cache_data(ttl=1, show_spinner=False)
 @st.cache_data(show_spinner=False)
