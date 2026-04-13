@@ -721,7 +721,22 @@ with st.expander("Energies", expanded=False):
                     return int(match.group()) if match else 0
             
             # --- INTERFEJS WYBORU ---
-            
+                st.markdown(f"""
+        <div style="
+            background-color: {kolor_tla}; 
+            border-radius: 10px; 
+            padding: 1px;
+            margin-left: -10px;
+            margin-right: -14px;
+            margin-bottom: -590px; /* Trik, żeby 'podłożyć' tło pod wykres */
+            height: 450px;
+        ">
+        </div>
+    """, unsafe_allow_html=True)
+
+
+
+                
                 sort_option = st.radio(
                     "Sorting by",
                     ["Energy S1 (descending)","Linker order (L2 -> L10)"],
