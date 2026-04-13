@@ -93,6 +93,8 @@ kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 
 cola,colb=st.columns([5,4])
 with cola:
+        
+        
         st.markdown(f"""
         <style>
         .moja-ramka {{ 
@@ -115,8 +117,28 @@ with cola:
     """, unsafe_allow_html=True)   
          
 with colb:
+        st.markdown(f"""
+        <style>
+        .moja-ramka {{ 
+        border-radius: 10px;
+        padding: 20px;
+        background-color: {kolor_tla};
+        text-align: center;
+        height: 30px;
+    }}
+    .moja-ramka h4 {{
+        color: {kolor_ramki};
+        margin: 0;
+    }}
+    </style>
+    
+    <div class="moja-ramka">
+        <h4>Linker modifications</h4>
+        <p style="color: #fff8db;">by MM</p>
+    </div>
+    """, unsafe_allow_html=True)  
         image = Image.open('linkers.jpg')
-        st.image(image, caption='Podpis pod Twoim zdjęciem', use_container_width=True)      
+        st.image(image, use_container_width=True)      
 
 
 
