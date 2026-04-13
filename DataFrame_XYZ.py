@@ -727,9 +727,9 @@ with st.expander("Energies", expanded=False):
             border-radius: 10px; 
             padding: 1px;
             margin-left: -10px;
-            margin-right: -14px;
+            margin-right: -24px;
             margin-bottom: -590px; /* Trik, żeby 'podłożyć' tło pod wykres */
-            height: 450px;
+            height: 550px;
         ">
         </div>
     """, unsafe_allow_html=True)
@@ -786,7 +786,7 @@ with st.expander("Energies", expanded=False):
                             template='plotly_dark' if bg_color in ["#111111", "#000000", "#2D2D2D"] else 'plotly_white',
                             plot_bgcolor=bg_color,
                             paper_bgcolor=bg_color,
-                            height=500 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
+                            height=400 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
                         )
             
                 
