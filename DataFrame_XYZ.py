@@ -90,7 +90,10 @@ st.markdown("""<hr style="height:5px; border:none; color:#444444; background-col
 kolor_ramki = "#ff9300"  # Twój kolor (np. niebieski)
 kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 
-st.markdown(f"""
+
+cola,colb=st.columns([10,2])
+with cola:
+        st.markdown(f"""
         <style>
         .moja-ramka {{ 
         border-radius: 10px;
@@ -109,7 +112,15 @@ st.markdown(f"""
         <h4>Dataset for Machine Learning</h4>
         <p style="color: #fff8db;">by MM</p>
     </div>
-    """, unsafe_allow_html=True)            
+    """, unsafe_allow_html=True)   
+         
+with colb:
+        image = Image.open('linkers.jpg')
+        st.image(image, caption='Podpis pod Twoim zdjęciem', use_container_width=True)      
+
+
+
+         
 
 st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)      
 
@@ -118,14 +129,9 @@ with st.expander("Input DataFrame with Strating Structures (from Dejan) and furt
     st.dataframe(df)
 
 
-image = Image.open('linkers.jpg')
 
-cola,colb=st.columns([10,2])
-with cola:
-        st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)      
-         
-with colb:
-        st.image(image, caption='Podpis pod Twoim zdjęciem', use_container_width=True)           
+
+     
 
 #%%
 
