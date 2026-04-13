@@ -30,25 +30,8 @@ import gdown
 from analiza_podstawnikow import wykonaj_analize_L2
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-
-
-def open_in_chemcraft(file_path):
-    chemcraft_path = r"C:\Chemcraft/Chemcraft.exe" 
-    subprocess.Popen([chemcraft_path, file_path])
-    # UŻYCIE: open_in_chemcraft(df.iloc[0]['Full_Path'])
-    
-    
-def open_by_id(mol_id, dataframe):
-    try:
-        # Pobieramy ścieżkę dla podanego ID
-        path = dataframe.loc[dataframe['ID'] == mol_id, 'Starting_Structure_Full_Path'].values[0]
-        open_in_chemcraft(path)
-        print(f"Otwieranie struktury: {mol_id}")
-    except IndexError:
-        print(f"BŁĄD: Nie znaleziono związku o ID: {mol_id}")
         
-        
+     
 def pokaz_freq(mol_id):
     row = df[df['ID'] == mol_id]
     if not row.empty:
