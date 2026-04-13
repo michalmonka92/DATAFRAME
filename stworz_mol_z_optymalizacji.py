@@ -1,3 +1,27 @@
+import streamlit as st
+import plotly.graph_objects as go
+import webbrowser
+import py3Dmol
+import pandas as pd
+import os
+import glob
+from rdkit import Chem
+from rdkit.Chem import Descriptors, rdDetermineBonds, Draw
+import subprocess
+from rdkit.Chem import rdmolfiles  
+import shutil
+import re
+from natsort import natsorted
+from PIL import Image
+import py3Dmol
+import streamlit.components.v1 as components
+from rdkit.Chem import rdMolAlign
+from rdkit.Chem import AllChem
+import numpy as np 
+
+
+
+
 def stworz_mol_z_optymalizacji(mol_start, xyz_text):
     if mol_start is None or not xyz_text:
         return None
