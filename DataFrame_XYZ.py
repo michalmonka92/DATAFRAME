@@ -94,7 +94,6 @@ kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 cola,colb=st.columns([8,3])
 with cola:
         
-        
         st.markdown(f"""
         <style>
         .moja-ramka1 {{ 
@@ -698,7 +697,7 @@ with st.expander("Energies", expanded=False):
             margin-left: -10px;
             margin-right: 0px;
             margin-bottom: -590px; /* Trik, żeby 'podłożyć' tło pod wykres */
-            height: 400px;
+            height: 450px;
         ">
         </div>
     """, unsafe_allow_html=True)
