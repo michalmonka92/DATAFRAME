@@ -785,7 +785,7 @@ with st.expander("Energies", expanded=False):
                                 showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
                                 title=None            # Ukrywa napis "ID Związku"
                             ),
-                            template='plotly_dark',
+                            template='plotly_dark' if bg_color in ["#111111", "#000000", "#2D2D2D"] else 'plotly_white',
                             plot_bgcolor=orange,
                             paper_bgcolor=green,
                             height=500 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
