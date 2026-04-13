@@ -727,9 +727,9 @@ with st.expander("Energies", expanded=False):
             border-radius: 10px; 
             padding: 1px;
             margin-left: -10px;
-            margin-right: 5px;
+            margin-right: 8px;
             margin-bottom: -590px; /* Trik, żeby 'podłożyć' tło pod wykres */
-            height: 550px;
+            height: 520px;
         ">
         </div>
     """, unsafe_allow_html=True)
