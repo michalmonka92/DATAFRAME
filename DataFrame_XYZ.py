@@ -728,11 +728,34 @@ with st.expander("Energies", expanded=False):
     """, unsafe_allow_html=True)
                 tabl, tabr= st.tabs(["by Linker", "by Substutuent"])
                 with tabl:
+
+
+                    st.markdown('<div class="orange-radio">', unsafe_allow_html=True)
+
+# 2. Definiujemy styl tylko dla elementów wewnątrz klasy .orange-radio
+                    st.markdown(
+                    """
+                    <style>
+                    .orange-radio div[role="radiogroup"] label {
+                        color: #FFA500 !important; /* Pomarańczowy tekst */
+                    }
+                    .orange-radio div[role="radiogroup"] [data-testid="stWidgetSelectionStateMarker"] {
+                        background-color: #FFA500 !important; /* Pomarańczowe kółko w środku */
+                        border-color: #FFA500 !important;     /* Pomarańczowa obwódka kółka */
+                    }
+                    </style>
+                    """,
+                    unsafe_allow_html=True
+                    )
                     sort_option = st.radio(
                         "Sorting by",
                         ["Energy S1 (descending)","Substituent order (R1 -> R16)"],
                         horizontal=True) 
-                    
+                    st.markdown('</div>', unsafe_allow_html=True)
+
+
+
+
                     # 2. Przygotowanie danych
                     # Zawsze potrzebujemy numeru R do głównego grupowania
                     df2['R_num'] = df2['Substituent'].apply(get_number)
