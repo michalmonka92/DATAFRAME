@@ -28,6 +28,7 @@ from rdkit.Chem import AllChem
 import numpy as np 
 import gdown
 from analiza_podstawnikow import wykonaj_analize_L2
+from stworz_mol_z_optymalizacji.py import stworz_mol_z_optymalizacji
 import matplotlib.pyplot as plt
 import seaborn as sns
         
