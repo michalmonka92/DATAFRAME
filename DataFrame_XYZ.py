@@ -793,7 +793,7 @@ with st.expander("Energies", expanded=False):
                             template='plotly_dark' if bg_color in ["#111111", "#000000", "#2D2D2D"] else 'plotly_white',
                             plot_bgcolor=bg_color,
                             paper_bgcolor=bg_color,
-                            margin=dict(l=10, r=10, t=30, b=10),
+                            margin=dict(l=60, r=10, t=30, b=10),
                             height=300 # Możesz teraz zmniejszyć wysokość, bo nie ma napisów na dole
                         )
             
