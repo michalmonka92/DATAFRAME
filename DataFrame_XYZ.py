@@ -821,7 +821,7 @@ with st.expander("Energies", expanded=False):
                     sorted_linkers = sorted(df_plot['Linker'].unique(), key=get_number)
                     
                     # 3. Tworzenie wykresu Plotly
-                    fig2 = px.scatter(
+                    fig3 = px.scatter(
                         df_plot,
                         x='ID',
                         y='S1',
@@ -836,8 +836,8 @@ with st.expander("Energies", expanded=False):
                     )
                     
                     # 4. Stylizacja
-                    fig2.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
-                    fig2.update_layout(
+                    fig3.update_traces(marker=dict(size=11, line=dict(width=1, color='white')))
+                    fig3.update_layout(
                                 xaxis=dict(
                                     showticklabels=False, # TO UKRYWA PODPISY (R1-L2-cośtam)
                                     showgrid=False,       # Opcjonalnie: ukrywa pionowe linie siatki
@@ -859,7 +859,7 @@ with st.expander("Energies", expanded=False):
                 
                     
                     # 5. Wyświetlenie
-                    st.plotly_chart(fig2, use_container_width=True)
+                    st.plotly_chart(fig3, use_container_width=True,key="heatm"))
 
         
                             
