@@ -118,7 +118,7 @@ with st.expander("Input DataFrame with Strating Structures (from Dejan) and furt
     st.dataframe(df)
 
 
-image = Image.open('image_e9cee1.png')
+image = Image.open('linkers.jpg')
 st.image(image, caption='Podpis pod Twoim zdjęciem', use_container_width=True)           
 #%%
 
