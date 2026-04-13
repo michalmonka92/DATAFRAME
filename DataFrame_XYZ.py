@@ -118,7 +118,8 @@ with st.expander("Input DataFrame with Strating Structures (from Dejan) and furt
     st.dataframe(df)
 
 
-                
+image = Image.open('image_e9cee1.png')
+st.image(image, caption='Podpis pod Twoim zdjęciem', use_container_width=True)           
 #%%
 
 # 1. Przykładowy słownik opisów (dostosuj do swojego DF)
