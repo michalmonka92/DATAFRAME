@@ -859,7 +859,7 @@ with st.expander("Energies", expanded=False):
                 
                     
                     # 5. Wyświetlenie
-                    st.plotly_chart(fig3, use_container_width=True,key="heatm"))
+                    st.plotly_chart(fig3, use_container_width=True,key="heatm")
 
         
                             
