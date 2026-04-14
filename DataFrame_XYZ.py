@@ -97,7 +97,7 @@ st.markdown(f"""
         <style>
         .moja-ramka1 {{ 
         border-radius: 10px;
-        padding: 30px;
+        padding: 0px;
         background-color: {kolor_tla};
         color=#ffffff;
         text-align: center;
@@ -106,7 +106,7 @@ st.markdown(f"""
     .moja-ramka1 h4 {{
         color: "#ffffff";
         font-size: 18px;
-        margin: 20px;
+        margin: 0px;
     }}
     </style>
     
