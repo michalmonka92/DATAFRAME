@@ -275,87 +275,92 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                     }
                 ])
                 st.table(stats_)
-                with st.expander("2D Structure Preview", expanded=False):
-                        if 'Linker' in df0.columns:
-                                available_ls = df0['Linker'].unique()
-                                available_ls = natsorted(available_ls)
-                                selected_l = st.selectbox(
-                                    "Select the linker mod:", 
-                                    available_ls, 
-                                    key="selectbox_linker_main" # Dodaj unikalny ciąg znaków
-                                )
-                                
-                                df0_filtered = df0[df0['Linker'] == selected_l].copy()
-                                df0_filtered['sort_key'] = df0_filtered['ID'].apply(natural_sort_key)
-                                df0_filtered = df0_filtered.sort_values(by='sort_key').drop(columns=['sort_key'])
-                        else:
-                                df0_filtered = df0.head(16)
-                        
-                        current_id0 = st.session_state.get('selected_id0', df['ID'].iloc[0])
-                        selected_row0 = df0[df0['ID'] == current_id0].iloc[0] 
-                        
-                
-                        n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
-                            
-                            # Grupowanie wierszy galerii
-                        gallery_rows = [df0_filtered[i:i + n_cols_gal] for i in range(0, len(df0_filtered), n_cols_gal)]
-                            
-                        for row_data in gallery_rows:
-                                cols = st.columns(n_cols_gal)
-                                for i, (idx, row) in enumerate(row_data.iterrows()):
-                                    with cols[i]:
-                                        m = row['Starting_Structure_MOL']
-                                        if m:
-                                            # 1. Przygotowanie obrazka
-                                            m_2d = Chem.Mol(m)
-                                            m_2d = Chem.RemoveHs(m_2d)
-                                            AllChem.Compute2DCoords(m_2d)
-                                            img = Draw.MolToImage(m_2d, size=(300, 300))
-                                            img = img.rotate(90, expand=True)
-                                            st.image(img, use_container_width=True)
-                                            
-                                            # 2. Podpis ID
-                                            st.markdown(f'<div style="text-align:center; font-size:14px;font-weight:bold; color:{pomarancz};">{row["ID"]}</div>', unsafe_allow_html=True)
-                                            is_active0 = (row['ID'] == current_id0)
-                                            # KOMPLETNY CSS: kolorowanie aktywnego oraz zmniejszenie wysokości
-                                            st.markdown("""
-                                                <style>
-                                                /* 1. Styl dla przycisku wybranego (Zielony) */
-                                                div[data-testid="stButton"] button[kind="primary"] {
-                                                    background-color:  #ff9300 !important;
-                                                    color: white !important;
-                                                    border-color: #ff9300 !important;
-                                                }
+                col_a,col_b=st.columns([5,5])
+                with cola:
+                        with st.expander("2D Structure Preview", expanded=False):
+                                if 'Linker' in df0.columns:
+                                        available_ls = df0['Linker'].unique()
+                                        available_ls = natsorted(available_ls)
+                                        selected_l = st.selectbox(
+                                            "Select the linker mod:", 
+                                            available_ls, 
+                                            key="selectbox_linker_main" # Dodaj unikalny ciąg znaków
+                                        )
                                         
-                                                /* 2. Zmniejszenie wysokości wszystkich przycisków w galerii */
-                                                div[data-testid="stButton"] button {
-                                                    padding-top: 0px !important;
-                                                    padding-bottom: 0px !important;
-                                                    height: 24px !important; /* Tutaj kontrolujesz wysokość w osi Y */
-                                                    min-height: 24px !important;
-                                                    line-height: 24px !important;
-                                                }
-                                                
-                                                /* 3. Wycentrowanie ikony ptaszka w mniejszym przycisku */
-                                                div[data-testid="stButton"] button p {
-                                                    font-size: 14px !important;
-                                                    margin-top: -2px !important;
-                                                }
-                                                </style>
-                                            """, unsafe_allow_html=True)
-
-
-                                                
-                    
-                                            # Jeśli aktywny, dajemy type="primary" (zadziała Twój CSS), jeśli nie - "secondary"
-                                            btn_type = "primary" if is_active0 else "secondary"
-                                            
-                                            if st.button("✔", key=f"gal_{row['ID']}", use_container_width=True, type=btn_type):
-                                                st.session_state['selected_id0'] = row['ID']
-                                                st.rerun()
-
+                                        df0_filtered = df0[df0['Linker'] == selected_l].copy()
+                                        df0_filtered['sort_key'] = df0_filtered['ID'].apply(natural_sort_key)
+                                        df0_filtered = df0_filtered.sort_values(by='sort_key').drop(columns=['sort_key'])
+                                else:
+                                        df0_filtered = df0.head(16)
                                 
-                                st.text(" ")
+                                current_id0 = st.session_state.get('selected_id0', df['ID'].iloc[0])
+                                selected_row0 = df0[df0['ID'] == current_id0].iloc[0] 
+                                
+                        
+                                n_cols_gal = 4  # 4 kolumny wewnątrz lewego panelu
+                                    
+                                    # Grupowanie wierszy galerii
+                                gallery_rows = [df0_filtered[i:i + n_cols_gal] for i in range(0, len(df0_filtered), n_cols_gal)]
+                                    
+                                for row_data in gallery_rows:
+                                        cols = st.columns(n_cols_gal)
+                                        for i, (idx, row) in enumerate(row_data.iterrows()):
+                                            with cols[i]:
+                                                m = row['Starting_Structure_MOL']
+                                                if m:
+                                                    # 1. Przygotowanie obrazka
+                                                    m_2d = Chem.Mol(m)
+                                                    m_2d = Chem.RemoveHs(m_2d)
+                                                    AllChem.Compute2DCoords(m_2d)
+                                                    img = Draw.MolToImage(m_2d, size=(300, 300))
+                                                    img = img.rotate(90, expand=True)
+                                                    st.image(img, use_container_width=True)
+                                                    
+                                                    # 2. Podpis ID
+                                                    st.markdown(f'<div style="text-align:center; font-size:14px;font-weight:bold; color:{pomarancz};">{row["ID"]}</div>', unsafe_allow_html=True)
+                                                    is_active0 = (row['ID'] == current_id0)
+                                                    # KOMPLETNY CSS: kolorowanie aktywnego oraz zmniejszenie wysokości
+                                                    st.markdown("""
+                                                        <style>
+                                                        /* 1. Styl dla przycisku wybranego (Zielony) */
+                                                        div[data-testid="stButton"] button[kind="primary"] {
+                                                            background-color:  #ff9300 !important;
+                                                            color: white !important;
+                                                            border-color: #ff9300 !important;
+                                                        }
+                                                
+                                                        /* 2. Zmniejszenie wysokości wszystkich przycisków w galerii */
+                                                        div[data-testid="stButton"] button {
+                                                            padding-top: 0px !important;
+                                                            padding-bottom: 0px !important;
+                                                            height: 24px !important; /* Tutaj kontrolujesz wysokość w osi Y */
+                                                            min-height: 24px !important;
+                                                            line-height: 24px !important;
+                                                        }
+                                                        
+                                                        /* 3. Wycentrowanie ikony ptaszka w mniejszym przycisku */
+                                                        div[data-testid="stButton"] button p {
+                                                            font-size: 14px !important;
+                                                            margin-top: -2px !important;
+                                                        }
+                                                        </style>
+                                                    """, unsafe_allow_html=True)
+        
+        
+                                                        
+                            
+                                                    # Jeśli aktywny, dajemy type="primary" (zadziała Twój CSS), jeśli nie - "secondary"
+                                                    btn_type = "primary" if is_active0 else "secondary"
+                                                    
+                                                    if st.button("✔", key=f"gal_{row['ID']}", use_container_width=True, type=btn_type):
+                                                        st.session_state['selected_id0'] = row['ID']
+                                                        st.rerun()
+        
+                                        
+                                        st.text(" ")
+                                with col_b:
+                                        st.text(" ")
+                                                
 with st.expander("Input DataFrame: Starting Structures (from Dejan) with S0-optimization", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
 
