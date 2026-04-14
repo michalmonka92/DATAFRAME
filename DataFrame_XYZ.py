@@ -283,7 +283,7 @@ This dataset contains **starting structures** of TADF emitters. All data points 
                         df0_filtered = df0[df0['Linker'] == selected_l].copy()
                         df0_filtered['sort_key'] = df_filtered['ID'].apply(natural_sort_key)
                         df0_filtered = df0_filtered.sort_values(by='sort_key').drop(columns=['sort_key'])
-                    else:
+                else:
                         df0_filtered = df0.head(16)
                 
                     current_id = st.session_state.get('selected_id', df['ID'].iloc[0])
