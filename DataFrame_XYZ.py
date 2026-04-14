@@ -278,7 +278,7 @@ This dataset contains **starting structures** of TADF emitters. All data points 
 
 
 
-with st.expander("Input DataFrame with Strating Structures (from Dejan) and further S0-Optimized", expanded=False):
+with st.expander("Input DataFrame: Starting Structures (from Dejan) with S0-optimization", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
 
 
