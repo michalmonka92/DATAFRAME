@@ -277,7 +277,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                 st.table(stats_)
 
                 with st.expander("2D Structure Preview", expanded=False):
-                        col_a,col_b=st.columns([5,2])
+                        col_a,col_b,col_c,col_d=st.columns([5,0.1,20,1])
                         with col_a:    
                                 if 'Linker' in df0.columns:
                                         available_ls = df0['Linker'].unique()
@@ -357,6 +357,8 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                         
                                 st.text(" ")
                         with col_b:
+                                pass
+                        with col_c:        
                                 st.markdown(f"""
                                 <div style="font-size: 16px; font-weight: bold; margin-bottom: 15px;">Structure: <span style="color: #ff9300;">{current_id0}</span>
                                   </div>
@@ -404,7 +406,8 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                         components.html(obj0, height=400, width=610)
                                 else:
                                         st.error("Brak obiektu MOL (Starting_Structure_MOL) dla tej cząsteczki.")   
-                                                
+                        with col_d:
+                                pass
 with st.expander("Input DataFrame: Starting Structures (from Dejan) with S0-optimization", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
 
