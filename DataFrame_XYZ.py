@@ -285,81 +285,9 @@ with st.expander("Input DataFrame with Strating Structures (from Dejan) and furt
 
 
 
-     
-
-#%%
-
-# 1. Przykładowy słownik opisów (dostosuj do swojego DF)
-column_descriptions = {
-    "ID": "Unikalny identyfikator cząsteczki w bazie danych.",
-    "Linker": "Typ modyfikacji linkera",
-    "Starting_Structure_MOL": "Obiekt RDKit Mol reprezentujący strukturę wejściową (przed optymalizacją).",
-    "S0_XYZ_Opt": "Współrzędne kartezjańskie (XYZ) struktury po optymalizacji w stanie podstawowym S0.",
-    "S0_Opt_Mol": "Zoptymalizowana struktura zapisana jako obiekt Mol.",
-    "Energy": "Energia całkowita układu obliczona metodą DFT [Hartree].",
-    "RMSD": "Wartość odchylenia średniokwadratowego między strukturą startową a zoptymalizowaną."
-}
-
-with st.expander("🔍 Szczegóły bazy danych i statystyki kolumn", expanded=False):
-    # 1. Przygotowanie danych z liczeniem wartości non-null
-    info_data = []
-    
-    # Liczymy wystąpienia non-null dla całego DF raz, aby było szybciej
-    counts = df.count() 
-    
-    for col in df.columns:
-        desc = column_descriptions.get(col, "Brak opisu.")
-        dtype = str(df[col].dtype)
-        val_count = counts[col]  # Pobieramy liczbę wartości nie-będących None/NaN
-        
-        info_data.append({
-            "Kolumna": col, 
-            "Typ": dtype, 
-            "Opis": desc,
-            "Liczba wartości": val_count
-        })
-    
-    info_df = pd.DataFrame(info_data)
-
-    # 2. Stylizacja tabeli
-    def style_table(styler):
-        # Nagłówki - pomarańczowy styl
-        styler.set_table_styles([
-            {'selector': 'th', 'props': [
-                ('background-color', '#ff9300'), 
-                ('color', 'white'), 
-                ('font-weight', 'bold'),
-                ('text-align', 'center')
-            ]}
-        ])
-        # Wyróżnienie nazw kolumn
-        styler.set_properties(subset=['Kolumna'], **{'color': '#ff9300', 'font-weight': 'bold'})
-        
-        # Kolorowanie liczby wartości (opcjonalnie na zielono)
-        styler.set_properties(subset=['Liczba wartości'], **{'color': '#4CAF50', 'font-weight': 'bold'})
-        
-        # Ogólny wygląd komórek
-        styler.set_properties(**{
-            'background-color': '#1e1e1e', 
-            'color': '#cccccc', 
-            'border': '1px solid #333'
-        })
-        return styler
-
-    # 3. Wyświetlenie
-    styled_df = info_df.style.pipe(style_table)
-    
-    st.dataframe(
-        styled_df, 
-        use_container_width=True, 
-        hide_index=True
-    )
-
-    # Dodatkowe info o całym zbiorze pod tabelą
-    st.caption(f"Całkowita liczba wierszy w bazie: {len(df)}")
+#%%--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-#%%
 
 st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)           
 
