@@ -96,7 +96,7 @@ st.markdown(f"""<hr style="height:5px;margin-top: -1px; border:none; color:{kolo
 st.markdown(f"""
         <style>
         .moja-ramka1 {{ 
-        border-radius: 10px;
+        border-radius: 14px;
         padding: 20px;
         background-color: {kolor_tla};
         color=#ffffff;
