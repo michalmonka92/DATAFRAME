@@ -186,7 +186,9 @@ with st.expander("Input DataFrame: Strating Structures (from Dejan) ", expanded=
                 st.dataframe(df0)
         with colb:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Description</span>', unsafe_allow_html=True)
-                st.print(fff)
+                st.text("To jest zwykły tekst o stałej szerokości czcionki (monospace).")
+                st.write("To jest 'szwajcarski scyzoryk' – wyświetli tekst, dane, wykresy i formatowanie Markdown.")
+                print("g")
 
 
 with st.expander("Input DataFrame with Strating Structures (from Dejan) and further S0-Optimized", expanded=False):
