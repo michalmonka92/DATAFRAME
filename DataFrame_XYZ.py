@@ -81,7 +81,7 @@ def load_my_data():
         data = pd.read_pickle(filename_1)
         data2 = pd.read_pickle(filename_2)
         data3 = pd.read_pickle(filename_3)
-        return data, data2, data3
+        return data_0,data, data2, data3
     except Exception as e:
         st.error(f"Błąd wczytywania pkl: {e}")
         return pd.DataFrame(), pd.DataFrame()
