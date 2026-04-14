@@ -276,7 +276,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                 ])
                 st.table(stats_)
 
-                with st.expander("2D Structure Preview", expanded=False):
+                with st.expander("2D & 3D Structure Preview", expanded=False):
                         col_a,col_b,col_c,col_d=st.columns([5,0.1,2,0.1])
                         with col_a:    
                                 if 'Linker' in df0.columns:
