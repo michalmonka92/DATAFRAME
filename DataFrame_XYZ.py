@@ -98,7 +98,7 @@ with cola:
         <style>
         .moja-ramka {{ 
         border-radius: 10px;
-        padding: 0px;
+        padding: 30px;
         background-color: {kolor_tla};
         text-align: center;
         height: 40px;
