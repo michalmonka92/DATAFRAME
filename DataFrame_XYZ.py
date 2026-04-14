@@ -377,7 +377,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                                    'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
                                         if not show_h_3d:
                                                 view.setStyle({'elem': 'H'}, {}) 
-                                        view.setBackgroundColor(#363636)
+                                        view.setBackgroundColor("#363636")
                                         view.zoomTo()
 
                         
