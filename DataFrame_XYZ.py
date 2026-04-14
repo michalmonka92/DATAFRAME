@@ -90,7 +90,7 @@ kolor_ramki = "#ff9300"  # Twój kolor (np. niebieski)
 kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 pomarancz = "#ff9300"
 
-st.markdown(f"""<hr style="height:5px;margin-top: -1px; border:none; color:{pomarancz}; background-color:{pomarancz};" />""", unsafe_allow_html=True)   
+st.markdown(f"""<hr style="height:5px;margin-top: -1px; border:none; color:{kolor_ramki}; background-color:{pomarancz};" />""", unsafe_allow_html=True)   
 
 
 st.markdown(f"""
