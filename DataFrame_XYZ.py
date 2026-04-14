@@ -114,7 +114,7 @@ st.markdown(f"""
         <p style="color: #fff8db;">by MM</p>
     </div>
     """, unsafe_allow_html=True) 
-st.markdown("") # Bardzo mały odstęp
+st.markdown(" ") # Bardzo mały odstęp
 cola,colb=st.columns([4.7,5])
 with cola:
            
@@ -139,7 +139,7 @@ with cola:
         <h4>Linker modifications</h4>
     </div>
     """, unsafe_allow_html=True)  
-        st.markdown(f"""<hr style="height:5px;margin-top: -5px; border:none; color:{pomarancz}; background-color:{pomarancz};" />""", unsafe_allow_html=True)
+        st.markdown(f"""<hr style="height:5px;margin-top: -3px; border:none; color:{pomarancz}; background-color:{pomarancz};" />""", unsafe_allow_html=True)
         image = Image.open('linkers.jpg')
         st.image(image, use_container_width=True)     
 
@@ -164,7 +164,7 @@ with colb:
         <h4>Substituents</h4>
     </div>
     """, unsafe_allow_html=True)
-        st.markdown(f"""<hr style="height:5px;margin-top: -5px; border:none; color:{pomarancz}; background-color:{pomarancz};" />""", unsafe_allow_html=True)
+        st.markdown(f"""<hr style="height:5px;margin-top: -3px; border:none; color:{pomarancz}; background-color:{pomarancz};" />""", unsafe_allow_html=True)
 
         image = Image.open('Subs.jpg')
         st.image(image, use_container_width=True)      
