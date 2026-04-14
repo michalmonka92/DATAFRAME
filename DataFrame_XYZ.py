@@ -196,7 +196,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
 
                 total_compounds = len(df0)
                 unique_linkers = df['Linker'].nunique()
-                unique_subs = df['Substituents'].nunique()
+                unique_subs = df['Substituent'].nunique()
                 # Wyświetlanie w rzędzie
                 col1, col2,col3 = st.columns(3)
                 col1.metric("Liczba związków", total_compounds)
