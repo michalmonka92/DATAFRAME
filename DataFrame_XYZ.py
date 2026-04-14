@@ -114,11 +114,11 @@ st.markdown(f"""
         <p style="color: #fff8db;">by MM</p>
     </div>
     """, unsafe_allow_html=True) 
-st.markdown(f"""<hr style="height:5px; border:none; color:{pomarancz}; background-color:{pomarancz};" />""", unsafe_allow_html=True)   
-st.markdown("#") # Bardzo mały odstęp
+st.markdown("") # Bardzo mały odstęp
 cola,colb=st.columns([4.7,5])
 with cola:
-        
+        st.markdown(f"""<hr style="height:5px; border:none; color:{pomarancz}; background-color:{pomarancz};" />""", unsafe_allow_html=True)   
+
         st.markdown(f"""
         <style>
         .moja-ramka {{ 
