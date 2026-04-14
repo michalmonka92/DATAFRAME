@@ -90,7 +90,7 @@ kolor_ramki = "#ff9300"  # Twój kolor (np. niebieski)
 kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 pomarancz = "#ff9300"
 
-st.markdown("""<hr style="height:5px; border:none; color:{pomarancz}; background-color:{pomarancz};" />""", unsafe_allow_html=True)   
+st.markdown(f"""<hr style="height:5px; border:none; color:{pomarancz}; background-color:{pomarancz};" />""", unsafe_allow_html=True)   
 
 
 st.markdown(f"""
@@ -113,7 +113,8 @@ st.markdown(f"""
         <h4>TADF dataset for Machine Learning</h4>
         <p style="color: #fff8db;">by MM</p>
     </div>
-    """, unsafe_allow_html=True)   
+    """, unsafe_allow_html=True) 
+st.markdown(f"""<hr style="height:5px; border:none; color:{pomarancz}; background-color:{pomarancz};" />""", unsafe_allow_html=True)   
 st.markdown("#") # Bardzo mały odstęp
 cola,colb=st.columns([4.7,5])
 with cola:
