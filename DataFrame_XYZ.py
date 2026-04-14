@@ -205,7 +205,7 @@ This dataset contains **starting structures** of TADF emitters. All data points 
             ('color', 'black'),             # POMARAŃCZOWY KOLOR CZCIONKI
             ('font-family', 'cambria'),
         ('font-weight', 'bold'),
-                        ('border', '1px solid #444'),
+                        ('border', '1px solid #363636'),
             ('font-size', '14px')
         ]
     }
