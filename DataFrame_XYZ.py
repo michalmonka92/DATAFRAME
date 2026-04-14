@@ -197,7 +197,7 @@ This dataset contains **starting structures** of TADF emitters. All data points 
                 stats = df0.describe()
                 stats=stats.drop(['top','freq'], axis=0)
 
-                stats = stats.style.set_table_styles([
+                stats_ = stats.style.set_table_styles([
                     {
                         'selector': 'th',
                         'props': [
@@ -211,7 +211,7 @@ This dataset contains **starting structures** of TADF emitters. All data points 
 
 
                 
-                st.dataframe(stats)
+                st.table(stats_)
 
 
 
