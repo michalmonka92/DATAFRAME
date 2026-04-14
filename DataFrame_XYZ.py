@@ -234,7 +234,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
                 pkl_data = buffer.getvalue()
 
 
-                col1,col2,col3=st.columns([2,2,0.5])
+                col1,col2,col3=st.columns([1.5,2,0.5])
                 with col1:
                         st.download_button(
                     label="Download as *csv",
@@ -277,7 +277,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                 st.table(stats_)
 
                 with st.expander("2D Structure Preview", expanded=False):
-                        col_a,col_b=st.columns([5,3])
+                        col_a,col_b=st.columns([5,2])
                         with col_a:    
                                 if 'Linker' in df0.columns:
                                         available_ls = df0['Linker'].unique()
