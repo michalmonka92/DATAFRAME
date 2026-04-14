@@ -91,7 +91,7 @@ kolor_ramki = "#ff9300"  # Twój kolor (np. niebieski)
 kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 
 
-cola,colc,colb=st.columns([8,4])
+cola,colb=st.columns([8,4])
 with cola:
         
         st.markdown(f"""
@@ -141,30 +141,6 @@ with colb:
         st.image(image, use_container_width=True)      
 
 
-with colc:
-        st.markdown(f"""
-        <style>
-        .moja-ramka {{ 
-        border-radius: 10px;
-        padding: 0px;
-        background-color: {kolor_tla};
-        text-align: center;
-        height: 40px;
-    }}
-    .moja-ramka h4 {{
-        color: {kolor_ramki};
-        font-size: 18px;
-        margin: 0;
-    }}
-    </style>
-    
-    <div class="moja-ramka">
-        <h4>Linker modifications</h4>
-        <p style="color: #fff8db;">by MM</p>
-    </div>
-    """, unsafe_allow_html=True)  
-        image = Image.open('linkers.jpg')
-        st.image(image, use_container_width=True)      
 
 
 
