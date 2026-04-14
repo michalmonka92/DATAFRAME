@@ -194,6 +194,15 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
                 st.text("To jest zwykły tekst o stałej szerokości czcionki (monospace).")
                 st.write(df0.describe())
 
+                total_compounds = len(df0)
+                unique_linkers = df['Linker'].nunique()
+                unique_subs = df['Substituents'].nunique()
+                # Wyświetlanie w rzędzie
+                col1, col2,col3 = st.columns(3)
+                col1.metric("Liczba związków", total_compounds)
+                col2.metric("Unikalne Linkery", unique_linkers)
+                col3.metric("Unikalne Linkery", unique_subs)
+
 
 with st.expander("Input DataFrame with Strating Structures (from Dejan) and further S0-Optimized", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
