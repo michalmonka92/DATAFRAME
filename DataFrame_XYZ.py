@@ -100,7 +100,7 @@ st.markdown(f"""
         padding: 90px;
         background-color: {kolor_tla};
         text-align: center;
-        height: 120px;
+        height: 140px;
     }}
     .moja-ramka h4 {{
         color: {kolor_ramki};
@@ -111,7 +111,6 @@ st.markdown(f"""
     
     <div class="moja-ramka">
         <h4>TADF dataset for Machine Learning</h4>
-        <p style="color: #fff8db;">by MM</p>
     </div>
     """, unsafe_allow_html=True) 
 st.markdown(" ") # Bardzo mały odstęp
