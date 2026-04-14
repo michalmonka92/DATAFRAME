@@ -114,7 +114,7 @@ st.markdown(f"""
         <p style="color: #fff8db;">by MM</p>
     </div>
     """, unsafe_allow_html=True) 
-st.markdown(" ") # Bardzo mały odstęp
+st.markdown("~~") # Bardzo mały odstęp
 cola,colb=st.columns([4.7,5])
 with cola:
            
