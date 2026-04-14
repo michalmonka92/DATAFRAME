@@ -95,22 +95,22 @@ st.markdown(f"""<hr style="height:5px;margin-top: -1px; border:none; color:{kolo
 
 st.markdown(f"""
         <style>
-        .moja-ramka {{ 
+        .moja-ramka1 {{ 
         border-radius: 10px;
         padding: 90px;
         background-color: {kolor_tla};
-        color="#ffffff";
+        color=#ffffff;
         text-align: center;
         height: 190px;
     }}
-    .moja-ramka h4 {{
+    .moja-ramka1 h4 {{
         color: "#ffffff";
         font-size: 18px;
         margin: 20px;
     }}
     </style>
     
-    <div class="moja-ramka">
+    <div class="moja-ramka1">
         <h4>TADF dataset for Machine Learning</h4>
     </div>
     """, unsafe_allow_html=True) 
