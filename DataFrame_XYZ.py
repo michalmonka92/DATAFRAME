@@ -189,6 +189,21 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
         with cola:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Input DataFrame</span>', unsafe_allow_html=True)
                 st.dataframe(df0)
+
+                @st.cache_data
+                def convert_df(df0):
+                    return df0.to_csv(index=False).encode('utf-8')
+
+                csv = convert_df(df0)
+
+                st.download_button(
+                    label="📥 Pobierz dane jako CSV",
+                    data=csv,
+                    file_name='tadf_data.csv',
+                    mime='text/csv',
+                )
+
+        
         with colb:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Description and Summary</span>', unsafe_allow_html=True)
                 st.text("""
@@ -198,21 +213,17 @@ This dataset contains **starting structures** of TADF emitters. All data points 
                 stats=stats.drop(['top','freq'], axis=0)
 
                 stats_ = stats.style.set_table_styles([
-                    {
-                        'selector': 'th',
-                        'props': [
+                    {'selector': 'th',
+                     'props': [
                      ('background-color', '#ff9300'), # Ciemne tło nagłówka
-            ('color', 'black'),             # POMARAŃCZOWY KOLOR CZCIONKI
-            ('font-family', 'cambria'),
-        ('font-weight', 'bold'),
-                        ('border', '1px solid #363636'),
-            ('font-size', '14px')
-        ]
-    }
-])
-
-
-                
+                     ('color', 'black'),             # POMARAŃCZOWY KOLOR CZCIONKI
+                     ('font-family', 'cambria'),
+                     ('font-weight', 'bold'),
+                     ('border', '1px solid #363636'),
+                     ('font-size', '14px')
+                     ]
+                    }
+                ])
                 st.table(stats_)
 
 
