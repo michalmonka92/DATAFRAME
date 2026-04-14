@@ -235,16 +235,16 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
                     mime='text/csv',
                 )
                 buffer = io.BytesIO()
-pickle.dump(df0, buffer)
-pkl_data = buffer.getvalue()
+                pickle.dump(df0, buffer)
+                pkl_data = buffer.getvalue()
 
 # 2. Przycisk pobierania
-st.download_button(
-    label="📥 Download as PKL (Pickle)",
-    data=pkl_data,
-    file_name="tadf_data.pkl",
-    mime="application/octet-stream"  # Standardowy typ dla plików binarnych
-)
+                st.download_button(
+                    label="📥 Download as PKL (Pickle)",
+                    data=pkl_data,
+                    file_name="tadf_data.pkl",
+                    mime="application/octet-stream"  # Standardowy typ dla plików binarnych
+                )
 
         
         with colb:
