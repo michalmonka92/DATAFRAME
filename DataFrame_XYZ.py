@@ -315,32 +315,17 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                             st.image(img, use_container_width=True)
                                             
                                             # 2. Podpis ID
-                                            st.markdown(f'<div style="text-align:center; font-size:14px; color:{pomarancz};">{row["ID"]}</div>', unsafe_allow_html=True)
+                                            st.markdown(f'<div style="text-align:center; font-size:14px;font-weight:bold; color:{pomarancz};">{row["ID"]}</div>', unsafe_allow_html=True)
                                 st.text(" ")
-
-        
-
-
 with st.expander("Input DataFrame: Starting Structures (from Dejan) with S0-optimization", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
 
-
-
-
-
-#%%--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#%%----------------------------------------------------------------------------------------------------PO S0 OPTYMALIZACJI------------------------------------------------------------------------------
 
 
 
 st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)           
 
-# --- FILTROWANIE I SORTOWANIE ---
-
-
-
-
-
-# --- UKŁAD STRONY ---
 main_col_left, main_margin1,main_col_mid,main_margin2, main_col_right = st.columns([4,0.05, 1.7,0.05, 0.9])
 # --- 1. LEWA KOLUMNA: GALERIA NAWIGACYJNA ---
 
