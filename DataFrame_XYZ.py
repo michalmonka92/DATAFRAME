@@ -358,9 +358,9 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                                         st.rerun()
         
                                         
-                                st.text(" ")
+                                st.text("aa ")
                         with col_b:
-                                st.text(" ")
+                                st.text("aaaaa ")
                                                 
 with st.expander("Input DataFrame: Starting Structures (from Dejan) with S0-optimization", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
