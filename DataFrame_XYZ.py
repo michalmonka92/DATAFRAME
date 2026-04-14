@@ -194,7 +194,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
                 st.text("To jest zwykły tekst o stałej szerokości czcionki (monospace).")
                 st.write(df0.describe())
 
-                stats = df0.drop(['Folder'], axis=0)
+                stats = df0.describe()
                 st.dataframe(stats)
 
 
