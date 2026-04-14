@@ -99,6 +99,7 @@ st.markdown(f"""
         border-radius: 10px;
         padding: 90px;
         background-color: {kolor_tla};
+        color="#ffffff";
         text-align: center;
         height: 190px;
     }}
