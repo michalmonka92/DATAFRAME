@@ -117,7 +117,7 @@ st.markdown(f"""
 st.markdown("") # Bardzo mały odstęp
 cola,colb=st.columns([4.7,5])
 with cola:
-        st.markdown(f"""<hr style="height:5px; border:none; color:{pomarancz}; background-color:{pomarancz};" />""", unsafe_allow_html=True)   
+           
 
         st.markdown(f"""
         <style>
@@ -140,6 +140,7 @@ with cola:
         <p style="color: #fff8db;">by MM</p>
     </div>
     """, unsafe_allow_html=True)  
+        st.markdown(f"""<hr style="height:5px; border:none; color:{pomarancz}; background-color:{pomarancz};" />""", unsafe_allow_html=True)
         image = Image.open('linkers.jpg')
         st.image(image, use_container_width=True)     
 
