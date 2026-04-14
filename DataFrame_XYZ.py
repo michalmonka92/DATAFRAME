@@ -100,7 +100,7 @@ pomarancz = "#ff9300"
 st.markdown("""<style>
     /* Celujemy w tekst nagłówka expandera */
     .stExpander details summary p {
-        color: green !important;
+        color: cyan !important;
         font-weight: bold;
         font-size: 1.1rem;}
     </style>
