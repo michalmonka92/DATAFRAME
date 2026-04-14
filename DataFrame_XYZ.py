@@ -192,7 +192,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
         with colb:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Description and Summary</span>', unsafe_allow_html=True)
                 st.text("To jest zwykły tekst o stałej szerokości czcionki (monospace).")
-                df0.describe())
+                df0.describe()
 
 
 with st.expander("Input DataFrame with Strating Structures (from Dejan) and further S0-Optimized", expanded=False):
