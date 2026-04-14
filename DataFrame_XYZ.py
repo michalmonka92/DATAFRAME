@@ -191,7 +191,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
                 st.dataframe(df0)
         with colb:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Description and Summary</span>', unsafe_allow_html=True)
-                st.text("This are starting structures, aggregates into a dataframe "Starting_Structures.pkl")
+                st.text("This are starting structures, aggregates into a dataframe Starting_Structures.pkl")
                 stats = df0.describe()
                 stats=stats.drop(['top','freq'], axis=0)
                 st.dataframe(stats)
