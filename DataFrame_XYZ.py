@@ -95,10 +95,10 @@ st.markdown(f"""
         <style>
         .moja-ramka {{ 
         border-radius: 10px;
-        padding: 40px;
+        padding: 90px;
         background-color: {kolor_tla};
         text-align: center;
-        height: 80px;
+        height: 120px;
     }}
     .moja-ramka h4 {{
         color: {kolor_ramki};
