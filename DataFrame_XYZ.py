@@ -346,10 +346,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                                         }
                                                         </style>
                                                     """, unsafe_allow_html=True)
-        
-        
-                                                        
-                            
+
                                                     # Jeśli aktywny, dajemy type="primary" (zadziała Twój CSS), jeśli nie - "secondary"
                                                     btn_type = "primary" if is_active0 else "secondary"
                                                     
@@ -358,9 +355,34 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                                         st.rerun()
         
                                         
-                                st.text("aa ")
+                                st.text(" ")
                         with col_b:
-                                st.text("aaaaa ")
+                                thickness = st.slider("Grubość wiązań:", 0.05, 0.6, 0.15, 0.05, key=f"thick_{current_id}")
+
+                                # Pobieramy obiekt MOL
+                                mol_start0 = selected_row0.get('Starting_Structure_MOL')
+                            
+                                if mol_start:
+                                # Tworzymy kopię, aby nie modyfikować oryginału w DataFrame
+                                    view_mol0 = Chem.Mol(mol_start0)
+                                
+                                # Konwersja obiektu RDKit na blok tekstowy MOL
+                                    mol_block0 = Chem.MolToMolBlock(view_mol0)
+                                
+                                    view = py3Dmol.view(width=500, height=350)
+                                # Ważne: zmieniamy format na 'mol'
+                                    view.addModel(mol_block0, 'mol')
+                        
+                                # Ustawiamy styl stick
+                                    view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': thickness}, 
+                                                   'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
+                        
+                                # Render
+                                    obj0 = view._make_html()
+                                # Zwiększyłem wysokość komponentu, by pasowała do widoku
+                                    components.html(obj0, height=400, width=610)
+                                else:
+                                        st.error("Brak obiektu MOL (Starting_Structure_MOL) dla tej cząsteczki.")   
                                                 
 with st.expander("Input DataFrame: Starting Structures (from Dejan) with S0-optimization", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
@@ -450,7 +472,6 @@ with main_col_left:
                         st.session_state['selected_id'] = row['ID']
                         st.rerun()
 
-
 with main_margin1:
     pass
     
@@ -499,17 +520,9 @@ with main_col_mid:
         </div>
     """, unsafe_allow_html=True)
     tab1, tab2, tab3 = st.tabs(["Starting_Structure", "S0-Optimized_Structure", "Overlay"])
-   
-
-    
     with tab1:
-
-    
-    
-    
-# W sekcji wizualizacji (main_col_mid):
-        
-    # Pobieramy obiekt MOL
+        # W sekcji wizualizacji (main_col_mid):
+        # Pobieramy obiekt MOL
         mol_start = selected_row.get('Starting_Structure_MOL')
     
         if mol_start:
@@ -530,28 +543,17 @@ with main_col_mid:
         # Obsługa ukrywania wodorów
             if not show_h_3d:
                 view.setStyle({'elem': 'H'}, {}) 
-            
             view.zoomTo()
             view.setBackgroundColor(bg_color)
-        
         # Render
             obj = view._make_html()
         # Zwiększyłem wysokość komponentu, by pasowała do widoku
             components.html(obj, height=400, width=610)
         else:
-                st.error("Brak obiektu MOL (Starting_Structure_MOL) dla tej cząsteczki.")
-                
-                
-                
-                
-                
+                st.error("Brak obiektu MOL (Starting_Structure_MOL) dla tej cząsteczki.")   
     with tab2:
-
-    
-    
     # Pobieramy obiekt MOL
         mol_start = selected_row.get('S0_MOL_Opt')
-    
         if mol_start:
         # Tworzymy kopię, aby nie modyfikować oryginału w DataFrame
             view_mol = Chem.Mol(mol_start)
