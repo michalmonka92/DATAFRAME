@@ -275,42 +275,43 @@ This dataset contains **starting structures** of TADF emitters. All data points 
                     }
                 ])
                 st.table(stats_)
-
-                if 'Linker' in df0.columns:
-                        available_ls = df0['Linker'].unique()
-                        available_ls = natsorted(available_ls)
-                        selected_l = st.selectbox("Wybierz typ modyfikacji linkera", available_ls)
-                        df0_filtered = df0[df0['Linker'] == selected_l].copy()
-                        df0_filtered['sort_key'] = df0_filtered['ID'].apply(natural_sort_key)
-                        df0_filtered = df0_filtered.sort_values(by='sort_key').drop(columns=['sort_key'])
-                else:
-                        df0_filtered = df0.head(16)
+                with st.expander("2D Structure Preview", expanded=False):
+                        
+                        if 'Linker' in df0.columns:
+                                available_ls = df0['Linker'].unique()
+                                available_ls = natsorted(available_ls)
+                                selected_l = st.selectbox("Wybierz typ modyfikacji linkera", available_ls)
+                                df0_filtered = df0[df0['Linker'] == selected_l].copy()
+                                df0_filtered['sort_key'] = df0_filtered['ID'].apply(natural_sort_key)
+                                df0_filtered = df0_filtered.sort_values(by='sort_key').drop(columns=['sort_key'])
+                        else:
+                                df0_filtered = df0.head(16)
+                        
+                        current_id = st.session_state.get('selected_id', df['ID'].iloc[0])
+                        selected_row = df0[df0['ID'] == current_id].iloc[0]
+                        
                 
-                current_id = st.session_state.get('selected_id', df['ID'].iloc[0])
-                selected_row = df0[df0['ID'] == current_id].iloc[0]
-                
+                        n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
+                            
+                            # Grupowanie wierszy galerii
+                        gallery_rows = [df0_filtered[i:i + n_cols_gal] for i in range(0, len(df0_filtered), n_cols_gal)]
+                            
+                        for row_data in gallery_rows:
+                                cols = st.columns(n_cols_gal)
+                                for i, (idx, row) in enumerate(row_data.iterrows()):
+                                    with cols[i]:
+                                        m = row['Starting_Structure_MOL']
+                                        if m:
+                                            # 1. Przygotowanie obrazka
+                                            m_2d = Chem.Mol(m)
+                                            m_2d = Chem.RemoveHs(m_2d)
+                                            AllChem.Compute2DCoords(m_2d)
+                                            img = Draw.MolToImage(m_2d, size=(400, 400))
+                                            st.image(img, use_container_width=True)
+                                            
+                                            # 2. Podpis ID
+                                            st.markdown(f'<div style="text-align:center; font-size:14px; color:{pomarancz};">{row["ID"]}</div>', unsafe_allow_html=True)
         
-                n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
-                    
-                    # Grupowanie wierszy galerii
-                gallery_rows = [df0_filtered[i:i + n_cols_gal] for i in range(0, len(df0_filtered), n_cols_gal)]
-                    
-                for row_data in gallery_rows:
-                        cols = st.columns(n_cols_gal)
-                        for i, (idx, row) in enumerate(row_data.iterrows()):
-                            with cols[i]:
-                                m = row['Starting_Structure_MOL']
-                                if m:
-                                    # 1. Przygotowanie obrazka
-                                    m_2d = Chem.Mol(m)
-                                    m_2d = Chem.RemoveHs(m_2d)
-                                    AllChem.Compute2DCoords(m_2d)
-                                    img = Draw.MolToImage(m_2d, size=(400, 400))
-                                    st.image(img, use_container_width=True)
-                                    
-                                    # 2. Podpis ID
-                                    st.markdown(f'<div style="text-align:center; font-size:14px; color:{pomarancz};">{row["ID"]}</div>', unsafe_allow_html=True)
-
 
 
 with st.expander("Input DataFrame: Starting Structures (from Dejan) with S0-optimization", expanded=False):
