@@ -311,7 +311,7 @@ This dataset contains **starting structures** of TADF emitters. All data points 
                                             
                                             # 2. Podpis ID
                                             st.markdown(f'<div style="text-align:center; font-size:14px; color:{pomarancz};">{row["ID"]}</div>', unsafe_allow_html=True)
-                        st.write(ff)
+                        st.text(ff)
         
 
 
