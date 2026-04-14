@@ -176,20 +176,17 @@ with colb:
         st.image(image, use_container_width=True)      
 
 
-
-
-
-         
+#%%-------------------------------------------------------------------------------------------------INPUT DATAFRAME STARTING STRUCTURES----------------------------------------------------------------------------------
 
 st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)      
-
-with st.expander("Input DataFrame:Strating Structures (from Dejan) ", expanded=False):
+with st.expander("Input DataFrame: Strating Structures (from Dejan) ", expanded=False):
         cola,colb=st.columns([5,5])
         with cola:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Input DataFrame</span>', unsafe_allow_html=True)
                 st.dataframe(df0)
         with colb:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Description</span>', unsafe_allow_html=True)
+                st.print("fff")
 
 
 with st.expander("Input DataFrame with Strating Structures (from Dejan) and further S0-Optimized", expanded=False):
