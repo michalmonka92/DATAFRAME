@@ -106,7 +106,7 @@ with cola:
     .moja-ramka h4 {{
         color: {kolor_ramki};
         font-size: 18px;
-        margin: 15;
+        margin: 15px;
     }}
     </style>
     
