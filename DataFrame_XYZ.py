@@ -257,7 +257,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
         with colb:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Description and Summary</span>', unsafe_allow_html=True)
                 st.text("""
-This dataset contains **starting structures** of TADF emitters. All data points are aggregated into the `Starting_Structures.pkl` dataframe.
+This dataset contains starting structures (pre-optimized) of TADF emitters. All data points are aggregated into the `Starting_Structures.pkl` dataframe, which you can download as csv or pkl. 
 """)
                 stats = df0.describe()
                 stats=stats.drop(['top','freq'], axis=0)
