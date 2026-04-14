@@ -375,7 +375,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                 # Ustawiamy styl stick
                                         view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': thickness0}, 
                                                    'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
-                                        if not show_h_3d:
+                                        if not show_h_3d0:
                                                 view.setStyle({'elem': 'H'}, {}) 
                                         view.setBackgroundColor("#363636")
                                         view.zoomTo()
