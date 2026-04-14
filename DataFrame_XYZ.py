@@ -202,10 +202,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
                 col1.metric("Liczba związków", total_compounds)
                 col2.metric("Unikalne Linkery", unique_linkers)
                 col3.metric("Unikalne Linkery", unique_subs)
-                if 'Linker' in df0.columns and 'Substituent' in do.columns:
-                    st.subheader("Średnia energia S1 wg Linkera")
-                    stats_grouped = df0.groupby('Linker')['Substituent'].agg(['unique', 'count']).reset_index()
-                    st.table(stats_grouped) # st.table jest statyczna i bardzo czytelna
+
 
 
 with st.expander("Input DataFrame with Strating Structures (from Dejan) and further S0-Optimized", expanded=False):
