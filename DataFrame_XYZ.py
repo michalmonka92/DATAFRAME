@@ -103,7 +103,7 @@ st.markdown(f"""
         height: 190px;
     }}
     .moja-ramka h4 {{
-        color: {kolor_ramki};
+        color: "#ffffff";
         font-size: 18px;
         margin: 20px;
     }}
