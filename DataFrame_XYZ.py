@@ -187,7 +187,7 @@ with colb:
 
 st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)      
 with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=False):
-        cola,colb=st.columns([5,5])
+        cola,colb=st.columns([5,8])
         with cola:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Input DataFrame</span>', unsafe_allow_html=True)
                 st.dataframe(df0)
