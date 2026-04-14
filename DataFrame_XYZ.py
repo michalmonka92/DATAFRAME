@@ -408,7 +408,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                         st.error("Brak obiektu MOL (Starting_Structure_MOL) dla tej cząsteczki.")   
                         with col_d:
                                 pass
-with st.expander("Input DataFrame: Starting Structures (from Dejan) with S0-optimization", expanded=False):
+with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
 
 #%%----------------------------------------------------------------------------------------------------PO S0 OPTYMALIZACJI------------------------------------------------------------------------------
