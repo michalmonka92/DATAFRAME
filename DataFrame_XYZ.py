@@ -100,12 +100,12 @@ st.markdown(f"""
         padding: 90px;
         background-color: {kolor_tla};
         text-align: center;
-        height: 140px;
+        height: 190px;
     }}
     .moja-ramka h4 {{
         color: {kolor_ramki};
         font-size: 18px;
-        margin: 90px;
+        margin: 20px;
     }}
     </style>
     
