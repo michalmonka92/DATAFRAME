@@ -276,7 +276,6 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                 ])
                 st.table(stats_)
                 with st.expander("2D Structure Preview", expanded=False):
-                        
                         if 'Linker' in df0.columns:
                                 available_ls = df0['Linker'].unique()
                                 available_ls = natsorted(available_ls)
@@ -296,7 +295,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                         selected_row = df0[df0['ID'] == current_id].iloc[0]
                         
                 
-                        n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
+                        n_cols_gal = 4  # 4 kolumny wewnątrz lewego panelu
                             
                             # Grupowanie wierszy galerii
                         gallery_rows = [df0_filtered[i:i + n_cols_gal] for i in range(0, len(df0_filtered), n_cols_gal)]
