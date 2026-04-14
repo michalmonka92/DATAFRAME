@@ -357,8 +357,6 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                         
                                 st.text(" ")
                         with col_b:
-                                thickness = st.slider("Grubość wiązań:", 0.05, 0.6, 0.15, 0.05, key=f"thick_{current_id}")
-
                                 # Pobieramy obiekt MOL
                                 mol_start0 = selected_row0.get('Starting_Structure_MOL')
                             
@@ -374,7 +372,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                     view.addModel(mol_block0, 'mol')
                         
                                 # Ustawiamy styl stick
-                                    view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': thickness}, 
+                                    view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': 0.4}, 
                                                    'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
                         
                                 # Render
