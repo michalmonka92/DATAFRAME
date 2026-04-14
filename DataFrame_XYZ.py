@@ -340,8 +340,8 @@ with main_col_left:
     if 'Linker' in df.columns:
         available_ls = df['Linker'].unique()
         available_ls = natsorted(available_ls)
-        selected_l = st.selectbox("Wybierz typ modyfikacji linkera", available_ls)
-        df_filtered = df[df['Linker'] == selected_l].copy()
+        selected_linker = st.selectbox("Wybierz typ modyfikacji linkera", available_ls)
+        df_filtered = df[df['Linker'] == selected_linker].copy()
         df_filtered['sort_key'] = df_filtered['ID'].apply(natural_sort_key)
         df_filtered = df_filtered.sort_values(by='sort_key').drop(columns=['sort_key'])
     else:
