@@ -44,7 +44,7 @@ st.set_page_config(layout="wide")
 def load_my_data():
     filename_1 = "wyniki_obliczen1.pkl"
     file_id1 = '1qFMH8GqQPHyO7BZxF-wJOXNWScBusRkU'
-    
+        
     filename_2 = "DataFrame_Energies_FULL.pkl"
     file_id2 = "1Rngl3VouuX9kYVneiUGaJAJcYe3sdDKd"
 
