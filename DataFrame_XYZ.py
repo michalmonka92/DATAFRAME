@@ -108,7 +108,7 @@ st.markdown("""
     
     /* Zmiana koloru strzałki (ikony) expandera */
     .stExpander details summary svg {
-        fill: red !important;
+        fill: blue !important;
     }
     </style>
     """, unsafe_allow_html=True)
