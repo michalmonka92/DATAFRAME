@@ -359,26 +359,25 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                         with col_b:
                                 # Pobieramy obiekt MOL
                                 mol_start0 = selected_row0.get('Starting_Structure_MOL')
-                            
-                                if mol_start:
+                                if mol_start0:
                                 # Tworzymy kopię, aby nie modyfikować oryginału w DataFrame
-                                    view_mol0 = Chem.Mol(mol_start0)
+                                        view_mol0 = Chem.Mol(mol_start0)
                                 
                                 # Konwersja obiektu RDKit na blok tekstowy MOL
-                                    mol_block0 = Chem.MolToMolBlock(view_mol0)
+                                        mol_block0 = Chem.MolToMolBlock(view_mol0)
                                 
-                                    view = py3Dmol.view(width=500, height=350)
+                                        view = py3Dmol.view(width=500, height=350)
                                 # Ważne: zmieniamy format na 'mol'
-                                    view.addModel(mol_block0, 'mol')
+                                        view.addModel(mol_block0, 'mol')
                         
                                 # Ustawiamy styl stick
-                                    view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': 0.4}, 
+                                        view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': 0.4}, 
                                                    'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
                         
                                 # Render
-                                    obj0 = view._make_html()
+                                        obj0 = view._make_html()
                                 # Zwiększyłem wysokość komponentu, by pasowała do widoku
-                                    components.html(obj0, height=400, width=610)
+                                        components.html(obj0, height=400, width=610)
                                 else:
                                         st.error("Brak obiektu MOL (Starting_Structure_MOL) dla tej cząsteczki.")   
                                                 
