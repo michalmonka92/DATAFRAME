@@ -192,9 +192,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
         with colb:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Description and Summary</span>', unsafe_allow_html=True)
                 st.text("""
-This dataset contains **starting structures** of molecular aggregates, specifically curated for 
-TADF (Thermally Activated Delayed Fluorescence) research. All data points are aggregated 
-into the `Starting_Structures.pkl` dataframe.
+This dataset contains **starting structures** of TADF emitters. All data points are aggregated into the `Starting_Structures.pkl` dataframe.
 """)
                 stats = df0.describe()
                 stats=stats.drop(['top','freq'], axis=0)
