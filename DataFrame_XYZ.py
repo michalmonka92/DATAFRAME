@@ -292,7 +292,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                 df0_filtered = df0.head(16)
                         
                         current_id0 = st.session_state.get('selected_id0', df['ID'].iloc[0])
-                        selected_row0 = df0[df0['ID'] == current_id0].iloc[0]
+                        selected_row0 = df0[df0['ID'] == current_id0].iloc[0] 
                         
                 
                         n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
