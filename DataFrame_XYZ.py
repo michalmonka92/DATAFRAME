@@ -204,9 +204,9 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
                         background-color: #FFA500; /* Twój pomarańczowy */
                         color: white;              /* Kolor tekstu */
                         font-weight: bold;         /* POGRUBIENIE */
-                        font-size: 18px;           /* Wielkość czcionki */
+                        font-size: 16px;           /* Wielkość czcionki */
                         padding: 0.6em 1.2em;
-                        border-radius: 10px;       /* Zaokrąglone rogi */
+                        border-radius: 7px;       /* Zaokrąglone rogi */
                         border: none;
                         width: 100%;               /* Przycisk na pełną szerokość kolumny */
                         transition: 0.3s;          /* Płynna zmiana koloru */
@@ -215,7 +215,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
                     /* Efekt po najechaniu myszką (hover) */
                     .stDownloadButton > button:hover {
                         background-color: #FF8C00; /* Ciemniejszy pomarańcz */
-                        color: #f0f0f0;
+                        color: #424242;
                         border: none;
                     }
                     
