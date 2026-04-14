@@ -275,6 +275,53 @@ This dataset contains **starting structures** of TADF emitters. All data points 
                     }
                 ])
                 st.table(stats_)
+                # --- 1. Tworzenie macierzy (Pivot Table) ---
+                # Sprawdzamy ile struktur mamy dla danej kombinacji
+                matrix = df0.pivot_table(
+                    index='Linker', 
+                    columns='Substituent', 
+                    values='ID', 
+                    aggfunc='count'
+                ).fillna(0)
+                
+                st.subheader("Structure Availability Matrix")
+                st.markdown("Numbers represent the count of available structures for each combination.")
+                
+                # Wyświetlamy macierz jako ładną tabelę
+                st.dataframe(matrix.style.background_gradient(cmap='Oranges'), use_container_width=True)
+                
+                st.divider()
+                
+                # --- 2. Wybór struktury do wyświetlenia ---
+                st.subheader("Structure Viewer")
+                
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    selected_linker = st.selectbox("Select Linker", options=sorted(df['Linker'].unique()))
+                    
+                    # Filtrujemy dostępne podstawniki dla wybranego linkera
+                    available_subs = df[df['Linker'] == selected_linker]['Substituent'].unique()
+                    selected_sub = st.selectbox("Select Substituent", options=sorted(available_subs))
+                
+                # --- 3. Wyświetlenie obrazka ---
+                # Szukamy wiersza w df0, który pasuje do wyboru
+                matching_row = df[(df['Linker'] == selected_linker) & (df['Substituent'] == selected_sub)]
+                
+                with col2:
+                    if not matching_row.empty:
+                        # Pobieramy ścieżkę do zdjęcia (zakładając, że kolumna to 'Starting_Structure_IMG')
+                        img_path = matching_row.iloc[0]['Starting_Structure_IMG']
+                        
+                        try:
+                            st.image(img_path, caption=f"Structure: {selected_linker} + {selected_sub}", use_container_width=True)
+                            
+                            # Dodatkowo przycisk pobierania dla tej konkretnej struktury
+                            
+                        except:
+                            st.warning("Image file not found at the specified path.")
+                    else:
+                        st.info("No structure available for this specific combination.")
 
 
 
