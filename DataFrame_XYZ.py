@@ -9,9 +9,11 @@ import plotly.express as px
 import plotly.graph_objects as go
 import webbrowser
 import py3Dmol
+import pickle
 import pandas as pd
 import os
 import glob
+import io
 from rdkit import Chem
 from rdkit.Chem import Descriptors, rdDetermineBonds, Draw
 import subprocess
@@ -232,6 +234,17 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
                     file_name='tadf_data.csv',
                     mime='text/csv',
                 )
+                buffer = io.BytesIO()
+pickle.dump(df0, buffer)
+pkl_data = buffer.getvalue()
+
+# 2. Przycisk pobierania
+st.download_button(
+    label="📥 Download as PKL (Pickle)",
+    data=pkl_data,
+    file_name="tadf_data.pkl",
+    mime="application/octet-stream"  # Standardowy typ dla plików binarnych
+)
 
         
         with colb:
