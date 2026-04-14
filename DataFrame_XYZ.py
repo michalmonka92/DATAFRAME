@@ -234,7 +234,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
                 pkl_data = buffer.getvalue()
 
 
-                col1,col2,col3=st.columns([1,1,4])
+                col1,col2,col3=st.columns([1,2,4])
                 with col1:
                         st.download_button(
                     label="Download as *csv",
