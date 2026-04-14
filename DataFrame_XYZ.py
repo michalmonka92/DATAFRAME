@@ -289,33 +289,6 @@ This dataset contains **starting structures** of TADF emitters. All data points 
                 current_id = st.session_state.get('selected_id', df['ID'].iloc[0])
                 selected_row = df0[df0['ID'] == current_id].iloc[0]
                 
-                    # KOMPLETNY CSS: kolorowanie aktywnego oraz zmniejszenie wysokości
-                st.markdown("""
-                <style>
-                /* 1. Styl dla przycisku wybranego (Zielony) */
-                div[data-testid="stButton"] button[kind="primary"] {
-                    background-color:  #ff9300 !important;
-                    color: white !important;
-                    border-color: #ff9300 !important;
-                }
-        
-                /* 2. Zmniejszenie wysokości wszystkich przycisków w galerii */
-                div[data-testid="stButton"] button {
-                    padding-top: 0px !important;
-                    padding-bottom: 0px !important;
-                    height: 24px !important; /* Tutaj kontrolujesz wysokość w osi Y */
-                    min-height: 24px !important;
-                    line-height: 24px !important;
-                }
-                
-                /* 3. Wycentrowanie ikony ptaszka w mniejszym przycisku */
-                div[data-testid="stButton"] button p {
-                    font-size: 14px !important;
-                    margin-top: -2px !important;
-                }
-                </style>
-            """, unsafe_allow_html=True)
-
         
                 n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
                     
@@ -337,17 +310,7 @@ This dataset contains **starting structures** of TADF emitters. All data points 
                                     
                                     # 2. Podpis ID
                                     st.markdown(f'<div style="text-align:center; font-size:11px; color:#ffffff;">{row["ID"]}</div>', unsafe_allow_html=True)
-                                    
-                                    # --- KLUCZOWA ZMIANA TUTAJ ---
-                                    # Sprawdzamy, czy ten wiersz jest tym wybranym
-                                    is_active = (row['ID'] == current_id)
-                                    
-                                    # Jeśli aktywny, dajemy type="primary" (zadziała Twój CSS), jeśli nie - "secondary"
-                                    btn_type = "primary" if is_active else "secondary"
-                                    
-                                    if st.button("✔", key=f"gal_{row['ID']}", use_container_width=True, type=btn_type):
-                                        st.session_state['selected_id'] = row['ID']
-                                        st.rerun()
+
 
 
 with st.expander("Input DataFrame: Starting Structures (from Dejan) with S0-optimization", expanded=False):
