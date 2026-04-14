@@ -357,6 +357,10 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                         
                                 st.text(" ")
                         with col_b:
+                                st.markdown(f"""
+                                <div style="font-size: 16px; font-weight: bold; margin-bottom: 15px;">Structure: <span style="color: #ff9300;">{current_id0}</span>
+                                  </div>
+                                    """, unsafe_allow_html=True)
                                 show_h_3d0 = st.checkbox("Pokaż wodory (H)", value=True, key=f"h_3d0_{current_id0}")
                                 # Pobieramy obiekt MOL
                                 mol_start0 = selected_row0.get('Starting_Structure_MOL')
