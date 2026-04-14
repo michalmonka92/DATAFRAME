@@ -32,8 +32,6 @@ from stworz_mol_z_optymalizacji import stworz_mol_z_XYZ
 import matplotlib.pyplot as plt
 import seaborn as sns
         
-     
-
 def natural_sort_key(s):
     return [int(text) if text.isdigit() else text.lower() for text in re.split('([0-9]+)', str(s))]
     
@@ -97,8 +95,7 @@ kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 pomarancz = "#ff9300"
 
 
-st.markdown("""
-    <style>
+st.markdown("""<style>
     /* Celujemy w tekst nagłówka expandera */
     .stExpander details summary p {
         color: cyan !important;
@@ -106,13 +103,7 @@ st.markdown("""
         font-size: 1.1rem;}
     </style>
     """, unsafe_allow_html=True)
-
-
-
-
 st.markdown(f"""<hr style="height:5px;margin-top: -1px; border:none; color:{kolor_tla}; background-color:{kolor_tla};" />""", unsafe_allow_html=True)   
-
-
 st.markdown(f"""
         <style>
         .moja-ramka1 {{ 
@@ -193,16 +184,15 @@ with colb:
 #%%-------------------------------------------------------------------------------------------------INPUT DATAFRAME STARTING STRUCTURES----------------------------------------------------------------------------------
 
 st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)      
-with st.expander("Input DataFrame: Strating Structures (from Dejan) ", expanded=False):
+with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=False):
         cola,colb=st.columns([5,5])
         with cola:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Input DataFrame</span>', unsafe_allow_html=True)
                 st.dataframe(df0)
         with colb:
-                st.markdown('<span style="color: #ff9300; font-weight: bold;">Description</span>', unsafe_allow_html=True)
+                st.markdown('<span style="color: #ff9300; font-weight: bold;">Description and Summary</span>', unsafe_allow_html=True)
                 st.text("To jest zwykły tekst o stałej szerokości czcionki (monospace).")
-                st.write("To jest 'szwajcarski scyzoryk' – wyświetli tekst, dane, wykresy i formatowanie Markdown.")
-                print("g")
+                df0.describe())
 
 
 with st.expander("Input DataFrame with Strating Structures (from Dejan) and further S0-Optimized", expanded=False):
