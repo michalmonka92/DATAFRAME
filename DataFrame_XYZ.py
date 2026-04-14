@@ -192,7 +192,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
 
                 @st.cache_data
                 def convert_df(df0):
-                    return df0.to_csv(index=False).encode('utf-8')
+                    return df.to_csv(index=False, sep=';').encode('utf-8-sig') # utf-8-sig pomaga na polskie znaki
 
                 csv = convert_df(df0)
 
