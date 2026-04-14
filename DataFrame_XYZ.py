@@ -103,7 +103,7 @@ st.markdown(f"""
     .moja-ramka h4 {{
         color: {kolor_ramki};
         font-size: 18px;
-        margin: 0;
+        margin: 90px;
     }}
     </style>
     
