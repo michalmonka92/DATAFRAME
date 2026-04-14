@@ -101,7 +101,7 @@ st.markdown("""
     <style>
     /* Celujemy w tekst nagłówka expandera */
     .stExpander details summary p {
-        color: cyan !important;
+        color: white !important;
         font-weight: bold;
         font-size: 1.1rem;
     }
