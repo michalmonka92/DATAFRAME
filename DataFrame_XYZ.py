@@ -275,7 +275,80 @@ This dataset contains **starting structures** of TADF emitters. All data points 
                     }
                 ])
                 st.table(stats_)
+
+                 if 'Linker' in df.columns:
+                        available_ls = df0['Linker'].unique()
+                        available_ls = natsorted(available_ls)
+                        selected_l = st.selectbox("Wybierz typ modyfikacji linkera", available_ls)
+                        df0_filtered = df0[df0['Linker'] == selected_l].copy()
+                        df0_filtered['sort_key'] = df_filtered['ID'].apply(natural_sort_key)
+                        df0_filtered = df0_filtered.sort_values(by='sort_key').drop(columns=['sort_key'])
+                    else:
+                        df0_filtered = df0.head(16)
                 
+                    current_id = st.session_state.get('selected_id', df['ID'].iloc[0])
+                    selected_row = df0[df0['ID'] == current_id].iloc[0]
+                
+                    # KOMPLETNY CSS: kolorowanie aktywnego oraz zmniejszenie wysokości
+                    st.markdown("""
+                        <style>
+                        /* 1. Styl dla przycisku wybranego (Zielony) */
+                        div[data-testid="stButton"] button[kind="primary"] {
+                            background-color:  #ff9300 !important;
+                            color: white !important;
+                            border-color: #ff9300 !important;
+                        }
+                
+                        /* 2. Zmniejszenie wysokości wszystkich przycisków w galerii */
+                        div[data-testid="stButton"] button {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                            height: 24px !important; /* Tutaj kontrolujesz wysokość w osi Y */
+                            min-height: 24px !important;
+                            line-height: 24px !important;
+                        }
+                        
+                        /* 3. Wycentrowanie ikony ptaszka w mniejszym przycisku */
+                        div[data-testid="stButton"] button p {
+                            font-size: 14px !important;
+                            margin-top: -2px !important;
+                        }
+                        </style>
+                    """, unsafe_allow_html=True)
+
+                
+                    n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
+                    
+                    # Grupowanie wierszy galerii
+                    gallery_rows = [df0_filtered[i:i + n_cols_gal] for i in range(0, len(df0_filtered), n_cols_gal)]
+                    
+                    for row_data in gallery_rows:
+                        cols = st.columns(n_cols_gal)
+                        for i, (idx, row) in enumerate(row_data.iterrows()):
+                            with cols[i]:
+                                m = row['Starting_Structure_MOL']
+                                if m:
+                                    # 1. Przygotowanie obrazka
+                                    m_2d = Chem.Mol(m)
+                                    m_2d = Chem.RemoveHs(m_2d)
+                                    AllChem.Compute2DCoords(m_2d)
+                                    img = Draw.MolToImage(m_2d, size=(200, 200))
+                                    st.image(img, use_container_width=True)
+                                    
+                                    # 2. Podpis ID
+                                    st.markdown(f'<div style="text-align:center; font-size:11px; color:#ffffff;">{row["ID"]}</div>', unsafe_allow_html=True)
+                                    
+                                    # --- KLUCZOWA ZMIANA TUTAJ ---
+                                    # Sprawdzamy, czy ten wiersz jest tym wybranym
+                                    is_active = (row['ID'] == current_id)
+                                    
+                                    # Jeśli aktywny, dajemy type="primary" (zadziała Twój CSS), jeśli nie - "secondary"
+                                    btn_type = "primary" if is_active else "secondary"
+                                    
+                                    if st.button("✔", key=f"gal_{row['ID']}", use_container_width=True, type=btn_type):
+                                        st.session_state['selected_id'] = row['ID']
+                                        st.rerun()
+
 
 with st.expander("Input DataFrame: Starting Structures (from Dejan) with S0-optimization", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
@@ -297,40 +370,20 @@ st.markdown("""<hr style="height:5px; border:none; color:#444444; background-col
 
 
 # --- UKŁAD STRONY ---
-# Lewa: Galeria (2.5), Środek: Wizualizacja 3D (3), Prawa: Kontrolki (1.5)
 main_col_left, main_margin1,main_col_mid,main_margin2, main_col_right = st.columns([4,0.05, 1.7,0.05, 0.9])
-
-# Pobieramy aktualnie wybraną strukturę
-
-
 # --- 1. LEWA KOLUMNA: GALERIA NAWIGACYJNA ---
 
 with main_col_left:
-    
     if 'Linker' in df.columns:
-        # Pobieramy unikalne wartości i sortujemy je naturalnie (R1, R2, ..., R10)
         available_ls = df['Linker'].unique()
-        
-        # OPCJA A: Używając natsort (najwygodniejsze)
         available_ls = natsorted(available_ls)
-        
-        # OPCJA B: Jeśli nie masz natsort, odkomentuj linię poniżej:
-        # available_ls = sorted(available_ls, key=natural_sort_key)
-        
-        
         selected_l = st.selectbox("Wybierz typ modyfikacji linkera", available_ls)
-        
-        # Filtrowanie
         df_filtered = df[df['Linker'] == selected_l].copy()
-        
-        # Sortujemy również wiersze wewnątrz grupy (np. po ID lub innej kolumnie)
-        # tak, aby w galerii też były po kolei
         df_filtered['sort_key'] = df_filtered['ID'].apply(natural_sort_key)
         df_filtered = df_filtered.sort_values(by='sort_key').drop(columns=['sort_key'])
     else:
         df_filtered = df.head(16)
-        
-        
+
     current_id = st.session_state.get('selected_id', df['ID'].iloc[0])
     selected_row = df[df['ID'] == current_id].iloc[0]
 
@@ -415,25 +468,14 @@ with main_col_right:
     st.image(img, use_container_width=True)
     
     
-    
     with st.expander("Wygląd 3D", expanded=True):
         thickness = st.slider("Grubość wiązań:", 0.05, 0.6, 0.15, 0.05, key=f"thick_{current_id}")
         show_h_3d = st.checkbox("Pokaż wodory (H)", value=True, key=f"h_3d_{current_id}")
         bg_color = st.select_slider("Tło:", options=["white", "#363636", "black"], value="#363636", key=f"bg_{current_id}")
 
-
-
-
 with main_margin2:
     pass
     
-
-
-
-
-
-
-
 # --- 3. ŚRODKOWA KOLUMNA: WIZUALIZACJA 3D ---
 with main_col_mid:
     
