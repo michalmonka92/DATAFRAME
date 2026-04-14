@@ -276,7 +276,7 @@ This dataset contains **starting structures** of TADF emitters. All data points 
                 ])
                 st.table(stats_)
 
-                 if 'Linker' in df.columns:
+                if 'Linker' in df0.columns:
                         available_ls = df0['Linker'].unique()
                         available_ls = natsorted(available_ls)
                         selected_l = st.selectbox("Wybierz typ modyfikacji linkera", available_ls)
