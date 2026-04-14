@@ -186,7 +186,7 @@ with st.expander("Input DataFrame: Strating Structures (from Dejan) ", expanded=
                 st.dataframe(df0)
         with colb:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Description</span>', unsafe_allow_html=True)
-                st.print("fff")
+                st.print(fff)
 
 
 with st.expander("Input DataFrame with Strating Structures (from Dejan) and further S0-Optimized", expanded=False):
