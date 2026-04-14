@@ -196,8 +196,38 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
 
                 csv = convert_df(df0)
 
+
+                st.markdown("""
+                    <style>
+                    /* Celujemy w przycisk pobierania */
+                    .stDownloadButton > button {
+                        background-color: #FFA500; /* Twój pomarańczowy */
+                        color: white;              /* Kolor tekstu */
+                        font-weight: bold;         /* POGRUBIENIE */
+                        font-size: 18px;           /* Wielkość czcionki */
+                        padding: 0.6em 1.2em;
+                        border-radius: 10px;       /* Zaokrąglone rogi */
+                        border: none;
+                        width: 100%;               /* Przycisk na pełną szerokość kolumny */
+                        transition: 0.3s;          /* Płynna zmiana koloru */
+                    }
+                
+                    /* Efekt po najechaniu myszką (hover) */
+                    .stDownloadButton > button:hover {
+                        background-color: #FF8C00; /* Ciemniejszy pomarańcz */
+                        color: #f0f0f0;
+                        border: none;
+                    }
+                    
+                    /* Efekt po kliknięciu (active) */
+                    .stDownloadButton > button:active {
+                        background-color: #CC7000;
+                        transform: scale(0.98);    /* Efekt delikatnego wciśnięcia */
+                    }
+                    </style>
+                    """, unsafe_allow_html=True)
                 st.download_button(
-                    label="📥 Pobierz dane jako CSV",
+                    label="Download as CSV",
                     data=csv,
                     file_name='tadf_data.csv',
                     mime='text/csv',
