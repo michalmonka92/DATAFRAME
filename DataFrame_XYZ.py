@@ -96,6 +96,26 @@ kolor_ramki = "#ff9300"  # Twój kolor (np. niebieski)
 kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 pomarancz = "#ff9300"
 
+
+st.markdown("""
+    <style>
+    /* Celujemy w tekst nagłówka expandera */
+    .stExpander details summary p {
+        color: cyan !important;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+    
+    /* Zmiana koloru strzałki (ikony) expandera */
+    .stExpander details summary svg {
+        fill: red !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+
+
+
 st.markdown(f"""<hr style="height:5px;margin-top: -1px; border:none; color:{kolor_tla}; background-color:{kolor_tla};" />""", unsafe_allow_html=True)   
 
 
