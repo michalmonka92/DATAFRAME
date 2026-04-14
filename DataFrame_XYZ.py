@@ -106,7 +106,7 @@ st.markdown(f"""
     .moja-ramka1 h4 {{
         color: "#ffffff";
         font-size: 18px;
-        margin: 0px;
+        margin: 10px;
     }}
     </style>
     
