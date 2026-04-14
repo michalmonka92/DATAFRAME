@@ -197,7 +197,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
 
 with st.expander("Input DataFrame with Strating Structures (from Dejan) and further S0-Optimized", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
-    st.dataframe(df)
+    st.write(df0.describe())
 
 
 
