@@ -187,7 +187,7 @@ with colb:
 
 st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)      
 with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=False):
-        cola,colb=st.columns([5,8])
+        cola,colb=st.columns([3,8])
         with cola:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">Input DataFrame</span>', unsafe_allow_html=True)
                 st.dataframe(df0)
@@ -297,7 +297,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                 selected_row0 = df0[df0['ID'] == current_id0].iloc[0] 
                                 
                         
-                                n_cols_gal = 4  # 4 kolumny wewnątrz lewego panelu
+                                n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
                                     
                                     # Grupowanie wierszy galerii
                                 gallery_rows = [df0_filtered[i:i + n_cols_gal] for i in range(0, len(df0_filtered), n_cols_gal)]
