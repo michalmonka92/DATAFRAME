@@ -357,6 +357,9 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                         
                                 st.text(" ")
                         with col_b:
+                                thickness0 = st.slider("Grubość wiązań:", 0.05, 0.6, 0.15, 0.05, key=f"thick_{current_id0}")
+                                show_h_3d0 = st.checkbox("Pokaż wodory (H)", value=True, key=f"h_3d0_{current_id0}")
+                                bg_color0 = st.select_slider("Tło:", options=["white", "#363636", "black"], value="#363636", key=f"bg_{current_id0}")
                                 # Pobieramy obiekt MOL
                                 mol_start0 = selected_row0.get('Starting_Structure_MOL')
                                 if mol_start0:
@@ -371,8 +374,13 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                         view.addModel(mol_block0, 'mol')
                         
                                 # Ustawiamy styl stick
-                                        view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': 0.4}, 
+                                        view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': thickness0}, 
                                                    'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
+                                        if not show_h_3d:
+                                                view.setStyle({'elem': 'H'}, {}) 
+                                        view.setBackgroundColor(bg_color)
+                                        view.zoomTo()
+
                         
                                 # Render
                                         obj0 = view._make_html()
