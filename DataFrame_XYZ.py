@@ -204,7 +204,8 @@ This dataset contains **starting structures** of TADF emitters. All data points 
                      ('background-color', '#ff9300'), # Ciemne tło nagłówka
             ('color', 'black'),             # POMARAŃCZOWY KOLOR CZCIONKI
             ('font-family', 'cambria'),
-        ('font-style', 'bold'),
+        ('font-weight', 'bold'),
+                        ('border', '1px solid #444').
             ('font-size', '14px')
         ]
     }
