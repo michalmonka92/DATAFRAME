@@ -195,6 +195,7 @@ with st.expander("Input DataFrame: Starting Structures (from Dejan) ", expanded=
                 st.write(df0.describe())
 
                 stats = df0.describe()
+                stats=stats.drop(['top','freq'], axis=0)
                 st.dataframe(stats)
 
 
