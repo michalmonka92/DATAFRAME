@@ -42,6 +42,10 @@ st.set_page_config(layout="wide")
 @st.cache_data(ttl=1, show_spinner=False)
 @st.cache_data(show_spinner=False)
 def load_my_data():
+
+    filename_0 = "Starting_Structures.pkl" 
+    file_id0 = '12vrT1chxTl7_-81GoAD1vNqfVQ5TUZDT'
+        
     filename_1 = "wyniki_obliczen1.pkl"
     file_id1 = '1qFMH8GqQPHyO7BZxF-wJOXNWScBusRkU'
         
@@ -66,12 +70,14 @@ def load_my_data():
 
     # Pobieranie plików
     with st.spinner('Synchronizacja z Google Drive...'):
+        download_file(file_id0, filename_0)
         download_file(file_id1, filename_1)
         download_file(file_id2, filename_2)
         download_file(file_id3, filename_3)
 
     # Wczytywanie
     try:
+        data_0 = pd.read_pickle(filename_0)
         data = pd.read_pickle(filename_1)
         data2 = pd.read_pickle(filename_2)
         data3 = pd.read_pickle(filename_3)
@@ -81,7 +87,7 @@ def load_my_data():
         return pd.DataFrame(), pd.DataFrame()
 
 # Wywołanie danych
-df, df2, df3 = load_my_data()
+df0,df, df2, df3 = load_my_data()
 
 df['S0_MOL_Opt'] = df.apply(lambda x: stworz_mol_z_XYZ(x['Starting_Structure_MOL'], x['S0_XYZ_Opt']), axis=1)
 
@@ -176,6 +182,15 @@ with colb:
          
 
 st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)      
+
+with st.expander("Input DataFrame:Strating Structures (from Dejan) ", expanded=False):
+    cola,colb=st.columns([5,5])
+        with cola:
+                st.markdown('<span style="color: #ff9300; font-weight: bold;">Input DataFrame</span>', unsafe_allow_html=True)
+                st.dataframe(df0)
+        with colb:
+                st.markdown('<span style="color: #ff9300; font-weight: bold;">Description</span>', unsafe_allow_html=True)
+
 
 with st.expander("Input DataFrame with Strating Structures (from Dejan) and further S0-Optimized", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
