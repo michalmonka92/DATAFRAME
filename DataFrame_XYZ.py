@@ -96,28 +96,6 @@ with cola:
         
         st.markdown(f"""
         <style>
-        .moja-ramka1 {{ 
-        border-radius: 10px;
-        padding: 20px;
-        background-color: {kolor_tla};
-        text-align: center;
-        height: 120px;
-    }}
-    .moja-ramka1 h4 {{
-        color: {kolor_ramki};
-        margin: 0;
-    }}
-    </style>
-    
-    <div class="moja-ramka1">
-        <h4>Dataset for Machine Learning</h4>
-        <p style="color: #fff8db;">by MM</p>
-    </div>
-    """, unsafe_allow_html=True)   
-
-with colb:
-        st.markdown(f"""
-        <style>
         .moja-ramka {{ 
         border-radius: 10px;
         padding: 0px;
@@ -138,6 +116,31 @@ with colb:
     </div>
     """, unsafe_allow_html=True)  
         image = Image.open('linkers.jpg')
+        st.image(image, use_container_width=True)     
+
+with colb:
+        st.markdown(f"""
+        <style>
+        .moja-ramka {{ 
+        border-radius: 10px;
+        padding: 0px;
+        background-color: {kolor_tla};
+        text-align: center;
+        height: 40px;
+    }}
+    .moja-ramka h4 {{
+        color: {kolor_ramki};
+        font-size: 18px;
+        margin: 0;
+    }}
+    </style>
+    
+    <div class="moja-ramka">
+        <h4>Substituents</h4>
+        <p style="color: #fff8db;">by MM</p>
+    </div>
+    """, unsafe_allow_html=True)  
+        image = Image.open('Subs.jpg')
         st.image(image, use_container_width=True)      
 
 
