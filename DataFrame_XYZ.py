@@ -317,37 +317,37 @@ This dataset contains **starting structures** of TADF emitters. All data points 
             """, unsafe_allow_html=True)
 
         
-            n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
-            
-            # Grupowanie wierszy galerii
-            gallery_rows = [df0_filtered[i:i + n_cols_gal] for i in range(0, len(df0_filtered), n_cols_gal)]
-            
-            for row_data in gallery_rows:
-                cols = st.columns(n_cols_gal)
-                for i, (idx, row) in enumerate(row_data.iterrows()):
-                    with cols[i]:
-                        m = row['Starting_Structure_MOL']
-                        if m:
-                            # 1. Przygotowanie obrazka
-                            m_2d = Chem.Mol(m)
-                            m_2d = Chem.RemoveHs(m_2d)
-                            AllChem.Compute2DCoords(m_2d)
-                            img = Draw.MolToImage(m_2d, size=(200, 200))
-                            st.image(img, use_container_width=True)
-                            
-                            # 2. Podpis ID
-                            st.markdown(f'<div style="text-align:center; font-size:11px; color:#ffffff;">{row["ID"]}</div>', unsafe_allow_html=True)
-                            
-                            # --- KLUCZOWA ZMIANA TUTAJ ---
-                            # Sprawdzamy, czy ten wiersz jest tym wybranym
-                            is_active = (row['ID'] == current_id)
-                            
-                            # Jeśli aktywny, dajemy type="primary" (zadziała Twój CSS), jeśli nie - "secondary"
-                            btn_type = "primary" if is_active else "secondary"
-                            
-                            if st.button("✔", key=f"gal_{row['ID']}", use_container_width=True, type=btn_type):
-                                st.session_state['selected_id'] = row['ID']
-                                st.rerun()
+                n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
+                    
+                    # Grupowanie wierszy galerii
+                gallery_rows = [df0_filtered[i:i + n_cols_gal] for i in range(0, len(df0_filtered), n_cols_gal)]
+                    
+                for row_data in gallery_rows:
+                        cols = st.columns(n_cols_gal)
+                        for i, (idx, row) in enumerate(row_data.iterrows()):
+                            with cols[i]:
+                                m = row['Starting_Structure_MOL']
+                                if m:
+                                    # 1. Przygotowanie obrazka
+                                    m_2d = Chem.Mol(m)
+                                    m_2d = Chem.RemoveHs(m_2d)
+                                    AllChem.Compute2DCoords(m_2d)
+                                    img = Draw.MolToImage(m_2d, size=(200, 200))
+                                    st.image(img, use_container_width=True)
+                                    
+                                    # 2. Podpis ID
+                                    st.markdown(f'<div style="text-align:center; font-size:11px; color:#ffffff;">{row["ID"]}</div>', unsafe_allow_html=True)
+                                    
+                                    # --- KLUCZOWA ZMIANA TUTAJ ---
+                                    # Sprawdzamy, czy ten wiersz jest tym wybranym
+                                    is_active = (row['ID'] == current_id)
+                                    
+                                    # Jeśli aktywny, dajemy type="primary" (zadziała Twój CSS), jeśli nie - "secondary"
+                                    btn_type = "primary" if is_active else "secondary"
+                                    
+                                    if st.button("✔", key=f"gal_{row['ID']}", use_container_width=True, type=btn_type):
+                                        st.session_state['selected_id'] = row['ID']
+                                        st.rerun()
 
 
 with st.expander("Input DataFrame: Starting Structures (from Dejan) with S0-optimization", expanded=False):
