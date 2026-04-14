@@ -291,8 +291,8 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                         else:
                                 df0_filtered = df0.head(16)
                         
-                        current_id = st.session_state.get('selected_id', df['ID'].iloc[0])
-                        selected_row = df0[df0['ID'] == current_id].iloc[0]
+                        current_id0 = st.session_state.get('selected_id0', df['ID'].iloc[0])
+                        selected_row0 = df0[df0['ID'] == current_id].iloc[0]
                         
                 
                         n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
@@ -316,6 +316,45 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                             
                                             # 2. Podpis ID
                                             st.markdown(f'<div style="text-align:center; font-size:14px;font-weight:bold; color:{pomarancz};">{row["ID"]}</div>', unsafe_allow_html=True)
+                                            is_active0 = (row['ID'] == current_id0)
+                                            # KOMPLETNY CSS: kolorowanie aktywnego oraz zmniejszenie wysokości
+                                            st.markdown("""
+                                                <style>
+                                                /* 1. Styl dla przycisku wybranego (Zielony) */
+                                                div[data-testid="stButton"] button[kind="primary"] {
+                                                    background-color:  #ff9300 !important;
+                                                    color: white !important;
+                                                    border-color: #ff9300 !important;
+                                                }
+                                        
+                                                /* 2. Zmniejszenie wysokości wszystkich przycisków w galerii */
+                                                div[data-testid="stButton"] button {
+                                                    padding-top: 0px !important;
+                                                    padding-bottom: 0px !important;
+                                                    height: 24px !important; /* Tutaj kontrolujesz wysokość w osi Y */
+                                                    min-height: 24px !important;
+                                                    line-height: 24px !important;
+                                                }
+                                                
+                                                /* 3. Wycentrowanie ikony ptaszka w mniejszym przycisku */
+                                                div[data-testid="stButton"] button p {
+                                                    font-size: 14px !important;
+                                                    margin-top: -2px !important;
+                                                }
+                                                </style>
+                                            """, unsafe_allow_html=True)
+
+
+                                                
+                    
+                                            # Jeśli aktywny, dajemy type="primary" (zadziała Twój CSS), jeśli nie - "secondary"
+                                            btn_type = "primary" if is_active0 else "secondary"
+                                            
+                                            if st.button("✔", key=f"gal_{row['ID']}", use_container_width=True, type=btn_type):
+                                                st.session_state['selected_id0'] = row['ID']
+                                                st.rerun()
+
+                                
                                 st.text(" ")
 with st.expander("Input DataFrame: Starting Structures (from Dejan) with S0-optimization", expanded=False):
     st.markdown('<span style="color: #ff9300; font-weight: bold;">Input Dataframe</span>', unsafe_allow_html=True)
