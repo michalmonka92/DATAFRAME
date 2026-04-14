@@ -312,6 +312,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                             m_2d = Chem.RemoveHs(m_2d)
                                             AllChem.Compute2DCoords(m_2d)
                                             img = Draw.MolToImage(m_2d, size=(300, 300))
+                                            img = img.rotate(-90, expand=True)
                                             st.image(img, use_container_width=True)
                                             
                                             # 2. Podpis ID
@@ -388,6 +389,7 @@ with main_col_left:
                     m_2d = Chem.RemoveHs(m_2d)
                     AllChem.Compute2DCoords(m_2d)
                     img = Draw.MolToImage(m_2d, size=(200, 200))
+                    img = img.rotate(-90, expand=True)
                     st.image(img, use_container_width=True)
                     
                     # 2. Podpis ID
