@@ -88,7 +88,8 @@ df['S0_MOL_Opt'] = df.apply(lambda x: stworz_mol_z_XYZ(x['Starting_Structure_MOL
 #%%---------------------------------------------------------------------------------------Title--------------------------------------------------------------------------------------------------------------------------------
 kolor_ramki = "#ff9300"  # Twój kolor (np. niebieski)
 kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
-st.markdown("""<hr style="height:5px; border:none; color: kolor ramki; background-color:#444444;" />""", unsafe_allow_html=True)
+
+st.markdown("""<hr style="height:5px; border:none; color: kolor_ramki; background-color:kolor_ramki" />""", unsafe_allow_html=True)
 
 
 
