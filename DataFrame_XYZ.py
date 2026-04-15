@@ -421,6 +421,44 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
         with cola:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">DataFrame with structures after S0-geometry optimization</span>', unsafe_allow_html=True)
                 st.dataframe(df4)
+
+
+
+                @st.cache_data
+                def convert_df4(df4):
+                    return df4.to_csv(index=False, sep=';').encode('utf-8-sig') # utf-8-sig pomaga na polskie znaki
+
+                csv4 = convert_df4(df4)
+                
+                buffer4 = io.BytesIO()
+                pickle4.dump(df4, buffer4)
+                pkl_data4 = buffer4.getvalue()
+
+
+                col1,col2,col3=st.columns([1.5,2,0.5])
+                with col1:
+                        st.download_button(
+                    label="Download as *csv",
+                    data=csv4,
+                    file_name='tadf_data.csv',
+                    mime='text/csv',
+                )
+                with col2:
+                        st.download_button(
+                    label="Download as *pkl (Pickle)",
+                    data4=pkl_data4,
+                    file_name="tadf_data.pkl",
+                    mime="application/octet-stream"  # Standardowy typ dla plików binarnych
+                )
+                with col3:
+                        print()
+
+
+        
+
+
+
+        
         with colb:
                 st.text("""
                 This dataset contains S0-optimized structures. All data points are aggregated into the `DataFrame_S0_Optimized_Structures_FULL.pkl` dataframe, which you can download as csv or pkl. 
