@@ -611,7 +611,7 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                                 # Obsługa ukrywania wodorów
                                     view.setStyle({'elem': 'H'}, {}) 
                                     view.zoomTo()
-                                    view.setBackgroundColor(bg_color)
+                                    view.setBackgroundColor("#363636")
                                 # Render
                                     obj = view._make_html()
                                 # Zwiększyłem wysokość komponentu, by pasowała do widoku
@@ -633,15 +633,14 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                                     view.addModel(mol_block, 'mol')
                                 
                                 # Ustawiamy styl stick
-                                    view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': thickness}, 
+                                    view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': 0.05}, 
                                                    'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
                                 
                                 # Obsługa ukrywania wodorów
-                                    if not show_h_3d:
-                                        view.setStyle({'elem': 'H'}, {}) 
+                                    view.setStyle({'elem': 'H'}, {}) 
                                     
                                     view.zoomTo()
-                                    view.setBackgroundColor(bg_color)
+                                    view.setBackgroundColor("#363636")
                                 
                                 # Render
                                     obj = view._make_html()
@@ -677,16 +676,15 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                             
                             # Dodajemy pierwszą strukturę (np. szara)
                                         view.addModel(block1, 'mol')
-                                        view.setStyle({'model': 0}, {'stick': {'color': '#919191', 'radius': thickness}})
+                                        view.setStyle({'model': 0}, {'stick': {'color': '#919191', 'radius': 0.05}})
                             
                             # Dodajemy drugą strukturę (np. Twoje kolory Jmol lub konkretny kolor)
                                         view.addModel(block2, 'mol')
                                         view.setStyle({'model': 1}, {'stick': {'colorscheme': 'cyanCarbon', 'radius': thickness}})                                
                                     # Obsługa wodorów
-                                        if not show_h_3d:
-                                            view.setStyle({'elem': 'H'}, {})
+                                        view.setStyle({'elem': 'H'}, {})
                                         view.zoomTo()
-                                        view.setBackgroundColor(bg_color)
+                                        view.setBackgroundColor("#363636")
                                         obj = view._make_html()
                                         components.html(obj, height=400, width=610)
                                 else:
