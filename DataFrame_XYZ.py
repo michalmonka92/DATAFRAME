@@ -101,6 +101,7 @@ df['S0_MOL_Opt'] = df.apply(lambda x: stworz_mol_z_XYZ(x['Starting_Structure_MOL
 kolor_ramki = "#ff9300"  # Twój kolor (np. niebieski)
 kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 pomarancz = "#ff9300"
+bg_color="#363636"
 
 st.markdown("""<style>
     /* Celujemy w tekst nagłówka expandera */
