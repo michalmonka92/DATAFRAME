@@ -605,7 +605,7 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                                     view.addModel(mol_block, 'mol')
                         
                                 # Ustawiamy styl stick
-                                    view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': thickness}, 
+                                    view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': 0.05}, 
                                                    'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
                                 
                                 # Obsługa ukrywania wodorów
