@@ -446,7 +446,7 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                 with col2:
                         st.download_button(
                     label="Download as *pkl (Pickle)",
-                    data4=pkl_data4,
+                    data=pkl_data4,
                     file_name="tadf_data.pkl",
                     mime="application/octet-stream",  # Standardowy typ dla plików binarnych
                     key="btn_download_pickle",  # UNIKALNY KLUCZ
