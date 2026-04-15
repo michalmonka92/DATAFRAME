@@ -419,7 +419,7 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
 with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
         cola,colb=st.columns([3,8])
         with cola:
-                st.markdown('<span style="color: #ff9300; font-weight: bold;">DataFrame</span>', unsafe_allow_html=True)
+                st.markdown('<span style="color: #ff9300; font-weight: bold;">DataFrame with structures after S0-geometry optimization</span>', unsafe_allow_html=True)
                 st.dataframe(df4)
         with colb:
                 pass
