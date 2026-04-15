@@ -439,7 +439,7 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                         st.download_button(
                     label="Download as *csv",
                     data=csv4,
-                    file_name='tadf_data.csv',
+                    file_name='S0_Optimized_Structures_FULL.csv',
                     mime='text/csv',
                     key="btn_download_csv",  # UNIKALNY KLUCZ
                 )
@@ -447,7 +447,7 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                         st.download_button(
                     label="Download as *pkl (Pickle)",
                     data=pkl_data4,
-                    file_name="tadf_data.pkl",
+                    file_name="DataFrame_S0_Optimized_Structures_FULL.pkl",
                     mime="application/octet-stream",  # Standardowy typ dla plików binarnych
                     key="btn_download_pickle",  # UNIKALNY KLUCZ
                 )
