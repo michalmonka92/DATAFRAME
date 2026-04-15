@@ -661,9 +661,9 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                                         m1 = Chem.Mol(mol_start)
                                         m2 = Chem.Mol(mol_opt)
                             # Usunięcie wodorów do obliczeń, jeśli użytkownik tak wybrał (opcjonalnie)
-                                        if not show_h_3d:
-                                            m1 = Chem.RemoveHs(m1)
-                                            m2 = Chem.RemoveHs(m2)
+                                        
+                                        m1 = Chem.RemoveHs(m1)
+                                        m2 = Chem.RemoveHs(m2)
                             # --- NAKŁADANIE (ALIGNMENT) ---
                             # Dopasowujemy m2 (zoptymalizowaną) do m1 (startowej)
                                         rmsd = rdMolAlign.AlignMol(m2, m1)
