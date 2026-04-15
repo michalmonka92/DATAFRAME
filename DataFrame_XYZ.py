@@ -561,12 +561,8 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                             AllChem.Compute2DCoords(mol_start_2d)
                             img = Draw.MolToImage(mol_start_2d, size=(400, 400))
                             st.image(img, use_container_width=True)
+  
                             
-                            
-                            with st.expander("Wygląd 3D", expanded=True):
-                                thickness = st.slider("Grubość wiązań:", 0.05, 0.6, 0.15, 0.05, key=f"thick_{current_id}")
-                                show_h_3d = st.checkbox("Pokaż wodory (H)", value=True, key=f"h_3d_{current_id}")
-                                bg_color = st.select_slider("Tło:", options=["white", "#363636", "black"], value="#363636", key=f"bg_{current_id}")
                         
                         with main_margin2:
                             pass
