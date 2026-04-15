@@ -422,7 +422,25 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">DataFrame with structures after S0-geometry optimization</span>', unsafe_allow_html=True)
                 st.dataframe(df4)
         with colb:
-                pass
+                st.text("""
+                This dataset contains S0-optimized structures. All data points are aggregated into the `DataFrame_S0_Optimized_Structures_FULL.pkl` dataframe, which you can download as csv or pkl. 
+""")
+                stats = df4.describe()
+                stats=stats.drop(['top','freq'], axis=0)
+
+                stats_ = stats.style.set_table_styles([
+                    {'selector': 'th',
+                     'props': [
+                     ('background-color', '#ff9300'), # Ciemne tło nagłówka
+                     ('color', 'black'),             # POMARAŃCZOWY KOLOR CZCIONKI
+                     ('font-family', 'cambria'),
+                     ('font-weight', 'bold'),
+                     ('border', '1px solid #363636'),
+                     ('font-size', '14px')
+                     ]
+                    }
+                ])
+                st.table(stats_)
 
 
 
