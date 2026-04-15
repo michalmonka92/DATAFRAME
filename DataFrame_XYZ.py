@@ -1076,3 +1076,70 @@ with st.expander("Dihedrals", expanded=False):
             
             # 5. Wyświetlenie
             st.plotly_chart(fig, use_container_width=True)
+
+
+
+# 1. Wybieramy pierwszy dostępny emiter z Twojego DataFrame
+if not df3.empty:
+    row = df3.iloc[0]
+    mol = row['S0_MOL_Opt']
+    mol_id = row['ID']
+    
+    if mol:
+        # Konwersja na blok MOL do wizualizacji
+        mblock = Chem.MolToMolBlock(mol)
+        
+        view = py3Dmol.view(width=800, height=500)
+        view.addModel(mblock, 'sdf')
+        view.setStyle({'stick': {'colorscheme': 'orangeCarbon'}})
+        
+        # 2. Obliczanie płaszczyzny dla Donora
+        # Załóżmy, że donor to pierwsze 6 atomów (np. pierścień benzenowy)
+        # W realnym zastosowaniu możesz użyć: mol.GetSubstructMatch(Chem.MolFromSmarts('c1ccccc1'))
+        donor_indices = list(range(6)) 
+        
+        conf = mol.GetConformer()
+        positions = [conf.GetAtomPosition(i) for i in donor_indices]
+        coords = np.array([[p.x, p.y, p.z] for p in positions])
+        
+        # Środek ciężkości (centroid)
+        centroid = coords.mean(axis=0)
+        
+        # SVD - obliczanie normalnej do płaszczyzny
+        centered_coords = coords - centroid
+        u, s, vh = np.linalg.svd(centered_coords)
+        normal = vh[2]  # Trzeci wektor to normalna płaszczyzny
+        
+        # 3. Dodanie wizualizacji płaszczyzny (jako dysk lub prostokąt)
+        # py3Dmol pozwala dodawać kształty. Tutaj dodajemy półprzezroczysty kształt.
+        view.addUnitCell() # Opcjonalne
+        
+        # Rysujemy płaszczyznę jako "Shape" (płaski dysk w miejscu donora)
+        view.addSphere({
+            'center': {'x': centroid[0], 'y': centroid[1], 'z': centroid[2]},
+            'radius': 0.5,
+            'color': 'red',
+            'opacity': 0.8
+        })
+        
+        # Wizualizacja płaszczyzny jako półprzezroczysty dysk
+        view.addCylinder({
+            'start': {'x': centroid[0] - normal[0]*0.1, 'y': centroid[1] - normal[1]*0.1, 'z': centroid[2] - normal[2]*0.1},
+            'end': {'x': centroid[0] + normal[0]*0.1, 'y': centroid[1] + normal[1]*0.1, 'z': centroid[2] + normal[2]*0.1},
+            'radius': 3.0,
+            'color': 'blue',
+            'opacity': 0.3,
+            'cap': True
+        })
+
+        view.zoomTo()
+        
+        st.subheader(f"Wizualizacja płaszczyzny donora dla: {mol_id}")
+        st.components.v1.html(view._make_html(), height=500)
+        
+        # Dodatkowo wypiszmy wektor normalny
+        st.info(f"Wektor normalny płaszczyzny donora: {np.round(normal, 3)}")
+    else:
+        st.error("Błąd: Obiekt MOL jest pusty.")
+else:
+    st.warning("DataFrame jest pusty.")
