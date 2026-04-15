@@ -93,7 +93,7 @@ def load_my_data():
         return pd.DataFrame(), pd.DataFrame()
 
 # Wywołanie danych
-df0,df, df2, df3 = load_my_data()
+df0,df, df2, df3, df4 = load_my_data()
 
 df['S0_MOL_Opt'] = df.apply(lambda x: stworz_mol_z_XYZ(x['Starting_Structure_MOL'], x['S0_XYZ_Opt']), axis=1)
 
@@ -420,7 +420,7 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
         cola,colb=st.columns([3,8])
         with cola:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">DataFrame</span>', unsafe_allow_html=True)
-                st.dataframe(df0)
+                st.dataframe(df4)
         with colb:
                 pass
 
@@ -763,7 +763,6 @@ with st.expander("Frequency Analysis",expanded=False):
                 
     else:
         st.warning("Brak danych wibracyjnych dla tego emitera.")
-
 
 #%%------------------------------------------------------------------------------------ENERGIE-------------------------------------------------------------------------------------------------------------------
 
