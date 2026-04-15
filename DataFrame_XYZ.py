@@ -43,6 +43,10 @@ st.set_page_config(layout="wide")
 @st.cache_data(show_spinner=False)
 def load_my_data():
 
+    filename_4 = "DataFrame_S0_Optimized_Structures_FULL.pkl" 
+    file_id4 = '1aHKJUIERhSzwIEEs4EtcqGshnB8DaXDL' #zoptymalizowane S0 struktury
+
+
     filename_0 = "Starting_Structures.pkl" 
     file_id0 = '12vrT1chxTl7_-81GoAD1vNqfVQ5TUZDT'
         
@@ -74,6 +78,7 @@ def load_my_data():
         download_file(file_id1, filename_1)
         download_file(file_id2, filename_2)
         download_file(file_id3, filename_3)
+        download_file(file_id4, filename_4)
 
     # Wczytywanie
     try:
@@ -81,7 +86,8 @@ def load_my_data():
         data = pd.read_pickle(filename_1)
         data2 = pd.read_pickle(filename_2)
         data3 = pd.read_pickle(filename_3)
-        return data_0,data, data2, data3
+        data4 = pd.read_pickle(filename_4)
+        return data_0,data, data2, data3, data4
     except Exception as e:
         st.error(f"Błąd wczytywania pkl: {e}")
         return pd.DataFrame(), pd.DataFrame()
