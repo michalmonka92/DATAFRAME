@@ -50,9 +50,6 @@ def load_my_data():
     filename_0 = "Starting_Structures.pkl" 
     file_id0 = '12vrT1chxTl7_-81GoAD1vNqfVQ5TUZDT'
         
-    filename_1 = "wyniki_obliczen1.pkl"
-    file_id1 = '1qFMH8GqQPHyO7BZxF-wJOXNWScBusRkU'
-        
     filename_2 = "DataFrame_Energies_FULL.pkl"
     file_id2 = "1Rngl3VouuX9kYVneiUGaJAJcYe3sdDKd"
 
@@ -75,7 +72,6 @@ def load_my_data():
     # Pobieranie plików
     with st.spinner('Synchronizacja z Google Drive...'):
         download_file(file_id0, filename_0)
-        download_file(file_id1, filename_1)
         download_file(file_id2, filename_2)
         download_file(file_id3, filename_3)
         download_file(file_id4, filename_4)
@@ -83,17 +79,16 @@ def load_my_data():
     # Wczytywanie
     try:
         data_0 = pd.read_pickle(filename_0)
-        data = pd.read_pickle(filename_1)
         data2 = pd.read_pickle(filename_2)
         data3 = pd.read_pickle(filename_3)
         data4 = pd.read_pickle(filename_4)
-        return data_0,data, data2, data3, data4
+        return data_0, data2, data3, data4
     except Exception as e:
         st.error(f"Błąd wczytywania pkl: {e}")
         return pd.DataFrame(), pd.DataFrame()
 
 # Wywołanie danych
-df0,df, df2, df3, df4 = load_my_data()
+df0, df2, df3, df4 = load_my_data()
 
 df['S0_MOL_Opt'] = df.apply(lambda x: stworz_mol_z_XYZ(x['Starting_Structure_MOL'], x['S0_XYZ_Opt']), axis=1)
 
