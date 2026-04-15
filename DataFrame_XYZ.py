@@ -694,8 +694,8 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                                         view.setBackgroundColor(bg_color)
                                         obj = view._make_html()
                                         components.html(obj, height=400, width=610)
-                            else:
-                                st.error("Brak jednej ze struktur (Startowej lub Zoptymalizowanej) do nałożenia.")
+                                    else:
+                                        st.error("Brak jednej ze struktur (Startowej lub Zoptymalizowanej) do nałożenia.")
                         
 
 
