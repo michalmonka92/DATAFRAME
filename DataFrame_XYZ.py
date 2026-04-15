@@ -515,10 +515,7 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                                 </style>
                             """, unsafe_allow_html=True)
                                 n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
-                            
-                            # Grupowanie wierszy galerii
                                 gallery_rows = [df_filtered[i:i + n_cols_gal] for i in range(0, len(df_filtered), n_cols_gal)]
-                            
                                 for row_data in gallery_rows:
                                         cols = st.columns(n_cols_gal)
                                         for i, (idx, row) in enumerate(row_data.iterrows()):
