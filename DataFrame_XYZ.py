@@ -680,7 +680,7 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                             
                             # Dodajemy drugą strukturę (np. Twoje kolory Jmol lub konkretny kolor)
                                         view.addModel(block2, 'mol')
-                                        view.setStyle({'model': 1}, {'stick': {'colorscheme': 'cyanCarbon', 'radius': thickness}})                                
+                                        view.setStyle({'model': 1}, {'stick': {'colorscheme': 'cyanCarbon', 'radius': 0.05}})                                
                                     # Obsługa wodorów
                                         view.setStyle({'elem': 'H'}, {})
                                         view.zoomTo()
