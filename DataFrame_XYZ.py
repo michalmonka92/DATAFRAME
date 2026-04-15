@@ -609,8 +609,7 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                                                    'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
                                 
                                 # Obsługa ukrywania wodorów
-                                    if not show_h_3d:
-                                        view.setStyle({'elem': 'H'}, {}) 
+                                    view.setStyle({'elem': 'H'}, {}) 
                                     view.zoomTo()
                                     view.setBackgroundColor(bg_color)
                                 # Render
