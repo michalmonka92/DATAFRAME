@@ -1117,9 +1117,9 @@ if not df3.empty:
         # Rysujemy płaszczyznę jako "Shape" (płaski dysk w miejscu donora)
         view.addSphere({
             'center': {'x': centroid[0], 'y': centroid[1], 'z': centroid[2]},
-            'radius': 0.5,
+            'radius': 0.8,
             'color': 'red',
-            'opacity': 0.8
+            'opacity': 0.3
         })
         
         # Wizualizacja płaszczyzny jako półprzezroczysty dysk
