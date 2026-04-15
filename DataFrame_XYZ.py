@@ -102,7 +102,6 @@ kolor_ramki = "#ff9300"  # Twój kolor (np. niebieski)
 kolor_tla = "#363636"    # Jasny odcień dla wypełnienia
 pomarancz = "#ff9300"
 
-
 st.markdown("""<style>
     /* Celujemy w tekst nagłówka expandera */
     .stExpander details summary p {
