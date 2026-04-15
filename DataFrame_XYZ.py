@@ -391,12 +391,8 @@ This dataset contains starting structures (pre-optimized) of TADF emitters. All 
                                 
                                 # Konwersja obiektu RDKit na blok tekstowy MOL
                                         mol_block0 = Chem.MolToMolBlock(view_mol0)
-                                
                                         view = py3Dmol.view(width=500, height=350)
-                                # Ważne: zmieniamy format na 'mol'
                                         view.addModel(mol_block0, 'mol')
-                        
-                                # Ustawiamy styl stick
                                         view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': 0.1}, 
                                                    'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
                                         if not show_h_3d0:
@@ -420,15 +416,11 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
         with cola:
                 st.markdown('<span style="color: #ff9300; font-weight: bold;">DataFrame with structures after S0-geometry optimization</span>', unsafe_allow_html=True)
                 st.dataframe(df4)
-
-
-
                 @st.cache_data
                 def convert_df4(df4):
                     return df4.to_csv(index=False, sep=';').encode('utf-8-sig') # utf-8-sig pomaga na polskie znaki
 
                 csv4 = convert_df4(df4)
-                
                 buffer4 = io.BytesIO()
                 pickle.dump(df4, buffer4)
                 pkl_data4 = buffer4.getvalue()
@@ -480,256 +472,240 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                 ])
                 st.table(stats_)
 
+                st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)           
+                with st.expander("Preview", expanded=False):
+                        main_col_left, main_margin1,main_col_mid,main_margin2, main_col_right = st.columns([4,0.05, 1.7,0.05, 0.9])
+                        with main_col_left:
+                                if 'Linker' in df.columns:
+                                        available_ls = df['Linker'].unique()
+                                        available_ls = natsorted(available_ls)
+                                        selected_linker = st.selectbox("Wybierz typ modyfikacji linkera", available_ls)
+                                        df_filtered = df[df['Linker'] == selected_linker].copy()
+                                        df_filtered['sort_key'] = df_filtered['ID'].apply(natural_sort_key)
+                                        df_filtered = df_filtered.sort_values(by='sort_key').drop(columns=['sort_key'])
+                                else:
+                                        df_filtered = df.head(16)
+                        
+                                current_id = st.session_state.get('selected_id', df['ID'].iloc[0])
+                                selected_row = df[df['ID'] == current_id].iloc[0]
+                        
+                                st.markdown("""
+                                <style>
+                                /* 1. Styl dla przycisku wybranego (Zielony) */
+                                div[data-testid="stButton"] button[kind="primary"] {
+                                    background-color:  #ff9300 !important;
+                                    color: white !important;
+                                    border-color: #ff9300 !important;
+                                }
+                        
+                                /* 2. Zmniejszenie wysokości wszystkich przycisków w galerii */
+                                div[data-testid="stButton"] button {
+                                    padding-top: 0px !important;
+                                    padding-bottom: 0px !important;
+                                    height: 24px !important; /* Tutaj kontrolujesz wysokość w osi Y */
+                                    min-height: 24px !important;
+                                    line-height: 24px !important;
+                                }
+                                
+                                /* 3. Wycentrowanie ikony ptaszka w mniejszym przycisku */
+                                div[data-testid="stButton"] button p {
+                                    font-size: 14px !important;
+                                    margin-top: -2px !important;
+                                }
+                                </style>
+                            """, unsafe_allow_html=True)
+                                n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
+                            
+                            # Grupowanie wierszy galerii
+                                gallery_rows = [df_filtered[i:i + n_cols_gal] for i in range(0, len(df_filtered), n_cols_gal)]
+                            
+                                for row_data in gallery_rows:
+                                        cols = st.columns(n_cols_gal)
+                                        for i, (idx, row) in enumerate(row_data.iterrows()):
+                                            with cols[i]:
+                                                m = row['Starting_Structure_MOL']
+                                                if m:
+                                                    # 1. Przygotowanie obrazka
+                                                    m_2d = Chem.Mol(m)
+                                                    m_2d = Chem.RemoveHs(m_2d)
+                                                    AllChem.Compute2DCoords(m_2d)
+                                                    img = Draw.MolToImage(m_2d, size=(200, 200))
+                                                    img = img.rotate(90, expand=True)
+                                                    st.image(img, use_container_width=True)
+                                            
+                                                    # 2. Podpis ID
+                                                    st.markdown(f'<div style="text-align:center; font-size:11px; color:#ffffff;">{row["ID"]}</div>', unsafe_allow_html=True)
+                                            
+                                                    # --- KLUCZOWA ZMIANA TUTAJ ---
+                                                    # Sprawdzamy, czy ten wiersz jest tym wybranym
+                                                    is_active = (row['ID'] == current_id)
+                                            
+                                                    # Jeśli aktywny, dajemy type="primary" (zadziała Twój CSS), jeśli nie - "secondary"
+                                                    btn_type = "primary" if is_active else "secondary"
+                                                    
+                                                    if st.button("✔", key=f"gal_{row['ID']}", use_container_width=True, type=btn_type):
+                                                        st.session_state['selected_id'] = row['ID']
+                                                        st.rerun()
+                        
+                        with main_margin1:
+                            pass
+                            
+                            
+                        with main_col_right:
+                            # Sekcja ustawień pozostaje bez zmian (używamy Twoich domyślnych wartości)
+                            st.markdown(f"""
+                                <div style="font-size: 16px; font-weight: bold; margin-bottom: 15px;">Struktura 2D: <span style="color: #ff9300;">{current_id}</span>
+                                </div>
+                            """, unsafe_allow_html=True)
+                        
+                            mol_start = selected_row.get('Starting_Structure_MOL')
+                            mol_start_2d = Chem.Mol(mol_start)
+                            mol_start_2d = Chem.RemoveHs(mol_start_2d)
+                            AllChem.Compute2DCoords(mol_start_2d)
+                            img = Draw.MolToImage(mol_start_2d, size=(400, 400))
+                            st.image(img, use_container_width=True)
+                            
+                            
+                            with st.expander("Wygląd 3D", expanded=True):
+                                thickness = st.slider("Grubość wiązań:", 0.05, 0.6, 0.15, 0.05, key=f"thick_{current_id}")
+                                show_h_3d = st.checkbox("Pokaż wodory (H)", value=True, key=f"h_3d_{current_id}")
+                                bg_color = st.select_slider("Tło:", options=["white", "#363636", "black"], value="#363636", key=f"bg_{current_id}")
+                        
+                        with main_margin2:
+                            pass
+                            
+                        # --- 3. ŚRODKOWA KOLUMNA: WIZUALIZACJA 3D ---
+                        with main_col_mid:
+                            
+                            st.markdown(f"""
+                                <div style="font-size: 16px; font-weight: bold; margin-bottom: 15px;">Struktura 3D: <span style="color: #ff9300;">{current_id}</span>
+                                </div>
+                            """, unsafe_allow_html=True)
+                            
+                            st.markdown(f"""
+                                <div style="
+                                    background-color: {kolor_tla}; 
+                                    border-radius: 10px; 
+                                    padding: 1px;
+                                    margin-left: -10px;
+                                    margin-right: -14px;
+                                    margin-bottom: -590px; /* Trik, żeby 'podłożyć' tło pod wykres */
+                                    height: 450px;
+                                ">
+                                </div>
+                            """, unsafe_allow_html=True)
+                            tab1, tab2, tab3 = st.tabs(["Starting_Structure", "S0-Optimized_Structure", "Overlay"])
+                            with tab1:
+                                # W sekcji wizualizacji (main_col_mid):
+                                # Pobieramy obiekt MOL
+                                mol_start = selected_row.get('Starting_Structure_MOL')
+                            
+                                if mol_start:
+                                # Tworzymy kopię, aby nie modyfikować oryginału w DataFrame
+                                    view_mol = Chem.Mol(mol_start)
+                                
+                                # Konwersja obiektu RDKit na blok tekstowy MOL
+                                    mol_block = Chem.MolToMolBlock(view_mol)
+                                
+                                    view = py3Dmol.view(width=500, height=350)
+                                # Ważne: zmieniamy format na 'mol'
+                                    view.addModel(mol_block, 'mol')
+                        
+                                # Ustawiamy styl stick
+                                    view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': thickness}, 
+                                                   'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
+                                
+                                # Obsługa ukrywania wodorów
+                                    if not show_h_3d:
+                                        view.setStyle({'elem': 'H'}, {}) 
+                                    view.zoomTo()
+                                    view.setBackgroundColor(bg_color)
+                                # Render
+                                    obj = view._make_html()
+                                # Zwiększyłem wysokość komponentu, by pasowała do widoku
+                                    components.html(obj, height=400, width=610)
+                                else:
+                                        st.error("Brak obiektu MOL (Starting_Structure_MOL) dla tej cząsteczki.")   
+                            with tab2:
+                            # Pobieramy obiekt MOL
+                                mol_start = selected_row.get('S0_MOL_Opt')
+                                if mol_start:
+                                # Tworzymy kopię, aby nie modyfikować oryginału w DataFrame
+                                    view_mol = Chem.Mol(mol_start)
+                                
+                                # Konwersja obiektu RDKit na blok tekstowy MOL
+                                    mol_block = Chem.MolToMolBlock(view_mol)
+                                
+                                    view = py3Dmol.view(width=500, height=350)
+                                # Ważne: zmieniamy format na 'mol'
+                                    view.addModel(mol_block, 'mol')
+                                
+                                # Ustawiamy styl stick
+                                    view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': thickness}, 
+                                                   'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
+                                
+                                # Obsługa ukrywania wodorów
+                                    if not show_h_3d:
+                                        view.setStyle({'elem': 'H'}, {}) 
+                                    
+                                    view.zoomTo()
+                                    view.setBackgroundColor(bg_color)
+                                
+                                # Render
+                                    obj = view._make_html()
+                                # Zwiększyłem wysokość komponentu, by pasowała do widoku
+                                    components.html(obj, height=400, width=610)
+                                else:
+                                        st.error("Brak obiektu MOL (S0_MOL_Opt) dla tej cząsteczki.")
+                                
+
+                                st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)
+                                
+                        with tab3:
+                                start = selected_row.get('Starting_Structure_MOL')
+                                mol_opt = selected_row.get('S0_MOL_Opt') # Zakładam, że tu jest obiekt RDKit Mol
+                                
+                            if mol_start and mol_opt:
+                            # Tworzymy kopie, żeby nie psuć oryginałów
+                                m1 = Chem.Mol(mol_start)
+                                m2 = Chem.Mol(mol_opt)
+                            # Usunięcie wodorów do obliczeń, jeśli użytkownik tak wybrał (opcjonalnie)
+                                if not show_h_3d:
+                                    m1 = Chem.RemoveHs(m1)
+                                    m2 = Chem.RemoveHs(m2)
+                            # --- NAKŁADANIE (ALIGNMENT) ---
+                            # Dopasowujemy m2 (zoptymalizowaną) do m1 (startowej)
+                                rmsd = rdMolAlign.AlignMol(m2, m1)
+                            # Przygotowanie bloków tekstowych
+                                block1 = Chem.MolToMolBlock(m1)
+                                block2 = Chem.MolToMolBlock(m2)
+                        
+                            # --- WIZUALIZACJA py3Dmol ---
+                                view = py3Dmol.view(width=600, height=350)
+                            
+                            # Dodajemy pierwszą strukturę (np. szara)
+                                view.addModel(block1, 'mol')
+                                view.setStyle({'model': 0}, {'stick': {'color': '#919191', 'radius': thickness}})
+                            
+                            # Dodajemy drugą strukturę (np. Twoje kolory Jmol lub konkretny kolor)
+                                view.addModel(block2, 'mol')
+                                view.setStyle({'model': 1}, {'stick': {'colorscheme': 'cyanCarbon', 'radius': thickness}})                                
+                            # Obsługa wodorów
+                                if not show_h_3d:
+                                    view.setStyle({'elem': 'H'}, {})
+                                view.zoomTo()
+                                view.setBackgroundColor(bg_color)
+                                obj = view._make_html()
+                                components.html(obj, height=400, width=610)
+                            else:
+                                    st.error("Brak jednej ze struktur (Startowej lub Zoptymalizowanej) do nałożenia.")
+                                
 
 
 
 
-st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)           
-
-main_col_left, main_margin1,main_col_mid,main_margin2, main_col_right = st.columns([4,0.05, 1.7,0.05, 0.9])
-# --- 1. LEWA KOLUMNA: GALERIA NAWIGACYJNA ---
-
-with main_col_left:
-    if 'Linker' in df.columns:
-        available_ls = df['Linker'].unique()
-        available_ls = natsorted(available_ls)
-        selected_linker = st.selectbox("Wybierz typ modyfikacji linkera", available_ls)
-        df_filtered = df[df['Linker'] == selected_linker].copy()
-        df_filtered['sort_key'] = df_filtered['ID'].apply(natural_sort_key)
-        df_filtered = df_filtered.sort_values(by='sort_key').drop(columns=['sort_key'])
-    else:
-        df_filtered = df.head(16)
-
-    current_id = st.session_state.get('selected_id', df['ID'].iloc[0])
-    selected_row = df[df['ID'] == current_id].iloc[0]
-
-    # KOMPLETNY CSS: kolorowanie aktywnego oraz zmniejszenie wysokości
-    st.markdown("""
-        <style>
-        /* 1. Styl dla przycisku wybranego (Zielony) */
-        div[data-testid="stButton"] button[kind="primary"] {
-            background-color:  #ff9300 !important;
-            color: white !important;
-            border-color: #ff9300 !important;
-        }
-
-        /* 2. Zmniejszenie wysokości wszystkich przycisków w galerii */
-        div[data-testid="stButton"] button {
-            padding-top: 0px !important;
-            padding-bottom: 0px !important;
-            height: 24px !important; /* Tutaj kontrolujesz wysokość w osi Y */
-            min-height: 24px !important;
-            line-height: 24px !important;
-        }
-        
-        /* 3. Wycentrowanie ikony ptaszka w mniejszym przycisku */
-        div[data-testid="stButton"] button p {
-            font-size: 14px !important;
-            margin-top: -2px !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
 
 
-
-    n_cols_gal = 8  # 4 kolumny wewnątrz lewego panelu
-    
-    # Grupowanie wierszy galerii
-    gallery_rows = [df_filtered[i:i + n_cols_gal] for i in range(0, len(df_filtered), n_cols_gal)]
-    
-    for row_data in gallery_rows:
-        cols = st.columns(n_cols_gal)
-        for i, (idx, row) in enumerate(row_data.iterrows()):
-            with cols[i]:
-                m = row['Starting_Structure_MOL']
-                if m:
-                    # 1. Przygotowanie obrazka
-                    m_2d = Chem.Mol(m)
-                    m_2d = Chem.RemoveHs(m_2d)
-                    AllChem.Compute2DCoords(m_2d)
-                    img = Draw.MolToImage(m_2d, size=(200, 200))
-                    img = img.rotate(90, expand=True)
-                    st.image(img, use_container_width=True)
-                    
-                    # 2. Podpis ID
-                    st.markdown(f'<div style="text-align:center; font-size:11px; color:#ffffff;">{row["ID"]}</div>', unsafe_allow_html=True)
-                    
-                    # --- KLUCZOWA ZMIANA TUTAJ ---
-                    # Sprawdzamy, czy ten wiersz jest tym wybranym
-                    is_active = (row['ID'] == current_id)
-                    
-                    # Jeśli aktywny, dajemy type="primary" (zadziała Twój CSS), jeśli nie - "secondary"
-                    btn_type = "primary" if is_active else "secondary"
-                    
-                    if st.button("✔", key=f"gal_{row['ID']}", use_container_width=True, type=btn_type):
-                        st.session_state['selected_id'] = row['ID']
-                        st.rerun()
-
-with main_margin1:
-    pass
-    
-    
-with main_col_right:
-    # Sekcja ustawień pozostaje bez zmian (używamy Twoich domyślnych wartości)
-    st.markdown(f"""
-        <div style="font-size: 16px; font-weight: bold; margin-bottom: 15px;">Struktura 2D: <span style="color: #ff9300;">{current_id}</span>
-        </div>
-    """, unsafe_allow_html=True)
-
-    mol_start = selected_row.get('Starting_Structure_MOL')
-    mol_start_2d = Chem.Mol(mol_start)
-    mol_start_2d = Chem.RemoveHs(mol_start_2d)
-    AllChem.Compute2DCoords(mol_start_2d)
-    img = Draw.MolToImage(mol_start_2d, size=(400, 400))
-    st.image(img, use_container_width=True)
-    
-    
-    with st.expander("Wygląd 3D", expanded=True):
-        thickness = st.slider("Grubość wiązań:", 0.05, 0.6, 0.15, 0.05, key=f"thick_{current_id}")
-        show_h_3d = st.checkbox("Pokaż wodory (H)", value=True, key=f"h_3d_{current_id}")
-        bg_color = st.select_slider("Tło:", options=["white", "#363636", "black"], value="#363636", key=f"bg_{current_id}")
-
-with main_margin2:
-    pass
-    
-# --- 3. ŚRODKOWA KOLUMNA: WIZUALIZACJA 3D ---
-with main_col_mid:
-    
-    st.markdown(f"""
-        <div style="font-size: 16px; font-weight: bold; margin-bottom: 15px;">Struktura 3D: <span style="color: #ff9300;">{current_id}</span>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-        <div style="
-            background-color: {kolor_tla}; 
-            border-radius: 10px; 
-            padding: 1px;
-            margin-left: -10px;
-            margin-right: -14px;
-            margin-bottom: -590px; /* Trik, żeby 'podłożyć' tło pod wykres */
-            height: 450px;
-        ">
-        </div>
-    """, unsafe_allow_html=True)
-    tab1, tab2, tab3 = st.tabs(["Starting_Structure", "S0-Optimized_Structure", "Overlay"])
-    with tab1:
-        # W sekcji wizualizacji (main_col_mid):
-        # Pobieramy obiekt MOL
-        mol_start = selected_row.get('Starting_Structure_MOL')
-    
-        if mol_start:
-        # Tworzymy kopię, aby nie modyfikować oryginału w DataFrame
-            view_mol = Chem.Mol(mol_start)
-        
-        # Konwersja obiektu RDKit na blok tekstowy MOL
-            mol_block = Chem.MolToMolBlock(view_mol)
-        
-            view = py3Dmol.view(width=500, height=350)
-        # Ważne: zmieniamy format na 'mol'
-            view.addModel(mol_block, 'mol')
-
-        # Ustawiamy styl stick
-            view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': thickness}, 
-                           'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
-        
-        # Obsługa ukrywania wodorów
-            if not show_h_3d:
-                view.setStyle({'elem': 'H'}, {}) 
-            view.zoomTo()
-            view.setBackgroundColor(bg_color)
-        # Render
-            obj = view._make_html()
-        # Zwiększyłem wysokość komponentu, by pasowała do widoku
-            components.html(obj, height=400, width=610)
-        else:
-                st.error("Brak obiektu MOL (Starting_Structure_MOL) dla tej cząsteczki.")   
-    with tab2:
-    # Pobieramy obiekt MOL
-        mol_start = selected_row.get('S0_MOL_Opt')
-        if mol_start:
-        # Tworzymy kopię, aby nie modyfikować oryginału w DataFrame
-            view_mol = Chem.Mol(mol_start)
-        
-        # Konwersja obiektu RDKit na blok tekstowy MOL
-            mol_block = Chem.MolToMolBlock(view_mol)
-        
-            view = py3Dmol.view(width=500, height=350)
-        # Ważne: zmieniamy format na 'mol'
-            view.addModel(mol_block, 'mol')
-        
-        # Ustawiamy styl stick
-            view.setStyle({'stick': {'colorscheme': 'Jmol', 'radius': thickness}, 
-                           'sphere': {'colorscheme': 'Jmol', 'radius': 0.3}})
-        
-        # Obsługa ukrywania wodorów
-            if not show_h_3d:
-                view.setStyle({'elem': 'H'}, {}) 
-            
-            view.zoomTo()
-            view.setBackgroundColor(bg_color)
-        
-        # Render
-            obj = view._make_html()
-        # Zwiększyłem wysokość komponentu, by pasowała do widoku
-            components.html(obj, height=400, width=610)
-        else:
-                st.error("Brak obiektu MOL (S0_MOL_Opt) dla tej cząsteczki.")
-        
-
-st.markdown("""<hr style="height:5px; border:none; color:#444444; background-color:#444444;" />""", unsafe_allow_html=True)
-
-with tab3:
-
-    
-    
-    mol_start = selected_row.get('Starting_Structure_MOL')
-    mol_opt = selected_row.get('S0_MOL_Opt') # Zakładam, że tu jest obiekt RDKit Mol
-
-    if mol_start and mol_opt:
-    # Tworzymy kopie, żeby nie psuć oryginałów
-        m1 = Chem.Mol(mol_start)
-        m2 = Chem.Mol(mol_opt)
-
-    # Usunięcie wodorów do obliczeń, jeśli użytkownik tak wybrał (opcjonalnie)
-        if not show_h_3d:
-            m1 = Chem.RemoveHs(m1)
-            m2 = Chem.RemoveHs(m2)
-
-    # --- NAKŁADANIE (ALIGNMENT) ---
-    # Dopasowujemy m2 (zoptymalizowaną) do m1 (startowej)
-        rmsd = rdMolAlign.AlignMol(m2, m1)
-    
-    # Przygotowanie bloków tekstowych
-        block1 = Chem.MolToMolBlock(m1)
-        block2 = Chem.MolToMolBlock(m2)
-
-    # --- WIZUALIZACJA py3Dmol ---
-        view = py3Dmol.view(width=600, height=350)
-    
-    # Dodajemy pierwszą strukturę (np. szara)
-        view.addModel(block1, 'mol')
-        view.setStyle({'model': 0}, {'stick': {'color': '#919191', 'radius': thickness}})
-    
-    # Dodajemy drugą strukturę (np. Twoje kolory Jmol lub konkretny kolor)
-        view.addModel(block2, 'mol')
-        view.setStyle({'model': 1}, {'stick': {'colorscheme': 'cyanCarbon', 'radius': thickness}})
-
-    # Obsługa wodorów
-        if not show_h_3d:
-            view.setStyle({'elem': 'H'}, {})
-
-        view.zoomTo()
-        view.setBackgroundColor(bg_color)
-    
-    # Wyświetlenie RMSD jako metryki pod spodem
-
-
-    # Render
-        obj = view._make_html()
-        components.html(obj, height=400, width=610)
-    else:
-            st.error("Brak jednej ze struktur (Startowej lub Zoptymalizowanej) do nałożenia.")
 
 
 
