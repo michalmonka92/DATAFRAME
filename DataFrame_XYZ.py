@@ -662,41 +662,41 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                                 start = selected_row.get('Starting_Structure_MOL')
                                 mol_opt = selected_row.get('S0_MOL_Opt') # Zakładam, że tu jest obiekt RDKit Mol
                                 
-                            if mol_start and mol_opt:
+                                if mol_start and mol_opt:
                             # Tworzymy kopie, żeby nie psuć oryginałów
-                                m1 = Chem.Mol(mol_start)
-                                m2 = Chem.Mol(mol_opt)
+                                        m1 = Chem.Mol(mol_start)
+                                        m2 = Chem.Mol(mol_opt)
                             # Usunięcie wodorów do obliczeń, jeśli użytkownik tak wybrał (opcjonalnie)
-                                if not show_h_3d:
-                                    m1 = Chem.RemoveHs(m1)
-                                    m2 = Chem.RemoveHs(m2)
+                                        if not show_h_3d:
+                                            m1 = Chem.RemoveHs(m1)
+                                            m2 = Chem.RemoveHs(m2)
                             # --- NAKŁADANIE (ALIGNMENT) ---
                             # Dopasowujemy m2 (zoptymalizowaną) do m1 (startowej)
-                                rmsd = rdMolAlign.AlignMol(m2, m1)
+                                        rmsd = rdMolAlign.AlignMol(m2, m1)
                             # Przygotowanie bloków tekstowych
-                                block1 = Chem.MolToMolBlock(m1)
-                                block2 = Chem.MolToMolBlock(m2)
+                                        block1 = Chem.MolToMolBlock(m1)
+                                        block2 = Chem.MolToMolBlock(m2)
                         
                             # --- WIZUALIZACJA py3Dmol ---
-                                view = py3Dmol.view(width=600, height=350)
+                                        view = py3Dmol.view(width=600, height=350)
                             
                             # Dodajemy pierwszą strukturę (np. szara)
-                                view.addModel(block1, 'mol')
-                                view.setStyle({'model': 0}, {'stick': {'color': '#919191', 'radius': thickness}})
+                                        view.addModel(block1, 'mol')
+                                        view.setStyle({'model': 0}, {'stick': {'color': '#919191', 'radius': thickness}})
                             
                             # Dodajemy drugą strukturę (np. Twoje kolory Jmol lub konkretny kolor)
-                                view.addModel(block2, 'mol')
-                                view.setStyle({'model': 1}, {'stick': {'colorscheme': 'cyanCarbon', 'radius': thickness}})                                
-                            # Obsługa wodorów
-                                if not show_h_3d:
-                                    view.setStyle({'elem': 'H'}, {})
-                                view.zoomTo()
-                                view.setBackgroundColor(bg_color)
-                                obj = view._make_html()
-                                components.html(obj, height=400, width=610)
+                                        view.addModel(block2, 'mol')
+                                        view.setStyle({'model': 1}, {'stick': {'colorscheme': 'cyanCarbon', 'radius': thickness}})                                
+                                    # Obsługa wodorów
+                                        if not show_h_3d:
+                                            view.setStyle({'elem': 'H'}, {})
+                                        view.zoomTo()
+                                        view.setBackgroundColor(bg_color)
+                                        obj = view._make_html()
+                                        components.html(obj, height=400, width=610)
                             else:
-                                    st.error("Brak jednej ze struktur (Startowej lub Zoptymalizowanej) do nałożenia.")
-                                
+                                st.error("Brak jednej ze struktur (Startowej lub Zoptymalizowanej) do nałożenia.")
+                        
 
 
 
