@@ -434,7 +434,6 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                 pickle.dump(df4, buffer4)
                 pkl_data4 = buffer4.getvalue()
 
-
                 col1,col2,col3=st.columns([1.5,2,0.5])
                 with col1:
                         st.download_button(
@@ -442,7 +441,7 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                     data=csv4,
                     file_name='tadf_data.csv',
                     mime='text/csv',
-                    key="btn_download_csv"  # UNIKALNY KLUCZ
+                    key="btn_download_csv",  # UNIKALNY KLUCZ
                 )
                 with col2:
                         st.download_button(
@@ -450,7 +449,7 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                     data4=pkl_data4,
                     file_name="tadf_data.pkl",
                     mime="application/octet-stream",  # Standardowy typ dla plików binarnych
-                         key="btn_download_pickle"  # UNIKALNY KLUCZ
+                    key="btn_download_pickle",  # UNIKALNY KLUCZ
                 )
                 with col3:
                         print()
