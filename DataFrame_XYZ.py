@@ -1126,9 +1126,9 @@ if not df3.empty:
         view.addCylinder({
             'start': {'x': centroid[0] - normal[0]*0.1, 'y': centroid[1] - normal[1]*0.1, 'z': centroid[2] - normal[2]*0.1},
             'end': {'x': centroid[0] + normal[0]*0.1, 'y': centroid[1] + normal[1]*0.1, 'z': centroid[2] + normal[2]*0.1},
-            'radius': 3.0,
+            'radius': 5.0,
             'color': 'blue',
-            'opacity': 0.3,
+            'opacity': 0.7,
             'cap': True
         })
 
