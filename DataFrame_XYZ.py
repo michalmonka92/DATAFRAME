@@ -431,7 +431,7 @@ with st.expander("S0-optimization DataFrame (after DFT)", expanded=False):
                 csv4 = convert_df4(df4)
                 
                 buffer4 = io.BytesIO()
-                pickle4.dump(df4, buffer4)
+                pickle.dump(df4, buffer4)
                 pkl_data4 = buffer4.getvalue()
 
 
