@@ -1143,21 +1143,6 @@ display_df = df_processed.drop(columns=['S0_MOL_Opt'])
 # Wyświetlamy bezpieczny DataFrame
 st.dataframe(display_df)
 
-
-
-
-# --- 2. PRZETWARZANIE DATAFRAME ---
-# Zakładamy, że df3 jest już wczytany
-df_processed = add_angle_column(df3)
-cols_to_remove = ['R_num_internal', 'R_num', 'L_num']
-df_processed = df_processed.drop(columns=[c for c in cols_to_remove if c in df_processed.columns])
-
-st.success("Gotowe! Obliczono kąty dla wszystkich cząsteczek.")
-
-# Wyświetlanie tabeli (bez obiektów Mol, aby uniknąć błędu isPinned)
-display_df = df_processed.drop(columns=['S0_MOL_Opt']).select_dtypes(include=['number', 'object', 'bool'])
-st.dataframe(display_df)
-
 # --- 3. SEKCJA WIZUALIZACJI SZCZEGÓŁOWEJ ---
 
 st.divider()
