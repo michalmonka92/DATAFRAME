@@ -1163,7 +1163,23 @@ st.divider()
 st.subheader("Wizualizacja wektorów normalnych")
 
 # Wybór ID związku do podejrzenia
-selected_idx = st.selectbox("Wybierz indeks molekuły do wizualizacji:", df_processed.index)
+molecule_options = df_processed['Molecule_ID'].tolist()
+selected_idx = st.selectbox("Wybierz ID molekuły do wizualizacji:", molecule_options)
+
+if selected_idx:
+    # 2. Znajdujemy wiersz odpowiadający wybranemu ID
+    # Używamy .iloc[0], żeby pobrać konkretny wiersz (zakładamy unikalne ID)
+    row = df_processed[df_processed['Molecule_ID'] == selected_idx].iloc[0]
+    
+    mol_to_check = row['S0_MOL_Opt']
+    current_angle = row['Donor_Linker_Angle']
+    
+    if mol_to_check:
+        # ... reszta kodu analizy SVD (match_donor, coords_donor itd.) pozostaje bez zmian ...
+        
+        # Na samym końcu wizualizacji możesz dodać info o wybranej molekule
+        st.metric(f"Kąt skręcenia dla {selected_id}", f"{current_angle}°")
+
 
 if selected_idx is not None:
     mol_to_check = df_processed.loc[selected_idx, 'S0_MOL_Opt']
