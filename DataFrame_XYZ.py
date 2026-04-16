@@ -1174,10 +1174,10 @@ def render_donor_plane(mol_to_check, match, p_coords, vh, centroid):
     
     view.addCustom({
         'vertices': [
-            {'x': np.float(p1[0]), 'y': np.float(p1[1]), 'z': np.float(p1[2])},
-            {'x': np.float(p2[0]), 'y': np.float(p2[1]), 'z': np.float(p2[2])},
-            {'x': np.float(p3[0]), 'y': np.float(p3[1]), 'z': np.float(p3[2])},
-            {'x': np.float(p4[0]), 'y': np.float(p4[1]), 'z': np.float(p4[2])}
+        {'x': float(p1[0]), 'y': float(p1[1]), 'z': float(p1[2])},
+        {'x': float(p2[0]), 'y': float(p2[1]), 'z': float(p2[2])},
+        {'x': float(p3[0]), 'y': float(p3[1]), 'z': float(p3[2])},
+        {'x': float(p4[0]), 'y': float(p4[1]), 'z': float(p4[2])}
         ],
         'faces': [0, 1, 2, 0, 2, 3],
         'color': 'cyan',
