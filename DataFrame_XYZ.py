@@ -1144,3 +1144,101 @@ st.dataframe(display_df)
 
 
 
+
+# --- 2. PRZETWARZANIE DATAFRAME ---
+# Zakładamy, że df3 jest już wczytany
+df_processed = add_angle_column(df3)
+cols_to_remove = ['R_num_internal', 'R_num', 'L_num']
+df_processed = df_processed.drop(columns=[c for c in cols_to_remove if c in df_processed.columns])
+
+st.success("Gotowe! Obliczono kąty dla wszystkich cząsteczek.")
+
+# Wyświetlanie tabeli (bez obiektów Mol, aby uniknąć błędu isPinned)
+display_df = df_processed.drop(columns=['S0_MOL_Opt']).select_dtypes(include=['number', 'object', 'bool'])
+st.dataframe(display_df)
+
+# --- 3. SEKCJA WIZUALIZACJI SZCZEGÓŁOWEJ ---
+st.divider()
+st.subheader("Wizualizacja wektorów normalnych")
+
+# Wybór ID związku do podejrzenia
+selected_idx = st.selectbox("Wybierz indeks molekuły do wizualizacji:", df_processed.index)
+
+if selected_idx is not None:
+    mol_to_check = df_processed.loc[selected_idx, 'S0_MOL_Opt']
+    
+    if mol_to_check:
+        donor_smarts = "c1ccc2c(c1)Cc3ccccc3N2"
+        dmac_pattern = Chem.MolFromSmarts(donor_smarts)
+        conf = mol_to_check.GetConformer()
+
+        # Analiza Donora
+        match_donor = mol_to_check.GetSubstructMatch(dmac_pattern)
+        coords_donor = np.array([conf.GetAtomPosition(i) for i in match_donor])
+        centroid_donor = coords_donor.mean(axis=0)
+        _, _, vh_donor = np.linalg.svd(coords_donor - centroid_donor)
+        normal_donor = vh_donor[2]
+
+        # Identyfikacja Linkera
+        nazot_idx = [i for i in match_donor if mol_to_check.GetAtomWithIdx(i).GetSymbol() == 'N'][0]
+        azot_atom = mol_to_check.GetAtomWithIdx(nazot_idx)
+        linker_start_idx = [a.GetIdx() for a in azot_atom.GetNeighbors() if a.GetIdx() not in match_donor][0]
+        all_rings = mol_to_check.GetRingInfo().AtomRings()
+        match_linker = [ring for ring in all_rings if linker_start_idx in ring][0]
+
+        # Analiza Linkera
+        coords_linker = np.array([conf.GetAtomPosition(i) for i in match_linker])
+        centroid_linker = coords_linker.mean(axis=0)
+        _, _, vh_linker = np.linalg.svd(coords_linker - centroid_linker)
+        normal_linker = vh_linker[2]
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.write(f"**Widok 2D (ID: {selected_idx})**")
+            atom_cols = {}
+            for i in match_donor: atom_cols[i] = (0.6, 0.8, 1.0) # błękitny
+            for i in match_linker: atom_cols[i] = (1.0, 0.4, 0.4) # czerwony (jaśniejszy)
+            
+            d = rdMolDraw2D.MolDraw2DCairo(400, 400)
+            rdMolDraw2D.PrepareAndDrawMolecule(d, mol_to_check, highlightAtoms=list(atom_cols.keys()), highlightAtomColors=atom_cols)
+            d.FinishDrawing()
+            st.image(d.GetDrawingText())
+
+        with col2:
+            st.write("**Widok 3D (Wektory normalne)**")
+            view = py3Dmol.view(width=400, height=400)
+            view.addModel(Chem.MolToMolBlock(mol_to_check), 'sdf')
+
+            # Stylizacja zgodnie z Twoim życzeniem
+            view.setStyle({}, {'stick': {'color': '#cccccc', 'opacity': 0.4, 'radius': 0.2}})
+            view.setStyle({'serial': list(match_donor)}, {'stick': {'color': 'cyan', 'radius': 0.2}})
+            view.setStyle({'serial': list(match_linker)}, {'stick': {'color': 'red', 'radius': 0.2}})
+            view.setStyle({'serial': [nazot_idx]}, {'sphere': {'color': 'blue', 'radius': 0.2}})
+
+            # Strzałka Donora (Cyan)
+            view.addArrow({
+                'start': {'x': float(centroid_donor[0]), 'y': float(centroid_donor[1]), 'z': float(centroid_donor[2])},
+                'end': {'x': float(centroid_donor[0] + normal_donor[0]*4), 'y': float(centroid_donor[1] + normal_donor[1]*4), 'z': float(centroid_donor[2] + normal_donor[2]*4)},
+                'radius': 0.15, 'color': 'cyan', 'opacity': 0.9
+            })
+
+            # Strzałka Linkera (Red)
+            view.addArrow({
+                'start': {'x': float(centroid_linker[0]), 'y': float(centroid_linker[1]), 'z': float(centroid_linker[2])},
+                'end': {'x': float(centroid_linker[0] + normal_linker[0]*4), 'y': float(centroid_linker[1] + normal_linker[1]*4), 'z': float(centroid_linker[2] + normal_linker[2]*4)},
+                'radius': 0.2, 'color': 'red', 'opacity': 0.9
+            })
+
+            view.zoomTo()
+            
+            # Renderowanie py3Dmol w Streamlit
+            html_obj = view._make_html()
+            components.html(html_obj, height=400)
+
+
+
+
+
+
+
