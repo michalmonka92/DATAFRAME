@@ -9,3 +9,4 @@ Pillow
 gdown
 matplotlib
 seaborn
+stmol
