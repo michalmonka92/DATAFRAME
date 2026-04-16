@@ -1165,21 +1165,17 @@ st.header("🔬 Eksplorator Geometrii")
 
 # Załóżmy, że masz kolumny: 'Linker_Type' i 'Substituent'
 if 'Linker' in df_processed.columns and 'Substituent' in df_processed.columns:
-    
-    col_a, col_b = st.columns([1, 1])
-    
-    with col_a:
-        # 1. Wybór Linkera z listy rozwijanej
-        linker_list = sorted(df_processed['Linker'].unique().tolist())
-        selected_linker = st.selectbox("🎯 Wybierz rdzeń (Linker):", linker_list)
+  
+    linker_list = sorted(df_processed['Linker'].unique().tolist())
+    selected_linker = st.selectbox("🎯 Wybierz rdzeń (Linker):", linker_list)
 
-    # Filtrujemy dane dla wybranego linkera
+# Filtrujemy dane dla wybranego linkera
     df_linker = df_processed[df_processed['Linker'] == selected_linker]
 
-    with col_b:
-        # 2. Wybór Podstawnika za pomocą przycisków (Pills są bardzo wygodne)
-        subst_list = sorted(df_linker['Substituent'].unique().tolist())
-        selected_subst = st.pills("💊 Wybierz podstawnik:", subst_list, selection_mode="single", default=subst_list[0])
+
+# 2. Wybór Podstawnika za pomocą przycisków (Pills są bardzo wygodne)
+    subst_list = sorted(df_linker['Substituent'].unique().tolist())
+    selected_subst = st.pills("💊 Wybierz podstawnik:", subst_list, selection_mode="single", default=subst_list[0])
 
     # 3. Ostateczne filtrowanie do konkretnego ID
     final_filtered_df = df_linker[df_linker['Substituent'] == selected_subst]
