@@ -1195,6 +1195,7 @@ if selected_id:
 
     selected_row = df_processed[df_processed['ID'] == selected_id].iloc[0]
     mol_to_check = selected_row['S0_MOL_Opt']
+    current_angle = selected_row['Donor_Linker_Angle']
     if mol_to_check:
         st.info(f"Wybrano: {selected_id} | Obliczony kąt: {current_angle}°")
 
