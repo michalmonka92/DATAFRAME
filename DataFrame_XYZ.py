@@ -33,6 +33,7 @@ from stworz_mol_z_optymalizacji import stworz_mol_z_XYZ
 import matplotlib.pyplot as plt
 import seaborn as sns
 from stmol import showmol
+from rdkit.Chem.Draw import rdMolDraw2D
         
 def natural_sort_key(s):
     return [int(text) if text.isdigit() else text.lower() for text in re.split('([0-9]+)', str(s))]
