@@ -1127,8 +1127,8 @@ def add_angle_column(df, mol_col='S0_MOL_Opt'):
 
 # Wywołanie w Twoim kodzie:
 df_processed = add_angle_column(df3)
-cols_to_remove = ['R_num_internal', 'R_num', 'L_num']
-df_processed = df_processed.drop(columns=[c for c in cols_to_remove if c in df_processed.columns])
+        #cols_to_remove = ['R_num_internal', 'R_num', 'L_num']
+        #df_processed = df_processed.drop(columns=[c for c in cols_to_remove if c in df_processed.columns])
 
 st.success("Gotowe! Dodano kolumnę 'Donor_Linker_Angle'.")
 
