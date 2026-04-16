@@ -1125,17 +1125,22 @@ def add_angle_column(df, mol_col='S0_MOL_Opt'):
     new_df['Donor_Linker_Angle'] = angles
     return new_df
 
-# Wywołanie w Twoim kodzie:
+# 1. Obliczenia (tutaj potrzebujemy kolumny z molekułami)
 df_processed = add_angle_column(df3)
-        #cols_to_remove = ['R_num_internal', 'R_num', 'L_num']
-        #df_processed = df_processed.drop(columns=[c for c in cols_to_remove if c in df_processed.columns])
+
+# 2. Usuwanie zbędnych kolumn R_num itp.
+cols_to_remove = ['R_num_internal', 'R_num', 'L_num']
+df_processed = df_processed.drop(columns=[c for c in cols_to_remove if c in df_processed.columns])
 
 st.success("Gotowe! Dodano kolumnę 'Donor_Linker_Angle'.")
 
-# Wyświetlamy cały DataFrame (z wszystkimi kolumnami)
-st.dataframe(df_processed)
+# 3. PRZYGOTOWANIE DO WYŚWIETLENIA (Kluczowy krok!)
+# Tworzymy widok do tabeli, który NIE zawiera obiektów Mol
+# Zakładam, że Twoja kolumna z molekułami nazywa się 'S0_MOL_Opt'
+display_df = df_processed.drop(columns=['S0_MOL_Opt'])
 
-
+# Wyświetlamy bezpieczny DataFrame
+st.dataframe(display_df)
 
 
 
