@@ -1192,8 +1192,6 @@ if 'Linker' in df_processed.columns and 'Substituent' in df_processed.columns:
 
 # --- LOGIKA WIZUALIZACJI (bez zmian) ---
 if selected_id:
-
-    
     if mol_to_check:
         st.info(f"Wybrano: {selected_id} | Obliczony kąt: {current_angle}°")
 
