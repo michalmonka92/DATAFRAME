@@ -1084,6 +1084,3 @@ with st.expander("Dihedrals", expanded=False):
 
 
 
-
-
-    st.success(f"Wyrenderowano płaszczyznę dla atomów: {match}")
