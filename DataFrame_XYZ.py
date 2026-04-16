@@ -1163,7 +1163,7 @@ st.divider()
 st.subheader("Wizualizacja wektorów normalnych")
 
 # 1. Pobieramy listę ID
-molecule_options = df_processed['Molecule_ID'].tolist()
+molecule_options = df_processed['ID'].tolist()
 selected_id = st.selectbox("Wybierz ID molekuły do wizualizacji:", molecule_options)
 
 if selected_id:
