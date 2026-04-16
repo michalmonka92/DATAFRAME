@@ -1168,7 +1168,7 @@ selected_id = st.selectbox("Wybierz ID molekuły do wizualizacji:", molecule_opt
 
 if selected_id:
     # 2. Znajdujemy cały wiersz odpowiadający wybranemu ID
-    selected_row = df_processed[df_processed['Molecule_ID'] == selected_id].iloc[0]
+    selected_row = df_processed[df_processed['ID'] == selected_id].iloc[0]
     
     # 3. Wyciągamy molekułę bezpośrednio z tego wiersza
     mol_to_check = selected_row['S0_MOL_Opt']
