@@ -1080,62 +1080,69 @@ with st.expander("Dihedrals", expanded=False):
 
 
 
-
-
-def calculate_donor_linker_angles(df, mol_column='S0_MOL_Opt'):
+def calculate_angles_and_update_df(df, mol_column='S0_MOL_Opt'):
     """
-    Przetwarza DataFrame i liczy kąty między donorem DMAC a linkerem.
+    Pobiera cały DataFrame, kopiuje go i dodaje kolumnę 'Donor_Linker_Angle'.
+    Zachowuje wszystkie oryginalne kolumny.
     """
-    # Wzorzec DMAC
+    # 1. Kopiujemy DF, żeby nie modyfikować oryginału w miejscu
+    working_df = df.copy()
+    
+    # 2. Wzorzec DMAC
     donor_smarts = "c1ccc2c(c1)Cc3ccccc3N2"
     dmac_pattern = Chem.MolFromSmarts(donor_smarts)
     
-    results = []
+    angles = []
 
-    for index, row in df.iterrows():
+    for index, row in working_df.iterrows():
         mol = row[mol_column]
-        if mol is None:
-            results.append({'idx': index, 'angle_deg': None, 'status': 'No molecule'})
+        
+        # Obsługa błędów (brak molekuły)
+        if mol is None or not isinstance(mol, Chem.Mol):
+            angles.append(np.nan)
             continue
             
         try:
-            # 1. Dopasowanie donora
+            # --- OBLICZENIA DONORA ---
             match_donor = mol.GetSubstructMatch(dmac_pattern)
             if not match_donor:
-                results.append({'idx': index, 'angle_deg': None, 'status': 'Donor not found'})
+                angles.append(np.nan)
                 continue
             
             conf = mol.GetConformer()
-            
-            # 2. SVD dla Donora
             coords_donor = np.array([conf.GetAtomPosition(i) for i in match_donor])
             centered_donor = coords_donor - coords_donor.mean(axis=0)
             _, _, vh_donor = np.linalg.svd(centered_donor)
             normal_donor = vh_donor[2]
             
-            # 3. Szukanie linkera (pierwszy pierścień przy azocie)
+            # --- IDENTYFIKACJA LINKERA ---
+            # Znajdujemy azot i jego sąsiada poza donorem
             nazot_idx = [i for i in match_donor if mol.GetAtomWithIdx(i).GetSymbol() == 'N'][0]
             azot_atom = mol.GetAtomWithIdx(nazot_idx)
+            linker_neighbors = [a.GetIdx() for a in azot_atom.GetNeighbors() if a.GetIdx() not in match_donor]
             
-            # Atom linkera to sąsiad azotu spoza donora
-            linker_start_candidates = [a.GetIdx() for a in azot_atom.GetNeighbors() if a.GetIdx() not in match_donor]
-            if not linker_start_candidates:
-                results.append({'idx': index, 'angle_deg': None, 'status': 'No linker found'})
+            if not linker_neighbors:
+                angles.append(np.nan)
                 continue
                 
-            linker_start_idx = linker_start_candidates[0]
-            
-            # Pobranie pierścienia linkera
+            linker_start_idx = linker_neighbors[0]
             all_rings = mol.GetRingInfo().AtomRings()
-            match_linker = [ring for ring in all_rings if linker_start_idx in ring][0]
             
-            # 4. SVD dla Linkera
+            # Szukamy pierścienia linkera
+            match_linker = [ring for ring in all_rings if linker_start_idx in ring]
+            if not match_linker:
+                angles.append(np.nan)
+                continue
+            
+            match_linker = match_linker[0]
+            
+            # --- OBLICZENIA LINKERA ---
             coords_linker = np.array([conf.GetAtomPosition(i) for i in match_linker])
             centered_linker = coords_linker - coords_linker.mean(axis=0)
             _, _, vh_linker = np.linalg.svd(centered_linker)
             normal_linker = vh_linker[2]
             
-            # 5. Obliczenie kąta
+            # --- KĄT ---
             dot_product = np.dot(normal_donor, normal_linker)
             angle_rad = np.arccos(np.clip(dot_product, -1.0, 1.0))
             angle_deg = np.degrees(angle_rad)
@@ -1143,36 +1150,33 @@ def calculate_donor_linker_angles(df, mol_column='S0_MOL_Opt'):
             if angle_deg > 90:
                 angle_deg = 180 - angle_deg
                 
-            results.append({
-                'idx': index, 
-                'angle_deg': round(angle_deg, 2), 
-                'status': 'Success'
-            })
+            angles.append(round(angle_deg, 2))
             
-        except Exception as e:
-            results.append({'idx': index, 'angle_deg': None, 'status': f'Error: {str(e)}'})
+        except Exception:
+            # W razie jakiegokolwiek błędu wpisujemy NaN
+            angles.append(np.nan)
 
-    # Tworzenie wynikowego DataFrame
-    res_df = pd.DataFrame(results).set_index('idx')
-    return res_df
+    # 3. Dodajemy nową kolumnę na końcu
+    working_df['Donor_Linker_Angle'] = angles
+    
+    return working_df
 
-# --- PRZYKŁAD UŻYCIA W STREAMLIT ---
+# --- UŻYCIE W STREAMLIT ---
 
+st.title("Przetwarzanie bazy molekuł")
 
-if st.button('Przelicz wszystkie kąty'):
-    with st.spinner('Trwa obliczanie SVD dla wszystkich cząsteczek...'):
-        # Zakładamy, że df3 jest już w pamięci
-        df_results = calculate_donor_linker_angles(df3)
+if st.button('Oblicz kąty dla całej bazy'):
+    with st.spinner('Analizuję geometrię wszystkich cząsteczek...'):
+        # df3 to Twój oryginalny DataFrame
+        df_processed = calculate_angles_and_update_df(df3)
         
-        # Łączymy wyniki z oryginalnym df, żeby widzieć np. uśmiechy (SMILES)
-        final_df = df3.join(df_results)
+        st.success("Gotowe! Dodano kolumnę 'Donor_Linker_Angle'.")
         
-        st.write("Wyniki analizy:")
-        st.dataframe(final_df[['angle_deg', 'status']])
+        # Wyświetlamy cały DataFrame (z wszystkimi kolumnami)
+        st.dataframe(df_processed)
         
-        # Opcjonalnie: statystyki
-        st.metric("Średni kąt skręcenia", f"{final_df['angle_deg'].mean():.2f}°")
-
-
+        # Opcja pobrania jako CSV
+        csv = df_processed.to_csv(index=False).encode('utf-8')
+        st.download_button("Pobierz wyniki jako CSV", csv, "wyniki_katy.csv", "text/csv")
 
 
