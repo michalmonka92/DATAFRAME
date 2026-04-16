@@ -1202,7 +1202,7 @@ if selected_id:
         col1, col2 = st.columns(2)
 
         with col1:
-            st.write(f"**Widok 2D (ID: {selected_idx})**")
+            st.write(f"**Widok 2D (ID: {selected_id})**")
             atom_cols = {}
             for i in match_donor: atom_cols[i] = (0.6, 0.8, 1.0) # błękitny
             for i in match_linker: atom_cols[i] = (1.0, 0.4, 0.4) # czerwony (jaśniejszy)
