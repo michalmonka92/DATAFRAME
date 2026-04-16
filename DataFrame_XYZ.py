@@ -8,7 +8,6 @@ import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 import webbrowser
-import py3Dmol
 import pickle
 import pandas as pd
 import os
@@ -33,6 +32,7 @@ from analiza_podstawnikow import wykonaj_analize_L2
 from stworz_mol_z_optymalizacji import stworz_mol_z_XYZ
 import matplotlib.pyplot as plt
 import seaborn as sns
+from stmol import showmol
         
 def natural_sort_key(s):
     return [int(text) if text.isdigit() else text.lower() for text in re.split('([0-9]+)', str(s))]
@@ -1149,92 +1149,5 @@ else:
 
 
 
-from stmol import showmol
 
-
-def render_donor_plane(mol_to_check, match, p_coords, vh, centroid):
-    """
-    mol_to_check: obiekt mol RDKit
-    match: indeksy atomów donora
-    p_coords: lista Twoich punktów p1, p2, p3, p4
-    """
-    
-    # Inicjalizacja widoku py3Dmol
-    view = py3Dmol.view(width=800, height=600)
-    view.addModel(Chem.MolToMolBlock(mol_to_check), 'sdf')
-    
-    # 1. Stylizacja podstawowa
-    view.setStyle({'stick': {'color': '#cccccc', 'opacity': 0.5}})
-    # Podświetlenie donora
-    view.setStyle({'serial': list(match)}, {'stick': {'colorscheme': 'cyanCarbon'}})
-
-    p1, p2, p3, p4 = p_coords
-    
-    # Definiujemy wierzchołki jako listę floatów
-    verts = [
-        {'x': float(p1[0]), 'y': float(p1[1]), 'z': float(p1[2])},
-        {'x': float(p2[0]), 'y': float(p2[1]), 'z': float(p2[2])},
-        {'x': float(p3[0]), 'y': float(p3[1]), 'z': float(p3[2])},
-        {'x': float(p4[0]), 'y': float(p4[1]), 'z': float(p4[2])}
-    ]
-    
-# Używamy addShape z Mesh
-    view.addShape({
-        'shape': 'Mesh',
-        'props': {
-            'vertices': verts,
-            'faces': [0, 1, 2, 0, 2, 3],
-            'color': 'cyan',
-            'opacity': 0.5,
-            'doubleSided': True
-        }
-    })
-
-    # 3. DODANIE STRZAŁKI (Wektor normalny - dla pewności wizualnej)
-    normal = vh[2]
-    view.addArrow({
-        'start': {'x': float(centroid[0]), 'y': float(centroid[1]), 'z': float(centroid[2])},
-        'end': {'x': float(centroid[0] + normal[0]*4), 
-                'y': float(centroid[1] + normal[1]*4), 
-                'z': float(centroid[2] + normal[2]*4)},
-        'radius': 0.15,
-        'color': 'red'
-    })
-
-    view.zoomTo()
-    
-    # Kluczowe dla Streamlit: użycie showmol zamiast make_html
-    showmol(view, height=600, width=800)
-
-# --- Przykład użycia w aplikacji ---
-donor_smarts = "c1ccc2c(c1)Cc3ccccc3N2"
-dmac_pattern = Chem.MolFromSmarts(donor_smarts)
-
-mol_to_check = df3.iloc[132]['S0_MOL_Opt']
-
-match = mol_to_check.GetSubstructMatch(dmac_pattern)
-conf = mol_to_check.GetConformer()
-coords = np.array([conf.GetAtomPosition(i) for i in match])
-centroid = coords.mean(axis=0)
-
-centered_coords = coords - centroid
-_, _, vh = np.linalg.svd(centered_coords)
-# normal = vh[2]
-
-scale_l = 4.0  # jak szeroki ma być prostokąt
-scale_w = 3.0  # jak wysoki ma być prostokąt
-
-# Obliczamy 4 punkty (rogi prostokąta)
-p1 = centroid + (vh[0] * scale_l) + (vh[1] * scale_w)
-p2 = centroid + (vh[0] * scale_l) - (vh[1] * scale_w)
-p3 = centroid - (vh[0] * scale_l) - (vh[1] * scale_w)
-p4 = centroid - (vh[0] * scale_l) + (vh[1] * scale_w)
-
-# Tutaj wrzuć swoją logikę obliczania p1, p2, p3, p4
-# scale_l = 4.0
-# scale_w = 3.0
-# p1 = centroid + (vh[0] * scale_l) + (vh[1] * scale_w) ... itd.
-
-if st.button('Generuj widok'):
-    render_donor_plane(mol_to_check, match, [p1, p2, p3, p4], vh, centroid)
     st.success(f"Wyrenderowano płaszczyznę dla atomów: {match}")
