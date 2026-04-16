@@ -1168,22 +1168,26 @@ def render_donor_plane(mol_to_check, match, p_coords, vh, centroid):
     # Podświetlenie donora
     view.setStyle({'serial': list(match)}, {'stick': {'colorscheme': 'cyanCarbon'}})
 
-    # 2. DODANIE PŁASZCZYZNY (Custom Mesh)
-    # Konwertujemy punkty na floaty, bo JS w Streamlit bywa wyczulony na typy numpy
     p1, p2, p3, p4 = p_coords
     
-    view.addCustom({
-        'vertices': [
+    # Definiujemy wierzchołki jako listę floatów
+    verts = [
         {'x': float(p1[0]), 'y': float(p1[1]), 'z': float(p1[2])},
         {'x': float(p2[0]), 'y': float(p2[1]), 'z': float(p2[2])},
         {'x': float(p3[0]), 'y': float(p3[1]), 'z': float(p3[2])},
         {'x': float(p4[0]), 'y': float(p4[1]), 'z': float(p4[2])}
-        ],
-        'faces': [0, 1, 2, 0, 2, 3],
-        'color': 'cyan',
-        'opacity': 0.5,
-        'side': 1, # Parametr dla renderowania dwustronnego
-        'doubleSided': True
+    ]
+    
+# Używamy addShape z Mesh
+    view.addShape({
+        'shape': 'Mesh',
+        'props': {
+            'vertices': verts,
+            'faces': [0, 1, 2, 0, 2, 3],
+            'color': 'cyan',
+            'opacity': 0.5,
+            'doubleSided': True
+        }
     })
 
     # 3. DODANIE STRZAŁKI (Wektor normalny - dla pewności wizualnej)
