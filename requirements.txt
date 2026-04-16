@@ -10,4 +10,4 @@ gdown
 matplotlib
 seaborn
 stmol
-ipython_genutils stmol
+ipython_genutils 
