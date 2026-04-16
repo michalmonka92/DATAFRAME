@@ -1162,19 +1162,37 @@ st.dataframe(display_df)
 st.divider()
 st.subheader("Wizualizacja wektorów normalnych")
 
-# 1. Pobieramy listę ID
-molecule_options = df_processed['ID'].tolist()
-selected_id = st.selectbox("Wybierz ID molekuły do wizualizacji:", molecule_options)
+# 1. Wybór typu linkera (np. jako radio button lub selectbox)
+if 'Linker_Type' in df_processed.columns:
+    linker_types = sorted(df_processed['Linker_Type'].unique().tolist())
+    selected_linker_type = st.radio("Filtruj według typu linkera:", linker_types, horizontal=True)
+    
+    # Filtrujemy DataFrame pod kątem wybranego typu
+    filtered_df = df_processed[df_processed['Linker_Type'] == selected_linker_type]
+else:
+    # Jeśli nie masz takiej kolumny, używamy całego DF
+    st.warning("Nie znaleziono kolumny 'Linker_Type'. Wyświetlam wszystkie ID.")
+    filtered_df = df_processed
+
+# 2. Pobieramy listę ID tylko dla przefiltrowanych rekordów
+molecule_options = filtered_df['ID'].tolist()
+
+selected_id = st.selectbox(
+    f"Wybierz ID molekuły ({selected_linker_type if 'Linker_Type' in df_processed.columns else ''}):", 
+    molecule_options
+)
 
 if selected_id:
-    # 2. Znajdujemy cały wiersz odpowiadający wybranemu ID
-    selected_row = df_processed[df_processed['ID'] == selected_id].iloc[0]
+    # 3. Znajdujemy wiersz odpowiadający wybranemu ID w przefiltrowanym DF
+    selected_row = filtered_df[filtered_df['ID'] == selected_id].iloc[0]
     
-    # 3. Wyciągamy molekułę bezpośrednio z tego wiersza
+    # 4. Wyciągamy molekułę i dane do wizualizacji
     mol_to_check = selected_row['S0_MOL_Opt']
-
+    current_angle = selected_row['Donor_Linker_Angle']
     
     if mol_to_check:
+        st.info(f"Wybrano: {selected_id} | Obliczony kąt: {current_angle}°")
+
         donor_smarts = "c1ccc2c(c1)Cc3ccccc3N2"
         dmac_pattern = Chem.MolFromSmarts(donor_smarts)
         conf = mol_to_check.GetConformer()
