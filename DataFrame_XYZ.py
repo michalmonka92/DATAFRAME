@@ -1162,23 +1162,17 @@ st.dataframe(display_df)
 st.divider()
 st.subheader("Wizualizacja wektorów normalnych")
 
-# Wybór ID związku do podejrzenia
+# 1. Pobieramy listę ID
 molecule_options = df_processed['Molecule_ID'].tolist()
 selected_id = st.selectbox("Wybierz ID molekuły do wizualizacji:", molecule_options)
 
 if selected_id:
-    # 2. Znajdujemy wiersz odpowiadający wybranemu ID
-    # Używamy .iloc[0], żeby pobrać konkretny wiersz (zakładamy unikalne ID)
-    selected_idx = df_processed[df_processed['Molecule_ID'] == selected_id].iloc[0]
+    # 2. Znajdujemy cały wiersz odpowiadający wybranemu ID
+    selected_row = df_processed[df_processed['Molecule_ID'] == selected_id].iloc[0]
     
-    
-    
+    # 3. Wyciągamy molekułę bezpośrednio z tego wiersza
+    mol_to_check = selected_row['S0_MOL_Opt']
 
-
-
-
-if selected_idx is not None:
-    mol_to_check = df_processed.loc[selected_idx, 'S0_MOL_Opt']
     
     if mol_to_check:
         donor_smarts = "c1ccc2c(c1)Cc3ccccc3N2"
