@@ -1159,35 +1159,40 @@ display_df = df_processed.drop(columns=['S0_MOL_Opt']).select_dtypes(include=['n
 st.dataframe(display_df)
 
 # --- 3. SEKCJA WIZUALIZACJI SZCZEGÓŁOWEJ ---
+
 st.divider()
-st.subheader("Wizualizacja wektorów normalnych")
+st.header("🔬 Eksplorator Geometrii")
 
-# 1. Wybór typu linkera (np. jako radio button lub selectbox)
-if 'Linker' in df_processed.columns:
-    linker_types = sorted(df_processed['Linker'].unique().tolist())
-    selected_linker_type = st.radio("Filtruj według typu linkera:", linker_types, horizontal=True)
+# Załóżmy, że masz kolumny: 'Linker_Type' i 'Substituent'
+if 'Linker' in df_processed.columns and 'Substituent' in df_processed.columns:
     
-    # Filtrujemy DataFrame pod kątem wybranego typu
-    filtered_df = df_processed[df_processed['Linker'] == selected_linker_type]
-else:
-    # Jeśli nie masz takiej kolumny, używamy całego DF
-    st.warning("Nie znaleziono kolumny 'Linker'. Wyświetlam wszystkie ID.")
-    filtered_df = df_processed
+    col_a, col_b = st.columns([1, 1])
+    
+    with col_a:
+        # 1. Wybór Linkera z listy rozwijanej
+        linker_list = sorted(df_processed['Linker'].unique().tolist())
+        selected_linker = st.selectbox("🎯 Wybierz rdzeń (Linker):", linker_list)
 
-# 2. Pobieramy listę ID tylko dla przefiltrowanych rekordów
-molecule_options = filtered_df['ID'].tolist()
+    # Filtrujemy dane dla wybranego linkera
+    df_linker = df_processed[df_processed['Linker'] == selected_linker]
 
-selected_id = st.selectbox(
-    f"Wybierz ID molekuły ({selected_linker_type if 'Linker' in df_processed.columns else ''}):", 
-    molecule_options
-)
+    with col_b:
+        # 2. Wybór Podstawnika za pomocą przycisków (Pills są bardzo wygodne)
+        subst_list = sorted(df_linker['Substituent'].unique().tolist())
+        selected_subst = st.pills("💊 Wybierz podstawnik:", subst_list, selection_mode="single", default=subst_list[0])
 
+    # 3. Ostateczne filtrowanie do konkretnego ID
+    final_filtered_df = df_linker[df_linker['Substituent'] == selected_subst]
+    
+    # Jeśli dla danej pary Linker-Podstawnik jest więcej niż jedna molekuła (np. różne izomery)
+    if len(final_filtered_df) > 1:
+        selected_id = st.select_slider("Wybierz konkretny wariant (ID):", options=final_filtered_df['ID'].tolist())
+    else:
+        selected_id = final_filtered_df['ID'].iloc[0]
+
+# --- LOGIKA WIZUALIZACJI (bez zmian) ---
 if selected_id:
-    # 3. Znajdujemy wiersz odpowiadający wybranemu ID w przefiltrowanym DF
-    selected_row = filtered_df[filtered_df['ID'] == selected_id].iloc[0]
-    
-    # 4. Wyciągamy molekułę i dane do wizualizacji
-    mol_to_check = selected_row['S0_MOL_Opt']
+
     current_angle = selected_row['Donor_Linker_Angle']
     
     if mol_to_check:
