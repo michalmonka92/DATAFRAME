@@ -1163,22 +1163,22 @@ st.divider()
 st.subheader("Wizualizacja wektorów normalnych")
 
 # 1. Wybór typu linkera (np. jako radio button lub selectbox)
-if 'Linker_Type' in df_processed.columns:
-    linker_types = sorted(df_processed['Linker_Type'].unique().tolist())
+if 'Linker' in df_processed.columns:
+    linker_types = sorted(df_processed['Linker'].unique().tolist())
     selected_linker_type = st.radio("Filtruj według typu linkera:", linker_types, horizontal=True)
     
     # Filtrujemy DataFrame pod kątem wybranego typu
-    filtered_df = df_processed[df_processed['Linker_Type'] == selected_linker_type]
+    filtered_df = df_processed[df_processed['Linker'] == selected_linker_type]
 else:
     # Jeśli nie masz takiej kolumny, używamy całego DF
-    st.warning("Nie znaleziono kolumny 'Linker_Type'. Wyświetlam wszystkie ID.")
+    st.warning("Nie znaleziono kolumny 'Linker'. Wyświetlam wszystkie ID.")
     filtered_df = df_processed
 
 # 2. Pobieramy listę ID tylko dla przefiltrowanych rekordów
 molecule_options = filtered_df['ID'].tolist()
 
 selected_id = st.selectbox(
-    f"Wybierz ID molekuły ({selected_linker_type if 'Linker_Type' in df_processed.columns else ''}):", 
+    f"Wybierz ID molekuły ({selected_linker_type if 'Linker' in df_processed.columns else ''}):", 
     molecule_options
 )
 
